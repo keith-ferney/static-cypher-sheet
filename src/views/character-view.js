@@ -569,4 +569,19 @@ class CharacterView {
         
         return advancements;
     }
+
+    updateSaveButtonState(hasChanges) {
+        const saveButton = document.querySelector('button[onclick="saveCharacter()"]');
+        if (!saveButton) return;
+        
+        if (hasChanges) {
+            saveButton.classList.remove('bg-green-600', 'hover:bg-green-700');
+            saveButton.classList.add('bg-yellow-500', 'hover:bg-yellow-600', 'save-button-unsaved');
+            saveButton.innerHTML = '⚠️ Save Changes';
+        } else {
+            saveButton.classList.remove('bg-yellow-500', 'hover:bg-yellow-600', 'save-button-unsaved');
+            saveButton.classList.add('bg-green-600', 'hover:bg-green-700');
+            saveButton.innerHTML = '💾 Save Character';
+        }
+    }
 }

@@ -3,6 +3,7 @@ class CharacterController {
     constructor(model, view) {
         this.model = model;
         this.view = view;
+        this.savedCharacterSnapshot = null;
     }
 
     async initialize() {
@@ -20,6 +21,40 @@ class CharacterController {
         
         // Initialize FancySelects after view is shown
         this.view.initializeFancySelects();
+        
+        // Set up change detection
+        this.setupChangeDetection();
+    }
+
+    setupChangeDetection() {
+        const sheetView = document.getElementById('character-sheet-view');
+        
+        // Listen for input changes
+        sheetView.addEventListener('input', () => {
+            this.checkForChanges();
+        });
+        
+        // Listen for checkbox changes
+        sheetView.addEventListener('change', () => {
+            this.checkForChanges();
+        });
+    }
+
+    checkForChanges() {
+        if (!this.savedCharacterSnapshot) {
+            return;
+        }
+        
+        const currentData = this.view.getCharacterDataFromForm();
+        const hasChanges = JSON.stringify(currentData) !== JSON.stringify(this.savedCharacterSnapshot);
+        
+        this.view.updateSaveButtonState(hasChanges);
+    }
+
+    saveSnapshot() {
+        const currentData = this.view.getCharacterDataFromForm();
+        this.savedCharacterSnapshot = JSON.parse(JSON.stringify(currentData));
+        this.view.updateSaveButtonState(false);
     }
 
     showCharacterList() {
@@ -32,6 +67,7 @@ class CharacterController {
         this.model.createNewCharacterId();
         this.view.clearForm();
         this.view.showCharacterSheet();
+        this.saveSnapshot();
     }
 
     loadCharacter(id) {
@@ -41,11 +77,13 @@ class CharacterController {
         this.model.setCurrentCharacterId(id);
         this.view.loadCharacterToForm(character);
         this.view.showCharacterSheet();
+        this.saveSnapshot();
     }
 
     saveCharacter() {
         const characterData = this.view.getCharacterDataFromForm();
         this.model.saveCharacter(characterData);
+        this.saveSnapshot();
         alert('Character saved successfully!');
     }
 
@@ -60,12 +98,14 @@ class CharacterController {
         const skills = this.view.getCurrentSkills();
         skills.push({ name: '', pool: '', type: '', powerShift: 0 });
         this.view.renderSkills(skills);
+        this.checkForChanges();
     }
 
     removeSkill(index) {
         const skills = this.view.getCurrentSkills();
         skills.splice(index, 1);
         this.view.renderSkills(skills);
+        this.checkForChanges();
     }
 
     // Abilities methods
@@ -73,6 +113,7 @@ class CharacterController {
         const abilities = this.view.getCurrentAbilities();
         abilities.push({ name: '', description: '' });
         this.view.renderAbilities(abilities);
+        this.checkForChanges();
     }
 
     addAbilityFromSelect() {
@@ -92,6 +133,7 @@ class CharacterController {
             
             // Reset the select
             this.view.abilitySelect.setValue(null);
+            this.checkForChanges();
         }
     }
 
@@ -99,6 +141,7 @@ class CharacterController {
         const abilities = this.view.getCurrentAbilities();
         abilities.splice(index, 1);
         this.view.renderAbilities(abilities);
+        this.checkForChanges();
     }
 
     toggleAbilityDesc(index) {
@@ -114,12 +157,14 @@ class CharacterController {
         equipment.push(item);
         this.view.renderEquipment(equipment);
         input.value = '';
+        this.checkForChanges();
     }
 
     removeEquipment(index) {
         const equipment = this.view.getCurrentEquipment();
         equipment.splice(index, 1);
         this.view.renderEquipment(equipment);
+        this.checkForChanges();
     }
 
     // Attacks methods
@@ -131,12 +176,14 @@ class CharacterController {
         attacks.push(attack);
         this.view.renderAttacks(attacks);
         input.value = '';
+        this.checkForChanges();
     }
 
     removeAttack(index) {
         const attacks = this.view.getCurrentAttacks();
         attacks.splice(index, 1);
         this.view.renderAttacks(attacks);
+        this.checkForChanges();
     }
 
     // Cyphers methods
@@ -154,11 +201,13 @@ class CharacterController {
         nameInput.value = '';
         levelInput.value = '';
         descInput.value = '';
+        this.checkForChanges();
     }
 
     removeCypher(index) {
         const cyphers = this.view.getCurrentCyphers();
         cyphers.splice(index, 1);
         this.view.renderCyphers(cyphers);
+        this.checkForChanges();
     }
 }
