@@ -82,3 +82,32 @@ function addCypher() {
 function removeCypher(index) {
     app.removeCypher(index);
 }
+
+// Import/Export functions
+function exportCurrentCharacter() {
+    app.exportCurrentCharacter();
+}
+
+function exportAllCharacters() {
+    app.exportAllCharacters();
+}
+
+function handleImportFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const mode = document.querySelector('input[name="import-mode"]:checked').value;
+    app.importCharacters(file, mode);
+    
+    // Reset file input and hide modal
+    event.target.value = '';
+    hideImportExportModal();
+}
+
+function showImportExportModal() {
+    document.getElementById('import-export-modal').classList.remove('hidden');
+}
+
+function hideImportExportModal() {
+    document.getElementById('import-export-modal').classList.add('hidden');
+}

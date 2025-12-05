@@ -35,6 +35,10 @@ See [BUILD_DEPLOY.md](BUILD_DEPLOY.md) for detailed deployment instructions.
 - Create, edit, and delete multiple characters
 - All data stored in browser's localStorage
 - Character list view with quick access to edit each character
+- **Import/Export** - Transfer characters between devices or create backups
+  - Export individual characters or all at once
+  - Import with merge or replace options
+  - See [Import/Export Guide](docs/IMPORT_EXPORT_GUIDE.md) for details
 
 ### Character Sheet Features
 
