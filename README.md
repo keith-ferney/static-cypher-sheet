@@ -148,12 +148,14 @@ This creates a `dist/` folder with cache-busted assets ready for deployment.
 ### Available NPM Scripts
 - `npm run dev` - Start development server with auto-reload
 - `npm run build` - Build production-ready files to dist/
+- `npm run build:watch` - Auto-rebuild on file changes (watches src/, data/, styles.css, index.html)
 - `npm run clean` - Remove dist folder
 - `npm run rebuild` - Clean and rebuild
 - `npm test` - Run tests
 - `npm run test:watch` - Run tests in watch mode
 - `npm run test:coverage` - Run tests with coverage report
 
+**Pro Tip:** Use `npm run build:watch` in one terminal and serve the `dist/` folder in another to test production builds continuously!
 ### Netlify Deployment
 1. Run `npm run build` to create the `dist/` folder
 2. Drag and drop the `dist/` folder to Netlify
