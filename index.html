@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cypher System Character Sheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-900">
+    
+    <!-- Character List View -->
+    <div id="character-list-view" class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <div class="flex justify-between mb-6">
+                        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                            Your Characters
+                        </h2>
+                        <button onclick="showNewCharacterForm()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md">
+                            Create Character
+                        </button>
+                    </div>
+
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 flex lg:table">
+                        <thead class="bg-gray-50 dark:bg-gray-800 hidden lg:table-header-group">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Descriptor</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Focus</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="characters-tbody" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 flex flex-col lg:table-row-group">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Sheet View -->
+    <div id="character-sheet-view" class="hidden py-12">
+        <div class="sm:px-6 lg:px-8">
+            <!-- Main Character Sheet -->
+            <div style="background-image: url('assets/CharacterSheetBackground.png');" class="bg-center bg-cover bg-no-repeat bg-slate-200 dark:bg-gray-800 shadow-sm sm:rounded-lg text-gray-900 dark:text-black p-6 grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible">
+                
+                <!-- COLUMN 1 CONTAINER -->
+                <div class="flex flex-col gap-3 overflow-visible">
+                <!-- Name -->
+                <div class="w-full flex flex-col">
+                    <input id="char-name" type="text" class="border-0 border-r-8 border-b-8 border-black" placeholder="Character Name">
+                    <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Name</label>
+                </div>
+
+                <!-- Is A Descriptor Type -->
+                <div class="flex gap-3 flex-wrap xl:flex-nowrap">
+                    <div class="flex flex-row items-center w-full">
+                        <div class="bg-black px-2 pb-2 whitespace-nowrap font-extrabold text-white">IS A</div>
+                        <div class="w-full flex flex-col">
+                            <div id="descriptor-select"></div>
+                            <input id="char-descriptor" type="hidden">
+                            <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Descriptor</label>
+                        </div>
+                    </div>
+                    <div class="flex flex-row items-center w-full">
+                        <div class="w-full flex flex-col">
+                            <div id="type-select"></div>
+                            <input id="char-type" type="hidden">
+                            <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Type</label>
+                        </div>
+                        <div class="bg-black px-2 pb-2 font-extrabold text-white">WHO</div>
+                    </div>
+                </div>
+
+                <!-- Focus -->
+                <div class="w-full flex flex-col">
+                    <div id="focus-select"></div>
+                    <input id="char-focus" type="hidden">
+                    <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Focus</label>
+                </div>
+
+                <!-- Type/Flavor/Other -->
+                <div class="w-full flex flex-col">
+                    <div id="flavor-select"></div>
+                    <input id="char-flavor" type="hidden">
+                    <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Type/Flavor/Other</label>
+                </div>
+
+                <!-- Tier Effort XP -->
+                <div class="flex gap-1 justify-between">
+                    <div class="bg-white w-full text-black flex items-center flex-col border-r-8 border-b-8 border-black">
+                        <input id="char-tier" type="number" value="1" class="text-center w-24 border-0">
+                        <label class="text-center font-semibold text-xl">Tier</label>
+                    </div>
+                    <div class="bg-white w-full text-black flex items-center flex-col border-r-8 border-b-8 border-black">
+                        <input id="char-effort" type="number" value="1" class="text-center w-24 border-0">
+                        <label class="text-center font-semibold text-xl">Effort</label>
+                    </div>
+                    <div class="bg-white w-full text-black flex items-center flex-col border-r-8 border-b-8 border-black">
+                        <input id="char-experience" type="number" value="0" class="text-center w-24 border-0">
+                        <label class="text-center font-semibold text-xl">XP</label>
+                    </div>
+                </div>
+
+                <!-- Might Speed Intellect -->
+                <div class="flex bg-white w-full justify-between text-black border-r-8 border-b-8 border-black">
+                    <div class="flex flex-grow flex-col border-x border-x-black px-1">
+                        <label class="text-center font-semibold text-xl">Might</label>
+                        <input id="might-current" type="number" value="10" class="text-center w-24 border-0">
+                        <div class="grid grid-cols-2 border-t-2 border-t-black">
+                            <div class="flex flex-col border-r border-r-black">
+                                <input id="might-pool" type="number" value="10" class="text-center border-0 w-14">
+                                <label class="text-center font-semibold">Pool</label>
+                            </div>
+                            <div class="flex flex-col border-l border-l-black">
+                                <input id="might-edge" type="number" value="0" class="text-center border-0 w-14">
+                                <label class="text-center font-semibold">Edge</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-grow flex-col border-x border-x-black px-1">
+                        <label class="text-center font-semibold text-xl">Speed</label>
+                        <input id="speed-current" type="number" value="10" class="text-center w-24 border-0">
+                        <div class="grid grid-cols-2 border-t-2 border-t-black">
+                            <div class="flex flex-col border-r border-r-black">
+                                <input id="speed-pool" type="number" value="10" class="text-center border-0 w-14">
+                                <label class="text-center font-semibold">Pool</label>
+                            </div>
+                            <div class="flex flex-col border-l border-l-black">
+                                <input id="speed-edge" type="number" value="0" class="text-center border-0 w-14">
+                                <label class="text-center font-semibold">Edge</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-grow flex-col border-x border-x-black px-1">
+                        <label class="text-center font-semibold text-xl">Intellect</label>
+                        <input id="intellect-current" type="number" value="10" class="text-center w-24 border-0">
+                        <div class="grid grid-cols-2 border-t-2 border-t-black">
+                            <div class="flex flex-col border-r border-r-black">
+                                <input id="intellect-pool" type="number" value="10" class="text-center border-0 w-14">
+                                <label class="text-center font-semibold">Pool</label>
+                            </div>
+                            <div class="flex flex-col border-l border-l-black">
+                                <input id="intellect-edge" type="number" value="0" class="text-center border-0 w-14">
+                                <label class="text-center font-semibold">Edge</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recovery Damage Track -->
+                <div class="flex bg-white w-full justify-between text-black border-r-8 border-b-8 border-black">
+                    <div class="flex flex-grow flex-col border-x border-x-black px-1">
+                        <div class="grid grid-cols-2 border-t-2 border-t-black">
+                            <label class="font-semibold text-xl">Recovery</label>
+                            <input id="recovery-modifier" type="number" value="0" class="text-center w-14 border-0">
+                        </div>
+                        <div class="grid grid-cols-2 border-t-2 border-t-black">
+                            <div class="flex gap-1 items-center">
+                                <label class="font-semibold text-xl">
+                                    <input id="recovery-action" type="checkbox"> 1 Action
+                                </label>
+                            </div>
+                            <div class="flex gap-1 items-center">
+                                <label class="font-semibold text-xl">
+                                    <input id="recovery-1hour" type="checkbox"> 1 Hour
+                                </label>
+                            </div>
+                            <div class="flex gap-1 items-center">
+                                <label class="font-semibold text-xl">
+                                    <input id="recovery-10min" type="checkbox"> 10 Mins
+                                </label>
+                            </div>
+                            <div class="flex gap-1 items-center">
+                                <label class="font-semibold text-xl">
+                                    <input id="recovery-10hour" type="checkbox"> 10 Hours
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-grow flex-col border-x border-x-black px-1">
+                        <div class="grid grid-cols-2 border-t-2 border-t-black">
+                            <label class="font-semibold text-xl">Damage Track</label>
+                        </div>
+                        <div class="grid grid-cols-2 border-t-2 border-t-black">
+                            <div class="flex flex-col gap-1 w-36">
+                                <label class="font-semibold text-xl">
+                                    <input id="impaired" type="checkbox"> Impaired
+                                </label>
+                                <small class="text-xs text-gray-600">
+                                    +1 Effort per level<br>
+                                    Ignore minor and major effect results on rolls<br>
+                                    Combat roll of 17-20 deals only +1 damage
+                                </small>
+                            </div>
+                            <div class="flex flex-col gap-1 w-36">
+                                <label class="font-semibold text-xl">
+                                    <input id="debilitated" type="checkbox"> Debilitated
+                                </label>
+                                <small class="text-xs text-gray-600">
+                                    Can move only an immediate distance<br>
+                                    Cannot move if Speed Pool is 0
+                                </small>
+                            </div>
+                            <div></div>
+                            <div class="flex flex-col gap-1 w-36">
+                                <label class="font-semibold text-xl">
+                                    <input type="checkbox"> Dead
+                                </label>
+                                <small class="text-xs text-gray-600">
+                                    ...isn't always dead
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
+                    <label class="font-medium w-full text-lg underline-offset-8 mb-2 underline">Skills</label>
+                    <div class="overflow-y-auto max-h-64">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="text-left">Name</th>
+                                    <th class="text-center w-12">Pool</th>
+                                    <th class="text-center w-12">PS</th>
+                                    <th class="text-left w-24">Type</th>
+                                    <th class="w-8"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="skills-list"></tbody>
+                        </table>
+                    </div>
+                    <button onclick="addSkill()" class="mt-2 px-3 py-1 bg-black text-white text-xs">+ Add Skill</button>
+                </div>
+
+                <!-- Background (Column 1) -->
+                <div class="w-full flex flex-col">
+                    <textarea id="char-background" class="h-64 border-0 border-r-8 border-b-8 border-black" placeholder="Background"></textarea>
+                    <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Background</label>
+                </div>
+                </div><!-- End Column 1 -->
+
+                <!-- COLUMN 2 CONTAINER -->
+                <div class="flex flex-col gap-3">
+                <!-- Advancements -->
+                <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
+                    <label class="font-medium w-full text-lg underline-offset-8 mb-2 underline">Advancements</label>
+                    <div id="advancements-list" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Special Abilities (Column 2) -->
+                <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
+                    <label class="font-medium w-full text-lg underline-offset-8 mb-2 underline">Special Abilities</label>
+                    <div class="mb-2 flex gap-2">
+                        <div id="ability-select" class="flex-1"></div>
+                        <button onclick="addAbilityFromSelect()" class="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs whitespace-nowrap">+ Add Ability</button>
+                    </div>
+                    <div id="abilities-list" class="flex flex-col gap-2 overflow-y-auto max-h-64"></div>
+                </div>
+
+                <!-- Attacks (Column 2) -->
+                <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
+                    <label class="font-medium w-full text-lg underline-offset-8 mb-4 underline">Attacks</label>
+                    <div id="attacks-list" class="flex flex-col gap-1 overflow-y-auto max-h-32"></div>
+                    <div class="mt-2 flex gap-2">
+                        <input id="new-attack" type="text" placeholder="Attack (e.g., Sword - 4 dmg)" class="flex-1 px-2 py-1 border border-black">
+                        <button onclick="addAttack()" class="px-3 py-1 bg-black text-white">Add</button>
+                    </div>
+                </div>
+
+                <!-- Notes (Column 2) -->
+                <div class="w-full flex flex-col">
+                    <textarea id="char-notes" class="h-64 border-0 border-r-8 border-b-8 border-black" placeholder="Notes"></textarea>
+                    <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Notes</label>
+                </div>
+                </div><!-- End Column 2 -->
+
+                <!-- COLUMN 3 CONTAINER -->
+                <div class="flex flex-col gap-3">
+                <!-- Claim the Sky Logo -->
+                <img src="assets/ClaimTheSky.png" alt="Claim the Sky" class="hidden md:flex h-40 self-center place-self-center">
+
+                <!-- Cyphers (Column 3) -->
+                <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
+                    <label class="font-medium w-full text-lg underline-offset-8 mb-4 underline">Cyphers</label>
+                    <div id="cyphers-list" class="flex flex-col gap-2 overflow-y-auto max-h-48"></div>
+                    <div class="mt-2 flex flex-col gap-2">
+                        <input id="new-cypher-name" type="text" placeholder="Cypher name" class="px-2 py-1 border border-black">
+                        <input id="new-cypher-level" type="text" placeholder="Level" class="px-2 py-1 border border-black">
+                        <textarea id="new-cypher-desc" placeholder="Effect" class="px-2 py-1 border border-black" rows="2"></textarea>
+                        <button onclick="addCypher()" class="px-3 py-1 bg-black text-white">Add</button>
+                    </div>
+                </div>
+
+                <!-- Power Shifts (Column 3) -->
+                <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
+                    <label class="font-medium w-full text-lg underline-offset-8 mb-2 underline">Power Shifts</label>
+                    <div id="powershifts-list" class="flex flex-col gap-1 overflow-y-auto text-xs"></div>
+                </div>
+
+                <!-- Equipment (Column 3) -->
+                <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
+                    <label class="font-medium w-full text-lg underline-offset-8 mb-4 underline">Equipment</label>
+                    <div id="equipment-list" class="flex flex-col gap-1 overflow-y-auto max-h-48"></div>
+                    <div class="mt-2 flex gap-2">
+                        <input id="new-equipment" type="text" placeholder="Equipment" class="flex-1 px-2 py-1 border border-black">
+                        <button onclick="addEquipment()" class="px-3 py-1 bg-black text-white">Add</button>
+                    </div>
+                </div>
+
+                <!-- Portrait (Column 3) -->
+                <div class="w-full flex flex-col">
+                    <textarea id="char-portrait" class="h-48 border-0 border-r-8 border-b-8 border-black" placeholder="Portrait URL or description"></textarea>
+                    <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Portrait</label>
+                </div>
+                </div><!-- End Column 3 -->
+
+            </div><!-- End Main Character Sheet -->
+
+            <!-- Remove old Background/Notes/Portrait section -->
+
+            <!-- Action Buttons -->
+            <div class="mt-6 flex gap-4 justify-center">
+                <button onclick="saveCharacter()" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md font-semibold">💾 Save Character</button>
+                <button onclick="showCharacterList()" class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-md font-semibold">← Back to List</button>
+                <button onclick="deleteCurrentCharacter()" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-md font-semibold">🗑️ Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="src/models/data-loader.js"></script>
+    <script src="src/components/fancy-select.js"></script>
+    <script src="src/models/character.js"></script>
+    <script src="src/views/character-view.js"></script>
+    <script src="src/controllers/character-controller.js"></script>
+    <script src="src/app.js"></script>
+</body>
+</html>

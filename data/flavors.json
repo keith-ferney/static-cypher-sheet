@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Stealth Flavor",
+        "abilities": [
+            "Danger Sense",
+            "Goad",
+            "Legerdemain",
+            "Opportunist"
+        ],
+        "additional_benefits": [
+            "Choose 2 stealthy skills"
+        ],
+        "description": "\nCharacters with the stealth flavor are good at sneaking around, infiltrating places they don\u2019t belong, and deceiving others. They use these abilities in a variety of ways, including combat. An Explorer with stealth flavor might be a thief, while a Warrior with stealth flavor might be an assassin. An Explorer with stealth flavor in a superhero setting might be a crimefighter who stalks the streets at night.\n\nFirst-Tier Stealth Abilities\nDanger Sense\n\nGoad\n\nLegerdemain\n\nOpportunist\n\nStealth Skills\n\nSecond-Tier Stealth Abilities\nContortionist\n\nFind an Opening\n\nGet Away\n\nSense Ambush\n\nSurprise Attack\n\nThird-Tier Stealth Abilities\nEvanesce\n\nFrom the Shadows\n\nGambler\n\nInner Defense\n\nMisdirect\n\nRun and Fight\n\nSeize the Moment\n\nFourth-Tier Stealth Abilities\nAmbusher\n\nDebilitating Strike\n\nOutwit\n\nPreternatural Senses\n\nTumbling Moves\n\nFifth-Tier Stealth Abilities\nAssassin Strike\n\nMask\n\nReturn to Sender\n\nUncanny Luck\n\nSixth-Tier Stealth Abilities\nExploit Advantage\n\nSpring Away\n\nThief\u2019s Luck\n\nTwist of Fate\n\n"
+    },
+    {
+        "name": "Technology Flavor",
+        "abilities": [
+            "Datajack",
+            "Hacker",
+            "Machine Interf.",
+            "Scramble Machine",
+            "Tinker"
+        ],
+        "additional_benefits": [
+            "Choose 2 techy skills"
+        ],
+        "description": "\nCharacters with a flavor of technology typically are from science fiction or at least modern-day settings (although anything is possible). They excel at using, dealing with, and building machines. An Explorer with technology flavor might be a starship pilot, and a Speaker flavored with technology could be a techno-priest.\n\nSome of the less computer-oriented abilities might be appropriate for a steampunk character, while a modern-day character could use some of the abilities that don\u2019t involve starships or ultratech.\n\nFirst-Tier Technology Abilities\nDatajack\n\nHacker\n\nMachine Interface\n\nScramble Machine\n\nTech Skills\n\nTinker\n\nSecond-Tier Technology Abilities\nDistant Interface\n\nMachine Efficiency\n\nOverload Machine\n\nServ-0\n\nServ-0 Defender\n\nServ-0 Repair\n\nTool Mastery\n\nThird-Tier Technology Abilities\nMechanical Telepathy\n\nServ-0 Scanner\n\nShip Footing\n\nShipspeak\n\nSpray\n\nFourth-Tier Technology Abilities\nMachine Bond\n\nRobot Fighter\n\nServ-0 Aim\n\nServ-0 Brawler\n\nServ-0 Spy\n\nFifth-Tier Technology Abilities\nControl Machine\n\nJury-Rig\n\nMachine Companion\n\nSixth-Tier Technology Abilities\nInformation Gathering\n\nMaster Machine\n\n"
+    },
+    {
+        "name": "Magic Flavor",
+        "abilities": [
+            "Closed Mind",
+            "Entang. Force",
+            "Hedge Magic",
+            "Magic Training",
+            "Mental Link",
+            "Premonition",
+            "Blessing OTG"
+        ],
+        "description": "\nYou know a little about magic. You might not be a wizard, but you know the basics\u2014how it works, and how to accomplish a few wondrous things. Of course, in your setting, \u201cmagic\u201d might actually mean psychic powers, mutant abilities, weird alien tech, or anything else that produces interesting and useful effects.\n\nAn Explorer flavored with magic might be a wizard-hunter, and a Speaker with magical flavor might be a sorcerer-bard. Although an Adept flavored with magic is still an Adept, you might find that swapping some of the type\u2019s basic abilities with those given here tailors the character in desirable ways.\n\nFirst-Tier Magic Abilities\nBlessing of the Gods\n\nClosed Mind\n\nEntangling Force\n\nHedge Magic\n\nMagic Training\n\nMental Link\n\nPremonition\n\nSecond-Tier Magic Abilities\nConcussive Blast\n\nFetch\n\nForce Field\n\nLock\n\nRepair Flesh\n\nThird-Tier Magic Abilities\nDistance Viewing\n\nFire Bloom\n\nFling\n\nForce at Distance\n\nSummon Giant Spider\n\nFourth-Tier Magic Abilities\nElemental Protection\n\nIgnition\n\nPry Open\n\nFifth-Tier Magic Abilities\nCreate\n\nDivine Intervention\n\nDragon\u2019s Maw\n\nFast Travel\n\nTrue Senses\n\nSixth-Tier Magic Abilities\nRelocate\n\nSummon Demon\n\nTraverse the Worlds\n\nWord of Death\n\n"
+    },
+    {
+        "name": "Combat Flavor",
+        "abilities": [
+            "Danger Sense",
+            "Practiced in armor",
+            "Practiced w/ med. & light weapons"
+        ],
+        "description": "\nCombat flavor makes a character more martial. A Speaker with combat flavor in a fantasy setting would be a battle bard. An Explorer with combat flavor in a historical game might be a pirate. An Adept flavored with combat in a science fiction setting could be a veteran of a thousand psychic wars.\n\nFirst-Tier Combat Abilities\nDanger Sense\n\nPracticed in Armor\n\nPracticed With Medium Weapons\n\nSecond-Tier Combat Abilities\nBloodlust\n\nCombat Prowess\n\nTrained Without Armor\n\nThird-Tier Combat Abilities\nPracticed With All Weapons\n\nSkill With Attacks\n\nSkill With Defense\n\nSuccessive Attack\n\nFourth-Tier Combat Abilities\nCapable Warrior\n\nDeadly Aim\n\nFury\n\nMisdirect\n\nSpray\n\nFifth-Tier Combat Abilities\nExperienced Defender\n\nHard Target\n\nParry\n\nSixth-Tier Combat Abilities\nGreater Skill With Attacks\n\nMastery in Armor\n\nMastery With Defense\n\n"
+    },
+    {
+        "name": "Skills and Knowledge Flavor",
+        "additional_benefits": [
+            "Choose 2 interaction skills",
+            "Choose 2 investigative skills",
+            "Choose 2 knowledge skills",
+            "Choose 2 physical skills",
+            "Choose 2 travel skills"
+        ],
+        "description": "\nThis flavor is for characters in roles that call for more knowledge and more real-world application of talent. It\u2019s less flashy and dramatic than supernatural powers or the ability to hack apart multiple foes, but sometimes expertise or know-how is the real solution to a problem.\n\nA Warrior flavored with skills and knowledge might be a military engineer. An Explorer flavored with skills and knowledge could be a field scientist. A Speaker with this flavor might be a teacher.\n\nFirst-Tier Skills and Knowledge Abilities\nInteraction Skills\n\nInvestigative Skills\n\nKnowledge Skills\n\nPhysical Skills\n\nTravel Skills\n\nSecond-Tier Skills and Knowledge Abilities\nExtra Skill\n\nTool Mastery\n\nUnderstanding\n\nThird-Tier Skills and Knowledge Abilities\nFlex Skill\n\nImprovise\n\nFourth-Tier Skills and Knowledge Abilities\nMultiple Skills\n\nQuick Wits\n\nTask Specialization\n\nFifth-Tier Skills and Knowledge Abilities\nPracticed With Medium Weapons\n\nRead the Signs\n\nSixth-Tier Skills and Knowledge Abilities\nSkill With Attacks\n\nSkill With Defense"
+    }
+]

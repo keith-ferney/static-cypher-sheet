@@ -1,0 +1,158 @@
+/* Custom styles for Cypher Character Creator */
+
+/* Table input styling - remove borders for cleaner inline editing */
+#skills-list input,
+#skills-list select {
+    background: transparent;
+    border: none !important;
+    outline: none;
+    padding: 2px 4px;
+}
+
+#skills-list input:focus,
+#skills-list select:focus {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 2px;
+}
+
+#skills-list td {
+    padding: 4px 2px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+#skills-list tr:last-child td {
+    border-bottom: none;
+}
+
+/* Power shifts styling */
+#powershifts-list input {
+    padding: 2px 4px;
+}
+
+/* FancySelect Styles */
+.fancy-select {
+  position: relative;
+  width: 100%;
+}
+
+.fancy-select-trigger {
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+
+.fancy-select-trigger:hover {
+  background: #f9fafb;
+}
+
+.fancy-select-trigger svg {
+  transition: transform 0.2s;
+}
+
+.fancy-select-trigger svg.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.fancy-select-dropdown {
+  position: absolute;
+  width: max-content;
+  min-width: 100%;
+  max-width: 90vw;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  margin-top: 0.25rem;
+  max-height: 24rem;
+  overflow: visible; /* Changed from hidden to allow descriptions to overflow */
+  z-index: 50;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Extra wide dropdown variant for narrow containers */
+.fancy-select.extra-wide .fancy-select-dropdown {
+  width: max-content;
+  min-width: 100%;
+  max-width: 90vw;
+}
+
+.fancy-select-dropdown.hidden {
+  display: none;
+}
+
+.fancy-select-search {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  outline: none;
+}
+
+.fancy-select-options {
+  max-height: 20rem;
+  overflow-y: auto;
+  overflow-x: visible; /* Allow descriptions to overflow horizontally */
+}
+
+.fancy-select-option {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  position: relative;
+  overflow: visible; /* Allow description to overflow */
+}
+
+.fancy-select-option-label {
+  font-weight: 500;
+  color: #111827;
+  position: relative;
+  z-index: 2;
+}
+
+.fancy-select-option-description {
+  position: absolute; /* Will be changed to fixed by JS */
+  top: 100%;
+  left: 0;
+  right: -100%;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.25rem;
+  padding: 0.75rem;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #0c4a6e;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  pointer-events: none; /* Will be enabled when visible */
+  z-index: 10000; /* Very high z-index for fixed positioning */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  max-height: 60vh; /* Limit height to viewport */
+  overflow-y: auto; /* Scroll if too long */
+  cursor: default;
+  display: none; /* Hidden by default */
+}
+
+.fancy-select-option.hovered .fancy-select-option-description {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto; /* Allow mouse interaction for scrolling */
+  display: block; /* Show when hovered */
+}
+
+.fancy-select-option:hover,
+.fancy-select-option.hovered {
+  background: #eff6ff;
+  z-index: 5;
+}
+
+.fancy-select-option:last-child {
+  border-bottom: none;
+}

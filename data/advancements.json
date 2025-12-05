@@ -1,0 +1,18 @@
+[
+    {
+        "name": "INCREASE CAPABILITIES",
+        "description": "+4 points into stat Pools"
+    },
+    {
+        "name": "MOVE TOWARD PERFECTION",
+        "description": "+1 to the Edge of your choice"
+    },
+    {
+        "name": "EXTRA EFFORT",
+        "description": "+1 into Effort"
+    },
+    {
+        "name": "SKILL TRAINING",
+        "description": "rain in a skill or specialize in a trained skill"
+    }
+]
