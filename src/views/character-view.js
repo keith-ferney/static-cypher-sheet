@@ -9,6 +9,28 @@ class CharacterView {
         this.abilitySelect = null;
     }
 
+    showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        const icon = type === 'success' ? '✓' : 
+                     type === 'error' ? '✕' : 
+                     'ℹ';
+        
+        toast.innerHTML = `
+            <span style="font-size: 1.25rem;">${icon}</span>
+            <span>${message}</span>
+        `;
+        
+        container.appendChild(toast);
+        
+        // Remove toast after animation completes
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+
     initializeFancySelects() {
         // Initialize Descriptor Select
         this.descriptorSelect = new FancySelect(
@@ -437,11 +459,16 @@ class CharacterView {
     // Cyphers Management
     getCurrentCyphers() {
         return Array.from(document.querySelectorAll('#cyphers-list .cypher-item'))
-            .map(el => ({
-                name: el.querySelector('.cypher-name').textContent,
-                level: el.querySelector('.cypher-level').textContent,
-                description: el.querySelector('.cypher-desc').textContent
-            }));
+            .map(el => {
+                const levelText = el.querySelector('.cypher-level').textContent;
+                // Remove the "(Lvl " prefix and ")" suffix to get just the level value
+                const level = levelText.replace(/^\(Lvl\s*/, '').replace(/\)$/, '');
+                return {
+                    name: el.querySelector('.cypher-name').textContent,
+                    level: level,
+                    description: el.querySelector('.cypher-desc').textContent
+                };
+            });
     }
 
     renderCyphers(cyphers) {

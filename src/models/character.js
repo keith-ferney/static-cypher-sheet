@@ -48,9 +48,23 @@ class CharacterModel {
 
     setCurrentCharacterId(id) {
         this.currentCharacterId = id;
+        // Save the current character ID to localStorage
+        if (id) {
+            localStorage.setItem('currentCharacterId', id);
+        } else {
+            localStorage.removeItem('currentCharacterId');
+        }
     }
 
     getCurrentCharacterId() {
+        return this.currentCharacterId;
+    }
+
+    restoreCurrentCharacterId() {
+        const savedId = localStorage.getItem('currentCharacterId');
+        if (savedId) {
+            this.currentCharacterId = savedId;
+        }
         return this.currentCharacterId;
     }
 

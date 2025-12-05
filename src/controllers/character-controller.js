@@ -12,15 +12,22 @@ class CharacterController {
         this.view.renderAdvancements();
         this.model.loadCharacters();
         
-        // If no characters exist, show character sheet instead of list
-        if (this.model.getAllCharacters().length === 0) {
+        // Initialize FancySelects BEFORE loading character data
+        this.view.initializeFancySelects();
+        
+        // Try to restore the last viewed character
+        const lastCharacterId = this.model.restoreCurrentCharacterId();
+        
+        if (lastCharacterId && this.model.getCharacter(lastCharacterId)) {
+            // If we have a saved character ID and it still exists, load it
+            this.loadCharacter(lastCharacterId);
+        } else if (this.model.getAllCharacters().length === 0) {
+            // If no characters exist, show character sheet instead of list
             this.showNewCharacterForm();
         } else {
+            // Otherwise show the character list
             this.showCharacterList();
         }
-        
-        // Initialize FancySelects after view is shown
-        this.view.initializeFancySelects();
         
         // Set up change detection
         this.setupChangeDetection();
@@ -84,7 +91,7 @@ class CharacterController {
         const characterData = this.view.getCharacterDataFromForm();
         this.model.saveCharacter(characterData);
         this.saveSnapshot();
-        alert('Character saved successfully!');
+        this.view.showToast('Character saved successfully!', 'success');
     }
 
     deleteCurrentCharacter() {
