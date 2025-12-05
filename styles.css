@@ -70,6 +70,7 @@
   justify-content: space-between;
   align-items: center;
   user-select: none;
+  position: relative;
 }
 
 .fancy-select-trigger:hover {
@@ -82,6 +83,35 @@
 
 .fancy-select-trigger svg.rotate-180 {
   transform: rotate(180deg);
+}
+
+.fancy-select-trigger-description {
+  position: absolute;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.25rem;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: #0c4a6e;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  pointer-events: none;
+  z-index: 10000;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  max-height: 60vh;
+  overflow-y: auto;
+  cursor: default;
+  display: none;
+}
+
+.fancy-select-trigger-description.show {
+  opacity: 1;
+  visibility: visible;
+  display: block;
+  pointer-events: auto; /* Allow mouse interaction when visible */
 }
 
 .fancy-select-dropdown {
