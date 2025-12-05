@@ -4,10 +4,11 @@ Use this checklist every time you deploy an update.
 
 ## Pre-Deployment
 
-- [ ] All changes tested locally
+- [ ] All changes tested locally with `npm run dev`
 - [ ] Run tests: `npm test`
 - [ ] All tests passing
 - [ ] Bug fixes documented in relevant files
+- [ ] Verify all new JavaScript files are added to `build.js` filesToCopy array
 
 ## Build
 
@@ -15,6 +16,11 @@ Use this checklist every time you deploy an update.
 - [ ] Check for build errors
 - [ ] Verify `dist/` folder created
 - [ ] Spot-check a few files in `dist/` to ensure they copied correctly
+- [ ] Verify all refactored view files are present:
+  - [ ] `dist/src/views/toast-notification.js`
+  - [ ] `dist/src/views/form-renderer.js`
+  - [ ] `dist/src/views/character-form-manager.js`
+  - [ ] `dist/src/views/character-view.js`
 
 ## Verify Cache-Busting
 
@@ -22,12 +28,21 @@ Use this checklist every time you deploy an update.
 - [ ] Confirm all JS/CSS files have `?v=` query strings
 - [ ] Note the version number from `dist/version.txt`
 
-## Test Built Version (Optional but Recommended)
+## Test Built Version (Recommended)
 
-- [ ] Open `dist/index.html` in browser
+Use a local server to test (don't open file:// directly):
+```bash
+cd dist && python3 -m http.server 8080
+```
+
+- [ ] Open `http://localhost:8080` in browser
+- [ ] Check browser console for any errors
+- [ ] Verify all JavaScript files load correctly (no 404s)
 - [ ] Create a test character
-- [ ] Test dropdown selectors
-- [ ] Save character
+- [ ] Test dropdown selectors (Descriptor, Type, Focus, Flavor)
+- [ ] Save character and verify toast notification appears
+- [ ] Reload page and verify character persists
+- [ ] Test all form sections (Skills, Abilities, Equipment, etc.)
 - [ ] Reload page - character should persist
 - [ ] Delete test character
 

@@ -4,6 +4,7 @@
   "description": "A standalone, browser-based character sheet creator for the Cypher System RPG. This version requires no backend server and stores all data locally in your browser.",
   "main": "app.js",
   "scripts": {
+    "dev": "live-server --port=8000 --open=/",
     "build": "node build.js",
     "clean": "rm -rf dist",
     "rebuild": "npm run clean && npm run build",
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
     "jest": "^30.2.0",
-    "jest-environment-jsdom": "^30.2.0"
+    "jest-environment-jsdom": "^30.2.0",
+    "live-server": "^1.2.2"
   }
 }

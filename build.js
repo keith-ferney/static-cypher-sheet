@@ -32,6 +32,9 @@ const filesToCopy = [
   'src/app.js',
   'src/models/character.js',
   'src/models/data-loader.js',
+  'src/views/toast-notification.js',
+  'src/views/form-renderer.js',
+  'src/views/character-form-manager.js',
   'src/views/character-view.js',
   'src/controllers/character-controller.js',
   'src/components/fancy-select.js',
@@ -71,6 +74,9 @@ html = html.replace('href="styles.css"', `href="styles.css?v=${VERSION}"`);
 html = html.replace('src="src/models/data-loader.js"', `src="src/models/data-loader.js?v=${VERSION}"`);
 html = html.replace('src="src/components/fancy-select.js"', `src="src/components/fancy-select.js?v=${VERSION}"`);
 html = html.replace('src="src/models/character.js"', `src="src/models/character.js?v=${VERSION}"`);
+html = html.replace('src="src/views/toast-notification.js"', `src="src/views/toast-notification.js?v=${VERSION}"`);
+html = html.replace('src="src/views/form-renderer.js"', `src="src/views/form-renderer.js?v=${VERSION}"`);
+html = html.replace('src="src/views/character-form-manager.js"', `src="src/views/character-form-manager.js?v=${VERSION}"`);
 html = html.replace('src="src/views/character-view.js"', `src="src/views/character-view.js?v=${VERSION}"`);
 html = html.replace('src="src/controllers/character-controller.js"', `src="src/controllers/character-controller.js?v=${VERSION}"`);
 html = html.replace('src="src/app.js"', `src="src/app.js?v=${VERSION}"`);

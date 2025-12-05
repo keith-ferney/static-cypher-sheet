@@ -1,0 +1,31 @@
+# Netlify configuration for static-cypher-sheet
+
+[build]
+  # Build command to run
+  command = "npm run build"
+  
+  # Directory to publish (where the built files are)
+  publish = "dist"
+
+# Add proper MIME types for JavaScript files (just in case)
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "application/javascript; charset=utf-8"
+
+[[headers]]
+  for = "/src/**/*.js"
+  [headers.values]
+    Content-Type = "application/javascript; charset=utf-8"
+
+# Cache busting is handled by our build script with query strings
+# But we can also set cache headers for assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/data/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

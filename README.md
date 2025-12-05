@@ -4,9 +4,22 @@ A standalone, browser-based character sheet creator for the Cypher System RPG. T
 
 ## Quick Start
 
+### For Development
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start the development server (with auto-reload):
+   ```bash
+   npm run dev
+   ```
+   This will start a local server at `http://localhost:8000` and automatically refresh the browser when you make changes.
+
 ### For Users
-1. Open `index.html` in your web browser
-2. Start creating characters!
+1. Open `index.html` in your web browser (requires a local server)
+2. Or run `npm run dev` for the best experience
+3. Start creating characters!
 
 ### For Deployment
 ```bash
@@ -112,7 +125,15 @@ static-cypher-sheet/
 
 ## Deployment
 
+### Development Server
+For development with auto-reload:
+```bash
+npm run dev
+```
+This starts a live-server on http://localhost:8000 that automatically refreshes when you make changes.
+
 ### Local Testing
+Alternative simple server:
 ```bash
 python3 -m http.server 8080
 ```
@@ -123,6 +144,15 @@ Then open http://localhost:8080 in your browser.
 npm run build
 ```
 This creates a `dist/` folder with cache-busted assets ready for deployment.
+
+### Available NPM Scripts
+- `npm run dev` - Start development server with auto-reload
+- `npm run build` - Build production-ready files to dist/
+- `npm run clean` - Remove dist folder
+- `npm run rebuild` - Clean and rebuild
+- `npm test` - Run tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:coverage` - Run tests with coverage report
 
 ### Netlify Deployment
 1. Run `npm run build` to create the `dist/` folder
