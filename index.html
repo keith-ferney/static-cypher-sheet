@@ -384,13 +384,32 @@
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
 
     <script src="src/models/data-loader.js"></script>
+    <!-- FancySelect modular components -->
+    <script src="src/components/fancy-select/constants.js"></script>
+    <script src="src/components/fancy-select/utils.js"></script>
+    <script src="src/components/fancy-select/tooltip-manager.js"></script>
+    <script src="src/components/fancy-select/event-handlers.js"></script>
+    <script src="src/components/fancy-select/dom-builder.js"></script>
+    <script src="src/components/fancy-select/fancy-select-core.js"></script>
     <script src="src/components/fancy-select.js"></script>
     <script src="src/models/character.js"></script>
     <!-- Refactored view components -->
     <script src="src/views/toast-notification.js"></script>
+    <!-- Individual renderers -->
+    <script src="src/views/renderers/skills-renderer.js"></script>
+    <script src="src/views/renderers/abilities-renderer.js"></script>
+    <script src="src/views/renderers/equipment-renderer.js"></script>
+    <script src="src/views/renderers/combat-renderer.js"></script>
+    <script src="src/views/renderers/cyphers-renderer.js"></script>
+    <script src="src/views/renderers/power-shifts-renderer.js"></script>
+    <script src="src/views/renderers/advancements-renderer.js"></script>
+    <!-- Unified form renderer -->
     <script src="src/views/form-renderer.js"></script>
     <script src="src/views/character-form-manager.js"></script>
     <script src="src/views/character-view.js"></script>
+    <!-- Controller modules -->
+    <script src="src/controllers/modules/character-crud-controller.js"></script>
+    <script src="src/controllers/modules/character-change-tracker.js"></script>
     <script src="src/controllers/character-controller.js"></script>
     <script src="src/app.js"></script>
 </body>

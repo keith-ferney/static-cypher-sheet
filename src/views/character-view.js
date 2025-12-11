@@ -105,8 +105,10 @@ class CharacterView {
     }
 
     showCharacterSheet() {
-        document.getElementById('character-list-view').classList.add('hidden');
-        document.getElementById('character-sheet-view').classList.remove('hidden');
+        const listView = document.getElementById('character-list-view');
+        const sheetView = document.getElementById('character-sheet-view');
+        if (listView) listView.classList.add('hidden');
+        if (sheetView) sheetView.classList.remove('hidden');
     }
 
     // ========== CHARACTER LIST ==========
@@ -159,6 +161,13 @@ class CharacterView {
 
     clearForm() {
         this.formManager.clearForm();
+        
+        // Reset FancySelects to null
+        if (this.descriptorSelect) this.descriptorSelect.setValue(null);
+        if (this.typeSelect) this.typeSelect.setValue(null);
+        if (this.focusSelect) this.focusSelect.setValue(null);
+        if (this.flavorSelect) this.flavorSelect.setValue(null);
+        if (this.abilitySelect) this.abilitySelect.setValue(null);
     }
 
     getCharacterDataFromForm() {
@@ -241,5 +250,20 @@ class CharacterView {
 
     getCurrentAdvancements() {
         return FormRenderer.getCurrentAdvancements();
+    }
+
+    // ========== UNSAVED INDICATOR ==========
+    showUnsavedIndicator() {
+        const indicator = document.getElementById('unsaved-indicator');
+        if (indicator) {
+            indicator.classList.remove('hidden');
+        }
+    }
+
+    hideUnsavedIndicator() {
+        const indicator = document.getElementById('unsaved-indicator');
+        if (indicator) {
+            indicator.classList.add('hidden');
+        }
     }
 }

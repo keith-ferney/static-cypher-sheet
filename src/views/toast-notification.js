@@ -5,6 +5,12 @@ class ToastNotification {
     }
 
     show(message, type = 'success') {
+        // Gracefully handle missing container (e.g., in tests)
+        if (!this.container) {
+            console.warn('Toast container not found, message:', message);
+            return;
+        }
+        
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
         

@@ -69,8 +69,3 @@ class FormRenderer {
         return AdvancementsRenderer.renderAdvancements(characterAdvancements);
     }
 }
-
-// Make available globally for tests and browser usage
-if (typeof global !== 'undefined') {
-    global.FormRenderer = FormRenderer;
-}

@@ -29,14 +29,34 @@ fs.mkdirSync(distDir);
 // Files to copy directly
 const filesToCopy = [
   'styles.css',
+  'styles/layout.css',
+  'styles/components/tables.css',
+  'styles/components/fancy-select.css',
+  'styles/components/toast.css',
+  'styles/components/modal.css',
   'src/app.js',
   'src/models/character.js',
   'src/models/data-loader.js',
   'src/views/toast-notification.js',
+  'src/views/renderers/skills-renderer.js',
+  'src/views/renderers/abilities-renderer.js',
+  'src/views/renderers/equipment-renderer.js',
+  'src/views/renderers/combat-renderer.js',
+  'src/views/renderers/cyphers-renderer.js',
+  'src/views/renderers/power-shifts-renderer.js',
+  'src/views/renderers/advancements-renderer.js',
   'src/views/form-renderer.js',
   'src/views/character-form-manager.js',
   'src/views/character-view.js',
+  'src/controllers/modules/character-crud-controller.js',
+  'src/controllers/modules/character-change-tracker.js',
   'src/controllers/character-controller.js',
+  'src/components/fancy-select/constants.js',
+  'src/components/fancy-select/utils.js',
+  'src/components/fancy-select/tooltip-manager.js',
+  'src/components/fancy-select/event-handlers.js',
+  'src/components/fancy-select/dom-builder.js',
+  'src/components/fancy-select/fancy-select-core.js',
   'src/components/fancy-select.js',
   'data/descriptors.json',
   'data/types.json',
@@ -72,12 +92,27 @@ let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 // Add version query strings to CSS and JS files
 html = html.replace('href="styles.css"', `href="styles.css?v=${VERSION}"`);
 html = html.replace('src="src/models/data-loader.js"', `src="src/models/data-loader.js?v=${VERSION}"`);
+html = html.replace('src="src/components/fancy-select/constants.js"', `src="src/components/fancy-select/constants.js?v=${VERSION}"`);
+html = html.replace('src="src/components/fancy-select/utils.js"', `src="src/components/fancy-select/utils.js?v=${VERSION}"`);
+html = html.replace('src="src/components/fancy-select/tooltip-manager.js"', `src="src/components/fancy-select/tooltip-manager.js?v=${VERSION}"`);
+html = html.replace('src="src/components/fancy-select/event-handlers.js"', `src="src/components/fancy-select/event-handlers.js?v=${VERSION}"`);
+html = html.replace('src="src/components/fancy-select/dom-builder.js"', `src="src/components/fancy-select/dom-builder.js?v=${VERSION}"`);
+html = html.replace('src="src/components/fancy-select/fancy-select-core.js"', `src="src/components/fancy-select/fancy-select-core.js?v=${VERSION}"`);
 html = html.replace('src="src/components/fancy-select.js"', `src="src/components/fancy-select.js?v=${VERSION}"`);
 html = html.replace('src="src/models/character.js"', `src="src/models/character.js?v=${VERSION}"`);
 html = html.replace('src="src/views/toast-notification.js"', `src="src/views/toast-notification.js?v=${VERSION}"`);
+html = html.replace('src="src/views/renderers/skills-renderer.js"', `src="src/views/renderers/skills-renderer.js?v=${VERSION}"`);
+html = html.replace('src="src/views/renderers/abilities-renderer.js"', `src="src/views/renderers/abilities-renderer.js?v=${VERSION}"`);
+html = html.replace('src="src/views/renderers/equipment-renderer.js"', `src="src/views/renderers/equipment-renderer.js?v=${VERSION}"`);
+html = html.replace('src="src/views/renderers/combat-renderer.js"', `src="src/views/renderers/combat-renderer.js?v=${VERSION}"`);
+html = html.replace('src="src/views/renderers/cyphers-renderer.js"', `src="src/views/renderers/cyphers-renderer.js?v=${VERSION}"`);
+html = html.replace('src="src/views/renderers/power-shifts-renderer.js"', `src="src/views/renderers/power-shifts-renderer.js?v=${VERSION}"`);
+html = html.replace('src="src/views/renderers/advancements-renderer.js"', `src="src/views/renderers/advancements-renderer.js?v=${VERSION}"`);
 html = html.replace('src="src/views/form-renderer.js"', `src="src/views/form-renderer.js?v=${VERSION}"`);
 html = html.replace('src="src/views/character-form-manager.js"', `src="src/views/character-form-manager.js?v=${VERSION}"`);
 html = html.replace('src="src/views/character-view.js"', `src="src/views/character-view.js?v=${VERSION}"`);
+html = html.replace('src="src/controllers/modules/character-crud-controller.js"', `src="src/controllers/modules/character-crud-controller.js?v=${VERSION}"`);
+html = html.replace('src="src/controllers/modules/character-change-tracker.js"', `src="src/controllers/modules/character-change-tracker.js?v=${VERSION}"`);
 html = html.replace('src="src/controllers/character-controller.js"', `src="src/controllers/character-controller.js?v=${VERSION}"`);
 html = html.replace('src="src/app.js"', `src="src/app.js?v=${VERSION}"`);
 

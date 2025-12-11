@@ -3,13 +3,28 @@
  * These tests verify that the fancy dropdown selector works correctly
  */
 
-// Load the FancySelect code
+// Load the FancySelect code (modular version)
 const fs = require('fs');
 const path = require('path');
-const fancySelectCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select.js'), 'utf8');
 
-// Execute the FancySelect code and extract the class
-const FancySelect = eval(`(function() { ${fancySelectCode}; return FancySelect; })()`);
+// Load all fancy-select modules in order
+const constantsCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select/constants.js'), 'utf8');
+const utilsCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select/utils.js'), 'utf8');
+const tooltipManagerCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select/tooltip-manager.js'), 'utf8');
+const eventHandlersCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select/event-handlers.js'), 'utf8');
+const domBuilderCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select/dom-builder.js'), 'utf8');
+const fancySelectCoreCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select/fancy-select-core.js'), 'utf8');
+
+// Execute the code in order (constants and utils need to be global for FancySelect to use them)
+eval(constantsCode);
+eval(utilsCode);
+eval(tooltipManagerCode);
+eval(eventHandlersCode);
+eval(domBuilderCode);
+eval(fancySelectCoreCode);
+
+// Make FancySelect accessible in test scope
+const FancySelect = global.FancySelect;
 
 describe('FancySelect Component', () => {
   let container;
@@ -52,9 +67,10 @@ describe('FancySelect Component', () => {
       const trigger = container.querySelector('.fancy-select-trigger');
       trigger.click();
 
-      // Click first option
+      // Click first option's checkbox
       const firstOption = container.querySelectorAll('.fancy-select-option')[0];
-      firstOption.click();
+      const checkbox = firstOption.querySelector('.fancy-select-option-checkbox');
+      checkbox.click();
 
       // Verify onChange was called with correct option
       expect(onChangeMock).toHaveBeenCalledTimes(1);
@@ -77,9 +93,10 @@ describe('FancySelect Component', () => {
       const trigger = container.querySelector('.fancy-select-trigger');
       trigger.click();
 
-      // Click second option
+      // Click second option's checkbox
       const secondOption = container.querySelectorAll('.fancy-select-option')[1];
-      secondOption.click();
+      const checkbox = secondOption.querySelector('.fancy-select-option-checkbox');
+      checkbox.click();
 
       // Verify onChange was called with correct option
       expect(onChangeMock).toHaveBeenCalledTimes(1);
@@ -102,9 +119,10 @@ describe('FancySelect Component', () => {
       const trigger = container.querySelector('.fancy-select-trigger');
       trigger.click();
 
-      // Click third option
+      // Click third option's checkbox
       const thirdOption = container.querySelectorAll('.fancy-select-option')[2];
-      thirdOption.click();
+      const checkbox = thirdOption.querySelector('.fancy-select-option-checkbox');
+      checkbox.click();
 
       // Verify onChange was called with correct option
       expect(onChangeMock).toHaveBeenCalledTimes(1);
@@ -127,9 +145,10 @@ describe('FancySelect Component', () => {
       const trigger = container.querySelector('.fancy-select-trigger');
       trigger.click();
 
-      // Click fourth option
+      // Click fourth option's checkbox
       const fourthOption = container.querySelectorAll('.fancy-select-option')[3];
-      fourthOption.click();
+      const checkbox = fourthOption.querySelector('.fancy-select-option-checkbox');
+      checkbox.click();
 
       // Verify onChange was called with correct option
       expect(onChangeMock).toHaveBeenCalledTimes(1);
@@ -152,9 +171,10 @@ describe('FancySelect Component', () => {
       const trigger = container.querySelector('.fancy-select-trigger');
       trigger.click();
 
-      // Click third option
+      // Click third option's checkbox
       const thirdOption = container.querySelectorAll('.fancy-select-option')[2];
-      thirdOption.click();
+      const checkbox = thirdOption.querySelector('.fancy-select-option-checkbox');
+      checkbox.click();
 
       // Verify the trigger displays the selected option
       const triggerText = container.querySelector('.fancy-select-trigger').textContent.trim();
@@ -177,9 +197,10 @@ describe('FancySelect Component', () => {
       trigger.click();
       expect(select.isOpen).toBe(true);
 
-      // Click second option
+      // Click second option's checkbox
       const secondOption = container.querySelectorAll('.fancy-select-option')[1];
-      secondOption.click();
+      const checkbox = secondOption.querySelector('.fancy-select-option-checkbox');
+      checkbox.click();
 
       // Verify dropdown is closed
       expect(select.isOpen).toBe(false);
@@ -233,9 +254,10 @@ describe('FancySelect Component', () => {
       searchInput.value = 'Third';
       searchInput.dispatchEvent(new Event('input'));
 
-      // Click the filtered option
+      // Click the filtered option's checkbox
       const filteredOption = container.querySelector('.fancy-select-option');
-      filteredOption.click();
+      const checkbox = filteredOption.querySelector('.fancy-select-option-checkbox');
+      checkbox.click();
 
       // Verify onChange was called with correct option
       // Note: onChange might be called during render() too, so just check it was called with the right data
@@ -310,8 +332,9 @@ describe('FancySelect Component', () => {
       trigger.click();
 
       const secondOption = container.querySelectorAll('.fancy-select-option')[1];
+      const checkbox = secondOption.querySelector('.fancy-select-option-checkbox');
       callCount = 0; // Reset before clicking
-      secondOption.click();
+      checkbox.click();
 
       // Should only be called once, not multiple times due to accumulated listeners
       expect(callCount).toBe(1);
@@ -332,9 +355,10 @@ describe('FancySelect Component', () => {
       const trigger = container.querySelector('.fancy-select-trigger');
       trigger.click();
 
-      // Click on the label element of the third option (nested inside the option div)
-      const thirdOptionLabel = container.querySelectorAll('.fancy-select-option-label')[2];
-      thirdOptionLabel.click();
+      // Click on the checkbox of the third option
+      const thirdOption = container.querySelectorAll('.fancy-select-option')[2];
+      const checkbox = thirdOption.querySelector('.fancy-select-option-checkbox');
+      checkbox.click();
 
       // Should select the third option, not the first
       expect(onChangeMock).toHaveBeenCalledWith(testData[2]);

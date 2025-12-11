@@ -1,0 +1,55 @@
+/* Table Components - Skills, Power Shifts, etc. */
+
+/* Skills list styling - remove borders for cleaner inline editing */
+#skills-list input,
+#skills-list select {
+    background: transparent;
+    border: none !important;
+    outline: none;
+    padding: 2px 4px;
+}
+
+#skills-list input:focus,
+#skills-list select:focus {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 2px;
+}
+
+#skills-list td {
+    padding: 4px 2px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+#skills-list tr:last-child td {
+    border-bottom: none;
+}
+
+/* Power shifts styling */
+#powershifts-list input[type="number"] {
+    padding: 4px 6px;
+    width: 2.5rem !important; /* Override inline w-5 class */
+    font-size: 0.875rem !important; /* Override text-xs, make text larger */
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    background: white;
+}
+
+#powershifts-list input[type="number"]:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+}
+
+#powershifts-list input[type="text"] {
+    padding: 4px 6px;
+    font-size: 0.875rem !important;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    background: white;
+}
+
+#powershifts-list input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+}
