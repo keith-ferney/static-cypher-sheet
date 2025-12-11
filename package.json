@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "live-server --port=8000 --open=/",
     "build": "node build.js",
-    "build:watch": "nodemon --watch src --watch data --watch styles --watch styles.css --watch index.html --exec npm run build",
+    "build:watch": "nodemon --watch src --watch data --watch styles --watch styles.css --watch index.html --ext js,json,css,html --exec npm run build",
     "clean": "rm -rf dist",
     "rebuild": "npm run clean && npm run build",
     "test": "jest",

@@ -9,10 +9,23 @@ class FancySelectEventHandlers {
     }
 
     handleOutsideClick(e) {
+        // Close dropdown if clicking outside
         if (this.select.isOpen && !this.select.container.contains(e.target)) {
             this.select.isOpen = false;
             this.select.expandedIndex = -1;
             this.select.render();
+            return;
+        }
+        
+        // Close info description if clicking outside (but not on the info button)
+        if (this.select.showTriggerDescription) {
+            const infoButton = this.select.container.querySelector('.fancy-select-info-button');
+            const descriptionBox = this.select.container.querySelector('.fancy-select-trigger-description');
+            
+            if (!infoButton?.contains(e.target) && !descriptionBox?.contains(e.target)) {
+                this.select.showTriggerDescription = false;
+                this.select.render();
+            }
         }
     }
 
@@ -102,6 +115,10 @@ class FancySelectEventHandlers {
         if (infoButton) {
             infoButton.addEventListener('click', (e) => {
                 e.stopPropagation();
+                
+                // Close all other info boxes first
+                this.select.closeOtherInfoBoxes();
+                
                 this.select.showTriggerDescription = !this.select.showTriggerDescription;
                 this.select.render();
             });
@@ -159,11 +176,10 @@ class FancySelectEventHandlers {
         this.attachOptionEvents(optionsContainer);
         
         // Add outside click listener (only once)
-        if (this.select.isOpen) {
-            setTimeout(() => {
-                document.addEventListener('click', this.outsideClickHandler);
-            }, 0);
-        }
+        // Always add it so we can close the info description box
+        setTimeout(() => {
+            document.addEventListener('click', this.outsideClickHandler);
+        }, 0);
     }
 
     attachOptionEvents(optionsContainer) {

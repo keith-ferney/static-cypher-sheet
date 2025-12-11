@@ -32,6 +32,7 @@ class CharacterView {
                 extraWide: true,
                 onChange: (option) => {
                     document.getElementById('char-descriptor').value = option.name;
+                    this.triggerChangeDetection();
                 }
             }
         );
@@ -48,6 +49,7 @@ class CharacterView {
                 extraWide: true,
                 onChange: (option) => {
                     document.getElementById('char-type').value = option.name;
+                    this.triggerChangeDetection();
                 }
             }
         );
@@ -63,6 +65,7 @@ class CharacterView {
                 placeholder: '- Select A Focus -',
                 onChange: (option) => {
                     document.getElementById('char-focus').value = option.name;
+                    this.triggerChangeDetection();
                 }
             }
         );
@@ -78,6 +81,7 @@ class CharacterView {
                 placeholder: '- Select A Flavor (Optional) -',
                 onChange: (option) => {
                     document.getElementById('char-flavor').value = option.name;
+                    this.triggerChangeDetection();
                 }
             }
         );
@@ -96,6 +100,18 @@ class CharacterView {
                 }
             }
         );
+    }
+
+    // Trigger change detection callback (set by controller)
+    triggerChangeDetection() {
+        if (this.onChangeCallback) {
+            this.onChangeCallback();
+        }
+    }
+
+    // Set the change detection callback
+    setChangeDetectionCallback(callback) {
+        this.onChangeCallback = callback;
     }
 
     // ========== VIEW NAVIGATION ==========

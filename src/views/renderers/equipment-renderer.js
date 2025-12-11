@@ -12,7 +12,7 @@ class EquipmentRenderer {
             return;
         }
         container.innerHTML = equipment.map((item, idx) => `
-            <div class="equipment-item flex justify-between items-center text-sm">
+            <div class="equipment-item flex justify-between items-center text-sm border border-gray-300 rounded p-2">
                 <span>${item}</span>
                 <button onclick="app.removeEquipment(${idx})" class="text-red-600 hover:text-red-800">×</button>
             </div>

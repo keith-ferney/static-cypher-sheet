@@ -12,7 +12,7 @@ class CombatRenderer {
             return;
         }
         container.innerHTML = attacks.map((attack, idx) => `
-            <div class="attack-item flex justify-between items-center text-sm">
+            <div class="attack-item flex justify-between items-center text-sm border border-gray-300 rounded p-2">
                 <span>${attack}</span>
                 <button onclick="app.removeAttack(${idx})" class="text-red-600 hover:text-red-800">×</button>
             </div>

@@ -23,12 +23,6 @@ class FancySelectDOMBuilder {
             data-description="${escapeHTML(opt[this.select.descriptionKey] || '')}"
           >
             <div class="fancy-select-option-header" data-action="toggle">
-              ${hasDescription ? `
-                <svg class="fancy-select-option-chevron" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                </svg>
-              ` : `<span style="width: 1rem;"></span>`}
-              <div class="fancy-select-option-label">${opt[this.select.labelKey]}</div>
               <div class="fancy-select-option-checkbox-container" data-action="select">
                 <div class="fancy-select-option-checkbox">
                   <svg fill="currentColor" viewBox="0 0 20 20">
@@ -36,6 +30,12 @@ class FancySelectDOMBuilder {
                   </svg>
                 </div>
               </div>
+              <div class="fancy-select-option-label">${opt[this.select.labelKey]}</div>
+              ${hasDescription ? `
+                <svg class="fancy-select-option-chevron" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                </svg>
+              ` : `<span style="width: 1rem;"></span>`}
             </div>
             ${hasDescription ? `<div class="fancy-select-option-description">${opt[this.select.descriptionKey]}</div>` : ''}
           </div>

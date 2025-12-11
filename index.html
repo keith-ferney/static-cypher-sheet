@@ -47,16 +47,37 @@
     </div>
 
     <!-- Character Sheet View -->
-    <div id="character-sheet-view" class="hidden py-12">
+    <div id="character-sheet-view" class="hidden py-4">
         <div class="sm:px-6 lg:px-8">
+            <!-- Header with navigation and options menu -->
+            <div class="flex justify-between items-center mb-4">
+                <button onclick="showCharacterList()" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm">← Back to List</button>
+                <div class="relative">
+                    <button id="options-menu-button" onclick="toggleOptionsMenu()" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+                        <svg class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                        </svg>
+                    </button>
+                    <div id="options-menu" class="hidden absolute top-12 right-0 bg-white shadow-lg rounded-lg border border-gray-200 py-2 min-w-48 z-50">
+                        <button onclick="exportCurrentCharacter(); toggleOptionsMenu();" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
+                            <span>📥</span>
+                            <span>Export Character</span>
+                        </button>
+                        <button onclick="deleteCurrentCharacter(); toggleOptionsMenu();" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2 text-red-600">
+                            <span>🗑️</span>
+                            <span>Delete Character</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
             <!-- Main Character Sheet -->
             <div style="background-image: url('assets/CharacterSheetBackground.png');" class="bg-center bg-cover bg-no-repeat bg-slate-200 dark:bg-gray-800 shadow-sm sm:rounded-lg text-gray-900 dark:text-black p-6 grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible">
                 
                 <!-- COLUMN 1 CONTAINER -->
-                <div class="flex flex-col gap-3 overflow-visible">
+                <div class="flex flex-col gap-3 overflow-visible h-full">
                 <!-- Name -->
                 <div class="w-full flex flex-col">
-                    <input id="char-name" type="text" class="border-0 border-r-8 border-b-8 border-black" placeholder="Character Name">
+                    <input id="char-name" type="text" class="border-0 border-r-8 border-b-8 border-black px-3 py-2" placeholder="Character Name">
                     <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Name</label>
                 </div>
 
@@ -151,65 +172,56 @@
                 </div>
 
                 <!-- Recovery Damage Track -->
-                <div class="flex bg-white w-full justify-between text-black border-r-8 border-b-8 border-black">
-                    <div class="flex flex-grow flex-col border-x border-x-black px-1">
-                        <div class="grid grid-cols-2 border-t-2 border-t-black">
-                            <label class="font-semibold text-xl">Recovery</label>
-                            <input id="recovery-modifier" type="number" value="0" class="text-center w-14 border-0">
+                <div class="flex flex-wrap gap-3 w-full">
+                    <!-- Recovery Section -->
+                    <div class="flex-1 min-w-[280px] bg-white text-black border-r-8 border-b-8 border-black">
+                        <div class="border-b-2 border-black px-2 py-1 flex justify-between items-center">
+                            <label class="font-semibold text-lg">Recovery</label>
+                            <input id="recovery-modifier" type="number" value="0" class="text-center w-16 border border-gray-300 rounded">
                         </div>
-                        <div class="grid grid-cols-2 border-t-2 border-t-black">
-                            <div class="flex gap-1 items-center">
-                                <label class="font-semibold text-xl">
-                                    <input id="recovery-action" type="checkbox"> 1 Action
-                                </label>
-                            </div>
-                            <div class="flex gap-1 items-center">
-                                <label class="font-semibold text-xl">
-                                    <input id="recovery-1hour" type="checkbox"> 1 Hour
-                                </label>
-                            </div>
-                            <div class="flex gap-1 items-center">
-                                <label class="font-semibold text-xl">
-                                    <input id="recovery-10min" type="checkbox"> 10 Mins
-                                </label>
-                            </div>
-                            <div class="flex gap-1 items-center">
-                                <label class="font-semibold text-xl">
-                                    <input id="recovery-10hour" type="checkbox"> 10 Hours
-                                </label>
-                            </div>
+                        <div class="grid grid-cols-2 gap-2 p-2">
+                            <label class="flex items-center gap-1 text-sm">
+                                <input id="recovery-action" type="checkbox"> 1 Action
+                            </label>
+                            <label class="flex items-center gap-1 text-sm">
+                                <input id="recovery-10min" type="checkbox"> 10 Mins
+                            </label>
+                            <label class="flex items-center gap-1 text-sm">
+                                <input id="recovery-1hour" type="checkbox"> 1 Hour
+                            </label>
+                            <label class="flex items-center gap-1 text-sm">
+                                <input id="recovery-10hour" type="checkbox"> 10 Hours
+                            </label>
                         </div>
                     </div>
-                    <div class="flex flex-grow flex-col border-x border-x-black px-1">
-                        <div class="grid grid-cols-2 border-t-2 border-t-black">
-                            <label class="font-semibold text-xl">Damage Track</label>
+                    
+                    <!-- Damage Track Section -->
+                    <div class="flex-1 min-w-[280px] bg-white text-black border-r-8 border-b-8 border-black">
+                        <div class="border-b-2 border-black px-2 py-1">
+                            <label class="font-semibold text-lg">Damage Track</label>
                         </div>
-                        <div class="grid grid-cols-2 border-t-2 border-t-black">
-                            <div class="flex flex-col gap-1 w-36">
-                                <label class="font-semibold text-xl">
+                        <div class="flex flex-col gap-2 p-2">
+                            <div class="flex flex-col gap-1">
+                                <label class="font-semibold text-sm">
                                     <input id="impaired" type="checkbox"> Impaired
                                 </label>
-                                <small class="text-xs text-gray-600">
-                                    +1 Effort per level<br>
-                                    Ignore minor and major effect results on rolls<br>
-                                    Combat roll of 17-20 deals only +1 damage
+                                <small class="text-xs text-gray-600 ml-5">
+                                    +1 Effort per level • Ignore minor/major effect results • Combat roll 17-20 deals only +1 damage
                                 </small>
                             </div>
-                            <div class="flex flex-col gap-1 w-36">
-                                <label class="font-semibold text-xl">
+                            <div class="flex flex-col gap-1">
+                                <label class="font-semibold text-sm">
                                     <input id="debilitated" type="checkbox"> Debilitated
                                 </label>
-                                <small class="text-xs text-gray-600">
-                                    Can move only an immediate distance<br>
-                                    Cannot move if Speed Pool is 0
+                                <small class="text-xs text-gray-600 ml-5">
+                                    Can move only immediate distance • Cannot move if Speed Pool is 0
                                 </small>
                             </div>
-                            <div></div>
-                            <div class="flex flex-col gap-1 w-36">
-                                <label class="font-semibold text-xl">
+                            <div class="flex flex-col gap-1">
+                                <label class="font-semibold text-sm">
                                     <input type="checkbox"> Dead
                                 </label>
-                                <small class="text-xs text-gray-600">
+                                <small class="text-xs text-gray-600 ml-5">
                                     ...isn't always dead
                                 </small>
                             </div>
@@ -220,36 +232,23 @@
                 <!-- Skills -->
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
                     <label class="font-medium w-full text-lg underline-offset-8 mb-2 underline">Skills</label>
-                    <div class="overflow-y-auto max-h-64">
-                        <table class="w-full text-xs">
-                            <thead>
-                                <tr class="border-b">
-                                    <th class="text-left">Name</th>
-                                    <th class="text-center w-12">Pool</th>
-                                    <th class="text-center w-12">PS</th>
-                                    <th class="text-left w-24">Type</th>
-                                    <th class="w-8"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="skills-list"></tbody>
-                        </table>
-                    </div>
-                    <button onclick="addSkill()" class="mt-2 px-3 py-1 bg-black text-white text-xs">+ Add Skill</button>
+                    <div id="skills-list" class="flex flex-col gap-2"></div>
+                    <button onclick="addSkill()" class="mt-2 px-3 py-1 bg-black text-white text-sm rounded hover:bg-gray-800">+ Add Skill</button>
                 </div>
 
                 <!-- Background (Column 1) -->
-                <div class="w-full flex flex-col">
-                    <textarea id="char-background" class="h-64 border-0 border-r-8 border-b-8 border-black" placeholder="Background"></textarea>
+                <div class="w-full flex flex-col flex-1 min-h-0">
+                    <textarea id="char-background" class="flex-1 min-h-64 border-0 border-r-8 border-b-8 border-black px-3 py-2 resize-none" placeholder="Background"></textarea>
                     <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Background</label>
                 </div>
                 </div><!-- End Column 1 -->
 
                 <!-- COLUMN 2 CONTAINER -->
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-3 h-full">
                 <!-- Advancements -->
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
                     <label class="font-medium w-full text-lg underline-offset-8 mb-2 underline">Advancements</label>
-                    <div id="advancements-list" class="flex flex-wrap gap-2"></div>
+                    <div id="advancements-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2"></div>
                 </div>
 
                 <!-- Special Abilities (Column 2) -->
@@ -265,7 +264,7 @@
                 <!-- Attacks (Column 2) -->
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
                     <label class="font-medium w-full text-lg underline-offset-8 mb-4 underline">Attacks</label>
-                    <div id="attacks-list" class="flex flex-col gap-1 overflow-y-auto max-h-32"></div>
+                    <div id="attacks-list" class="flex flex-col gap-2 overflow-y-auto max-h-32"></div>
                     <div class="mt-2 flex gap-2">
                         <input id="new-attack" type="text" placeholder="Attack (e.g., Sword - 4 dmg)" class="flex-1 px-2 py-1 border border-black">
                         <button onclick="addAttack()" class="px-3 py-1 bg-black text-white">Add</button>
@@ -273,27 +272,35 @@
                 </div>
 
                 <!-- Notes (Column 2) -->
-                <div class="w-full flex flex-col">
-                    <textarea id="char-notes" class="h-64 border-0 border-r-8 border-b-8 border-black" placeholder="Notes"></textarea>
+                <div class="w-full flex flex-col flex-1 min-h-0">
+                    <textarea id="char-notes" class="flex-1 min-h-64 border-0 border-r-8 border-b-8 border-black px-3 py-2 resize-none" placeholder="Notes"></textarea>
                     <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Notes</label>
                 </div>
                 </div><!-- End Column 2 -->
 
                 <!-- COLUMN 3 CONTAINER -->
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-3 h-full">
                 <!-- Claim the Sky Logo -->
                 <img src="assets/ClaimTheSky.png" alt="Claim the Sky" class="hidden md:flex h-40 self-center place-self-center">
 
                 <!-- Cyphers (Column 3) -->
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
-                    <label class="font-medium w-full text-lg underline-offset-8 mb-4 underline">Cyphers</label>
-                    <div id="cyphers-list" class="flex flex-col gap-2 overflow-y-auto max-h-48"></div>
-                    <div class="mt-2 flex flex-col gap-2">
-                        <input id="new-cypher-name" type="text" placeholder="Cypher name" class="px-2 py-1 border border-black">
-                        <input id="new-cypher-level" type="text" placeholder="Level" class="px-2 py-1 border border-black">
-                        <textarea id="new-cypher-desc" placeholder="Effect" class="px-2 py-1 border border-black" rows="2"></textarea>
-                        <button onclick="addCypher()" class="px-3 py-1 bg-black text-white">Add</button>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="font-medium text-lg underline-offset-8 underline">Cyphers</label>
+                        <button id="toggle-cypher-form" onclick="toggleCypherForm()" class="px-3 py-1 bg-black text-white text-sm rounded hover:bg-gray-800">+ Add</button>
                     </div>
+                    <div id="cypher-form" class="hidden flex-col gap-2 pb-2 mb-2 border-b border-gray-300">
+                        <div class="flex gap-2">
+                            <input id="new-cypher-name" type="text" placeholder="Name" class="flex-1 px-2 py-1 text-sm border border-gray-300 rounded">
+                            <input id="new-cypher-level" type="text" placeholder="Lvl" class="w-16 px-2 py-1 text-sm border border-gray-300 rounded text-center">
+                        </div>
+                        <textarea id="new-cypher-desc" placeholder="Effect" class="px-2 py-1 text-sm border border-gray-300 rounded resize-none" rows="2"></textarea>
+                        <div class="flex gap-2">
+                            <button onclick="addCypher()" class="flex-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">Save</button>
+                            <button onclick="toggleCypherForm()" class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">Cancel</button>
+                        </div>
+                    </div>
+                    <div id="cyphers-list" class="flex flex-col gap-2 overflow-y-auto max-h-48"></div>
                 </div>
 
                 <!-- Power Shifts (Column 3) -->
@@ -305,7 +312,7 @@
                 <!-- Equipment (Column 3) -->
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
                     <label class="font-medium w-full text-lg underline-offset-8 mb-4 underline">Equipment</label>
-                    <div id="equipment-list" class="flex flex-col gap-1 overflow-y-auto max-h-48"></div>
+                    <div id="equipment-list" class="flex flex-col gap-2 overflow-y-auto max-h-48"></div>
                     <div class="mt-2 flex gap-2">
                         <input id="new-equipment" type="text" placeholder="Equipment" class="flex-1 px-2 py-1 border border-black">
                         <button onclick="addEquipment()" class="px-3 py-1 bg-black text-white">Add</button>
@@ -313,8 +320,8 @@
                 </div>
 
                 <!-- Portrait (Column 3) -->
-                <div class="w-full flex flex-col">
-                    <textarea id="char-portrait" class="h-48 border-0 border-r-8 border-b-8 border-black" placeholder="Portrait URL or description"></textarea>
+                <div class="w-full flex flex-col flex-1 min-h-0">
+                    <textarea id="char-portrait" class="flex-1 min-h-48 border-0 border-r-8 border-b-8 border-black px-3 py-2 resize-none" placeholder="Portrait URL or description"></textarea>
                     <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Portrait</label>
                 </div>
                 </div><!-- End Column 3 -->
@@ -325,10 +332,7 @@
 
             <!-- Action Buttons -->
             <div class="sticky-action-buttons">
-                <button onclick="saveCharacter()" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md font-semibold">💾 Save Character</button>
-                <button onclick="exportCurrentCharacter()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-semibold">📥 Export</button>
-                <button onclick="showCharacterList()" class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-md font-semibold">← Back to List</button>
-                <button onclick="deleteCurrentCharacter()" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-md font-semibold">🗑️ Delete</button>
+                <button onclick="saveCharacter()" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm">💾 Save Character</button>
             </div>
         </div>
     </div>

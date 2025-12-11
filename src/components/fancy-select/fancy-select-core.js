@@ -61,6 +61,15 @@ class FancySelect {
     });
   }
   
+  closeOtherInfoBoxes() {
+    FancySelect.instances.forEach(instance => {
+      if (instance !== this && instance.showTriggerDescription) {
+        instance.showTriggerDescription = false;
+        instance.render();
+      }
+    });
+  }
+  
   render() {
     if (!this.container) {
       console.warn('FancySelect container not found');

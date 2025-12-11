@@ -18,6 +18,9 @@ class CharacterController {
         // Initialize FancySelects BEFORE loading character data
         this.view.initializeFancySelects();
         
+        // Set up change detection callback for FancySelects
+        this.view.setChangeDetectionCallback(() => this.checkForChanges());
+        
         // Try to restore the last viewed character
         const lastCharacterId = this.model.restoreCurrentCharacterId();
         
@@ -152,6 +155,29 @@ class CharacterController {
         const equipment = this.view.getCurrentEquipment();
         equipment.splice(index, 1);
         this.view.renderEquipment(equipment);
+        this.checkForChanges();
+    }
+
+    // Power Shifts methods
+    addPowerShiftInstance(psName) {
+        const powerShifts = this.view.getCurrentPowerShifts();
+        const newId = Date.now().toString(); // Use timestamp as unique ID
+        
+        powerShifts.push({
+            name: psName,
+            value: 0,
+            additional_text: '',
+            id: newId
+        });
+        
+        this.view.renderPowerShifts(powerShifts);
+        this.checkForChanges();
+    }
+
+    removePowerShiftInstance(psName, psId) {
+        const powerShifts = this.view.getCurrentPowerShifts();
+        const filtered = powerShifts.filter(ps => !(ps.name === psName && ps.id === psId));
+        this.view.renderPowerShifts(filtered);
         this.checkForChanges();
     }
 

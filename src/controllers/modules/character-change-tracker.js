@@ -7,25 +7,40 @@ class CharacterChangeTracker {
     }
 
     setupChangeDetection() {
-        const form = document.getElementById('characterForm');
-        if (!form) return;
+        const characterSheetView = document.getElementById('character-sheet-view');
+        if (!characterSheetView) return;
 
         const checkChanges = () => this.checkForChanges();
 
-        // Add change listeners to all form inputs
-        form.querySelectorAll('input, select, textarea').forEach(input => {
+        // Add change listeners to all inputs in the character sheet
+        characterSheetView.querySelectorAll('input, select, textarea').forEach(input => {
             input.addEventListener('input', checkChanges);
             input.addEventListener('change', checkChanges);
         });
 
-        // Add observers for dynamic content
-        const observer = new MutationObserver(checkChanges);
+        // Add observers for dynamic content that gets added/removed
+        const observer = new MutationObserver(() => {
+            // Re-attach listeners to any new inputs
+            characterSheetView.querySelectorAll('input, select, textarea').forEach(input => {
+                // Remove old listeners first to avoid duplicates
+                input.removeEventListener('input', checkChanges);
+                input.removeEventListener('change', checkChanges);
+                // Add listeners
+                input.addEventListener('input', checkChanges);
+                input.addEventListener('change', checkChanges);
+            });
+            // Check for changes
+            checkChanges();
+        });
+
         const dynamicSections = [
-            'skillsContainer',
-            'abilitiesContainer',
-            'equipmentContainer',
-            'attacksContainer',
-            'cyphersContainer'
+            'skills-list',
+            'abilities-list',
+            'equipment-list',
+            'attacks-list',
+            'cyphers-list',
+            'powershifts-list',
+            'advancements-list'
         ];
 
         dynamicSections.forEach(id => {
@@ -34,6 +49,7 @@ class CharacterChangeTracker {
                 observer.observe(element, {
                     childList: true,
                     subtree: true,
+                    attributes: true,
                     characterData: true
                 });
             }
@@ -48,8 +64,10 @@ class CharacterChangeTracker {
 
         if (this.savedCharacterSnapshot !== currentSnapshot) {
             this.view.showUnsavedIndicator();
+            this.view.updateSaveButtonState(true);
         } else {
             this.view.hideUnsavedIndicator();
+            this.view.updateSaveButtonState(false);
         }
     }
 
@@ -62,10 +80,12 @@ class CharacterChangeTracker {
         const currentData = this.view.getCharacterDataFromForm();
         this.savedCharacterSnapshot = JSON.stringify(currentData);
         this.view.hideUnsavedIndicator();
+        this.view.updateSaveButtonState(false);
     }
 
     clearSnapshot() {
         this.savedCharacterSnapshot = null;
         this.view.hideUnsavedIndicator();
+        this.view.updateSaveButtonState(false);
     }
 }

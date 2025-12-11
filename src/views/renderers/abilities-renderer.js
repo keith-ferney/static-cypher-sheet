@@ -19,13 +19,18 @@ class AbilitiesRenderer {
             return;
         }
         container.innerHTML = abilities.map((ability, idx) => `
-            <div class="ability-item border border-gray-300 p-2 rounded">
+            <div class="ability-item border border-gray-300 p-2 rounded cursor-pointer" onclick="app.toggleAbilityDesc(${idx})">
                 <div class="flex justify-between items-start">
                     <div class="flex-1">
-                        <strong class="ability-name cursor-pointer hover:text-blue-600" onclick="app.toggleAbilityDesc(${idx})">${ability.name}</strong>
-                        <p class="ability-desc text-xs text-gray-600 mt-1 hidden">${ability.description}</p>
+                        <div class="flex items-center gap-2">
+                            <svg class="ability-chevron w-4 h-4 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 12.586l-4.293-4.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414L10 12.586z"/>
+                            </svg>
+                            <strong class="ability-name hover:text-blue-600">${ability.name}</strong>
+                        </div>
+                        <p class="ability-desc text-xs text-gray-600 mt-1 ml-6 hidden">${ability.description}</p>
                     </div>
-                    <button onclick="app.removeAbility(${idx})" class="text-red-600 hover:text-red-800 ml-2">×</button>
+                    <button onclick="app.removeAbility(${idx}); event.stopPropagation();" class="text-red-600 hover:text-red-800 ml-2">×</button>
                 </div>
             </div>
         `).join('');
@@ -35,7 +40,11 @@ class AbilitiesRenderer {
         const abilities = document.querySelectorAll('#abilities-list .ability-item');
         if (abilities[index]) {
             const desc = abilities[index].querySelector('.ability-desc');
+            const chevron = abilities[index].querySelector('.ability-chevron');
             desc.classList.toggle('hidden');
+            if (chevron) {
+                chevron.classList.toggle('rotate-180');
+            }
         }
     }
 }
