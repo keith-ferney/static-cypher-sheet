@@ -50,3 +50,8 @@ class AdvancementsRenderer {
 if (typeof global !== 'undefined') {
     global.AdvancementsRenderer = AdvancementsRenderer;
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AdvancementsRenderer;
+}

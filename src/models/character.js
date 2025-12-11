@@ -60,6 +60,10 @@ class CharacterModel {
         return this.currentCharacterId;
     }
 
+    get currentCharacter() {
+        return this.getCharacter(this.currentCharacterId);
+    }
+
     restoreCurrentCharacterId() {
         const savedId = localStorage.getItem('currentCharacterId');
         if (savedId) {
@@ -130,4 +134,9 @@ class CharacterModel {
             throw new Error(`Import failed: ${error.message}`);
         }
     }
+}
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CharacterModel;
 }

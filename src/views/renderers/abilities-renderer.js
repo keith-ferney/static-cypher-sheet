@@ -53,3 +53,8 @@ class AbilitiesRenderer {
 if (typeof global !== 'undefined') {
     global.AbilitiesRenderer = AbilitiesRenderer;
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AbilitiesRenderer;
+}

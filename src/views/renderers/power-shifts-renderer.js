@@ -161,3 +161,8 @@ class PowerShiftsRenderer {
 if (typeof global !== 'undefined') {
     global.PowerShiftsRenderer = PowerShiftsRenderer;
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = PowerShiftsRenderer;
+}

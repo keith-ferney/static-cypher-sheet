@@ -89,3 +89,8 @@ class CharacterChangeTracker {
         this.view.updateSaveButtonState(false);
     }
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CharacterChangeTracker;
+}

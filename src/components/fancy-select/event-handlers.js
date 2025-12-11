@@ -128,6 +128,11 @@ class FancySelectEventHandlers {
         trigger.addEventListener('click', (e) => {
             e.stopPropagation();
             
+            // Don't open if disabled
+            if (this.select.disabled) {
+                return;
+            }
+            
             // Hide trigger description when opening dropdown
             this.select.showTriggerDescription = false;
             
@@ -191,4 +196,9 @@ class FancySelectEventHandlers {
 // Make available globally for tests and browser usage
 if (typeof global !== 'undefined') {
     global.FancySelectEventHandlers = FancySelectEventHandlers;
+}
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = FancySelectEventHandlers;
 }

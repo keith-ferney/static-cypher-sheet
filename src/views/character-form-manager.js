@@ -2,6 +2,11 @@
 class CharacterFormManager {
     constructor(formRenderer) {
         this.formRenderer = formRenderer;
+        this.model = null; // Will be set by CharacterView
+    }
+
+    setModel(model) {
+        this.model = model;
     }
 
     /**
@@ -118,6 +123,9 @@ class CharacterFormManager {
      * Get all character data from the form
      */
     getDataFromForm() {
+        // Preserve isLocked from current character if it exists
+        const currentIsLocked = this.model?.currentCharacter?.isLocked || false;
+        
         return {
             name: document.getElementById('char-name').value || 'Unnamed Character',
             tier: parseInt(document.getElementById('char-tier').value) || 1,
@@ -152,7 +160,13 @@ class CharacterFormManager {
             attacks: FormRenderer.getCurrentAttacks(),
             cyphers: FormRenderer.getCurrentCyphers(),
             powerShifts: FormRenderer.getCurrentPowerShifts(),
-            advancements: FormRenderer.getCurrentAdvancements()
+            advancements: FormRenderer.getCurrentAdvancements(),
+            isLocked: currentIsLocked // Preserve lock state
         };
     }
+}
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CharacterFormManager;
 }

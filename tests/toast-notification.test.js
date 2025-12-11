@@ -1,0 +1,108 @@
+/**
+ * Toast Notification Tests
+ * Tests for toast notification functionality
+ */
+
+require('./test-setup');
+
+const ToastNotification = global.ToastNotification;
+
+describe('ToastNotification', () => {
+  let toast;
+
+  beforeEach(() => {
+    document.body.innerHTML = `
+      <div id="toast-container"></div>
+    `;
+    toast = new ToastNotification();
+  });
+
+  test('should show success toast', (done) => {
+    toast.show('Success message', 'success');
+    
+    const container = document.getElementById('toast-container');
+    const toastEl = container.querySelector('.toast');
+    
+    expect(toastEl).toBeTruthy();
+    expect(toastEl.classList.contains('success')).toBe(true);
+    expect(toastEl.textContent).toBe('Success message');
+    
+    // Wait for auto-hide
+    setTimeout(() => {
+      expect(container.querySelector('.toast')).toBeFalsy();
+      done();
+    }, 3500);
+  });
+
+  test('should show error toast', () => {
+    toast.show('Error message', 'error');
+    
+    const toastEl = document.querySelector('.toast');
+    expect(toastEl.classList.contains('error')).toBe(true);
+    expect(toastEl.textContent).toBe('Error message');
+  });
+
+  test('should show info toast', () => {
+    toast.show('Info message', 'info');
+    
+    const toastEl = document.querySelector('.toast');
+    expect(toastEl.classList.contains('info')).toBe(true);
+  });
+
+  test('should default to success type', () => {
+    toast.show('Default message');
+    
+    const toastEl = document.querySelector('.toast');
+    expect(toastEl.classList.contains('success')).toBe(true);
+  });
+
+  test('should handle missing container gracefully', () => {
+    document.body.innerHTML = '';
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    
+    toast = new ToastNotification();
+    toast.show('Test message');
+    
+    expect(consoleWarnSpy).toHaveBeenCalledWith('Toast container not found, message:', 'Test message');
+    consoleWarnSpy.mockRestore();
+  });
+
+  test('should hide toast when hide is called', () => {
+    toast.show('Test message');
+    const toastEl = document.querySelector('.toast');
+    
+    toast.hide(toastEl);
+    
+    expect(toastEl.classList.contains('hiding')).toBe(true);
+  });
+
+  test('should remove toast after fade out', (done) => {
+    toast.show('Test message');
+    const toastEl = document.querySelector('.toast');
+    
+    toast.hide(toastEl);
+    
+    setTimeout(() => {
+      expect(document.querySelector('.toast')).toBeFalsy();
+      done();
+    }, 350);
+  });
+
+  test('should show multiple toasts', () => {
+    toast.show('First message');
+    toast.show('Second message');
+    
+    const toasts = document.querySelectorAll('.toast');
+    expect(toasts.length).toBe(2);
+  });
+
+  test('should auto-hide after 3 seconds', (done) => {
+    toast.show('Auto-hide message');
+    
+    setTimeout(() => {
+      const toastEl = document.querySelector('.toast');
+      expect(toastEl).toBeFalsy();
+      done();
+    }, 3500);
+  });
+});

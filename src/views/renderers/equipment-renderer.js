@@ -24,3 +24,8 @@ class EquipmentRenderer {
 if (typeof global !== 'undefined') {
     global.EquipmentRenderer = EquipmentRenderer;
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = EquipmentRenderer;
+}

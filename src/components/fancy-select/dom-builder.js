@@ -50,7 +50,8 @@ class FancySelectDOMBuilder {
         const description = selectedOption ? selectedOption[this.select.descriptionKey] : '';
         
         const selectClass = getClassNames('fancy-select', {
-            'extra-wide': this.select.extraWide
+            'extra-wide': this.select.extraWide,
+            'disabled': this.select.disabled
         });
         
         const iconClass = getClassNames('fancy-select-trigger-chevron', {
@@ -58,7 +59,7 @@ class FancySelectDOMBuilder {
         });
         
         const dropdownClass = getClassNames('fancy-select-dropdown', {
-            'hidden': !this.select.isOpen
+            'hidden': !this.select.isOpen || this.select.disabled
         });
         
         const descriptionClass = getClassNames('fancy-select-trigger-description', {
@@ -89,6 +90,7 @@ class FancySelectDOMBuilder {
                 class="fancy-select-search" 
                 placeholder="Search..."
                 value="${this.select.searchTerm}"
+                ${this.select.disabled ? 'disabled' : ''}
               />
               <div class="fancy-select-options">
                 ${this.select.getFilteredOptions().map((opt, idx) => this.generateOptionHTML(opt, idx)).join('')}
@@ -117,4 +119,9 @@ class FancySelectDOMBuilder {
 // Make available globally for tests and browser usage
 if (typeof global !== 'undefined') {
     global.FancySelectDOMBuilder = FancySelectDOMBuilder;
+}
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = FancySelectDOMBuilder;
 }

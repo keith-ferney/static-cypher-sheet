@@ -77,3 +77,8 @@ class SkillsRenderer {
 if (typeof global !== 'undefined') {
     global.SkillsRenderer = SkillsRenderer;
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = SkillsRenderer;
+}

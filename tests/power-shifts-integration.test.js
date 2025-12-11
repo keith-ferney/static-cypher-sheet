@@ -55,8 +55,8 @@ describe('Power Shifts Integration Tests', () => {
     expect(accuracyInput).toBeTruthy();
     expect(accuracyInput.type).toBe('number');
     
-    // Check text + per round type (Flight)
-    const flightText = document.querySelector('[data-ps-text="Flight"]');
+    // Check text + per round type (Flight) - note: data attribute now includes psId
+    const flightText = document.querySelector('[data-ps-text^="Flight-"]');
     expect(flightText).toBeTruthy();
     expect(flightText.type).toBe('text');
     
@@ -71,11 +71,11 @@ describe('Power Shifts Integration Tests', () => {
   });
 
   test('Power shifts should save and load correctly', () => {
-    // Set up power shifts
+    // Set up power shifts with id property
     view.renderPowerShifts([
-      { name: 'Accuracy', value: 3, additional_text: '', hearts_used: 0 },
-      { name: 'Flight', value: 2, additional_text: 'short', hearts_used: 0 },
-      { name: 'Healing', value: 1, additional_text: '', hearts_used: 3 }
+      { name: 'Accuracy', value: 3, additional_text: '', hearts_used: 0, id: '0' },
+      { name: 'Flight', value: 2, additional_text: 'short', hearts_used: 0, id: '0' },
+      { name: 'Healing', value: 1, additional_text: '', hearts_used: 3, id: '0' }
     ]);
     
     // Verify values loaded
@@ -83,7 +83,7 @@ describe('Power Shifts Integration Tests', () => {
     expect(accuracyInput.value).toBe('3');
     
     const flightValue = document.querySelector('[data-ps-name="Flight"]');
-    const flightText = document.querySelector('[data-ps-text="Flight"]');
+    const flightText = document.querySelector('[data-ps-text="Flight-0"]'); // Updated selector
     expect(flightValue.value).toBe('2');
     expect(flightText.value).toBe('short');
     

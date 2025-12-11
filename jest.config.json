@@ -2,9 +2,15 @@
   "testEnvironment": "jsdom",
   "testMatch": ["**/tests/**/*.test.js"],
   "collectCoverageFrom": [
-    "src/**/*.js"
+    "src/**/*.js",
+    "!src/app.js"
   ],
   "coveragePathIgnorePatterns": [
-    "/node_modules/"
-  ]
+    "/node_modules/",
+    "/tests/"
+  ],
+  "coverageReporters": ["text", "lcov", "html"],
+  "coverageDirectory": "coverage",
+  "moduleFileExtensions": ["js", "json"],
+  "transform": {}
 }

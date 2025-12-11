@@ -41,3 +41,8 @@ async function loadCypherData() {
         return cypherData;
     }
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { loadCypherData, cypherData };
+}

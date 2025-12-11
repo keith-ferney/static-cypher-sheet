@@ -15,6 +15,9 @@ class CharacterCRUDController {
         this.model.createNewCharacterId();
         this.view.clearForm();
         this.view.showCharacterSheet();
+        
+        // Ensure new characters start unlocked
+        this.view.updateLockState(false);
     }
 
     loadCharacter(id) {
@@ -24,6 +27,9 @@ class CharacterCRUDController {
         this.model.setCurrentCharacterId(id);
         this.view.loadCharacterToForm(character);
         this.view.showCharacterSheet();
+        
+        // Restore lock state
+        this.view.updateLockState(character.isLocked || false);
     }
 
     saveCharacter() {
@@ -33,8 +39,15 @@ class CharacterCRUDController {
     }
 
     deleteCurrentCharacter() {
-        if (!confirm('Are you sure you want to delete this character?')) return;
+        const character = this.model.currentCharacter;
+        const characterName = character?.name || 'this character';
+        
+        if (!confirm(`Are you sure you want to delete "${characterName}"? This action cannot be undone.`)) {
+            return;
+        }
+        
         this.model.deleteCharacter(this.model.getCurrentCharacterId());
+        this.view.showToast('Character deleted', 'success');
         this.showCharacterList();
     }
 
@@ -99,4 +112,9 @@ class CharacterCRUDController {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     }
+}
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CharacterCRUDController;
 }

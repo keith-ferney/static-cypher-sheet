@@ -103,9 +103,19 @@ class FancySelect {
     this.value = value;
     this.render();
   }
+
+  setDisabled(disabled) {
+    this.disabled = disabled;
+    this.render();
+  }
 }
 
 // Make available globally for tests and browser usage
 if (typeof global !== 'undefined') {
   global.FancySelect = FancySelect;
+}
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = FancySelect;
 }

@@ -4,6 +4,9 @@ class CharacterController {
         this.model = model;
         this.view = view;
         
+        // Pass model reference to view
+        this.view.setModel(model);
+        
         // Initialize sub-controllers
         this.crudController = new CharacterCRUDController(model, view);
         this.changeTracker = new CharacterChangeTracker(model, view);
@@ -244,4 +247,34 @@ class CharacterController {
     downloadJSON(jsonData, filename) {
         this.crudController.downloadJSON(jsonData, filename);
     }
+
+    // Toggle character lock/unlock
+    toggleCharacterLock() {
+        const currentCharacter = this.model.currentCharacter;
+        if (!currentCharacter) return;
+        
+        const isLocked = currentCharacter.isLocked || false;
+        const newLockState = !isLocked;
+        
+        // Update model first
+        currentCharacter.isLocked = newLockState;
+        
+        // Save the character data with the lock state
+        const characterData = this.view.getCharacterDataFromForm();
+        characterData.isLocked = newLockState; // Ensure it's in the saved data
+        this.model.saveCharacter(characterData);
+        
+        // Update UI
+        this.view.updateLockState(newLockState);
+        
+        // Update snapshot to match current state (so no "unsaved changes" indicator)
+        this.changeTracker.saveSnapshot();
+        
+        this.view.showToast(newLockState ? 'Character locked' : 'Character unlocked', 'success');
+    }
+}
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CharacterController;
 }

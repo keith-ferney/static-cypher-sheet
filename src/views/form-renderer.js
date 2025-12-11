@@ -74,3 +74,8 @@ class FormRenderer {
 if (typeof global !== 'undefined') {
     global.FormRenderer = FormRenderer;
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = FormRenderer;
+}

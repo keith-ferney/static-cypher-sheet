@@ -10,3 +10,8 @@ const TOOLTIP_CONSTANTS = {
 if (typeof global !== 'undefined') {
   global.TOOLTIP_CONSTANTS = TOOLTIP_CONSTANTS;
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { TOOLTIP_CONSTANTS };
+}

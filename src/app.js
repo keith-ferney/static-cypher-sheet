@@ -175,3 +175,7 @@ function showImportExportModal() {
 function hideImportExportModal() {
     document.getElementById('import-export-modal').classList.add('hidden');
 }
+
+function toggleCharacterLock() {
+    app.toggleCharacterLock();
+}

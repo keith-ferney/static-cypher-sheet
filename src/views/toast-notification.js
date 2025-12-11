@@ -43,3 +43,8 @@ class ToastNotification {
         this.show(message, 'info');
     }
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ToastNotification;
+}

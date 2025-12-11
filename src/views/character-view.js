@@ -11,6 +11,12 @@ class CharacterView {
         this.focusSelect = null;
         this.flavorSelect = null;
         this.abilitySelect = null;
+        this.model = null; // Will be set by controller
+    }
+
+    setModel(model) {
+        this.model = model;
+        this.formManager.setModel(model);
     }
 
     // ========== TOAST NOTIFICATIONS ==========
@@ -282,4 +288,75 @@ class CharacterView {
             indicator.classList.add('hidden');
         }
     }
+
+    // ========== CHARACTER LOCK ==========
+    updateLockState(isLocked) {
+        const lockBtn = document.getElementById('lock-toggle-btn');
+        const lockIcon = document.getElementById('lock-icon');
+        const lockText = document.getElementById('lock-text');
+        
+        // Update button appearance
+        if (lockBtn) {
+            if (isLocked) {
+                lockBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                lockBtn.classList.add('bg-orange-600', 'hover:bg-orange-700');
+            } else {
+                lockBtn.classList.remove('bg-orange-600', 'hover:bg-orange-700');
+                lockBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+            }
+        }
+        
+        if (lockIcon) {
+            lockIcon.textContent = isLocked ? '🔒' : '🔓';
+        }
+        
+        if (lockText) {
+            lockText.textContent = isLocked ? 'Locked' : 'Unlocked';
+        }
+        
+        // Lock/unlock character creation fields
+        this._setFieldsLockState(isLocked);
+    }
+
+    _setFieldsLockState(isLocked) {
+        // Fields that should be locked (character creation fields that don't change during play)
+        const fieldsToLock = [
+            'char-name',
+            'char-descriptor',
+            'char-type',
+            'char-focus',
+            'char-flavor',
+            'char-tier',
+            'char-effort',
+            'might-pool',
+            'might-edge',
+            'speed-pool',
+            'speed-edge',
+            'intellect-pool',
+            'intellect-edge'
+        ];
+        
+        fieldsToLock.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.disabled = isLocked;
+                if (isLocked) {
+                    field.classList.add('bg-gray-200', 'cursor-not-allowed');
+                } else {
+                    field.classList.remove('bg-gray-200', 'cursor-not-allowed');
+                }
+            }
+        });
+        
+        // Also disable FancySelects
+        if (this.descriptorSelect) this.descriptorSelect.setDisabled(isLocked);
+        if (this.typeSelect) this.typeSelect.setDisabled(isLocked);
+        if (this.focusSelect) this.focusSelect.setDisabled(isLocked);
+        if (this.flavorSelect) this.flavorSelect.setDisabled(isLocked);
+    }
+}
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CharacterView;
 }

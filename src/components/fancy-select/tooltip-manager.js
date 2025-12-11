@@ -87,3 +87,8 @@ class TooltipManager {
 if (typeof global !== 'undefined') {
   global.TooltipManager = TooltipManager;
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = TooltipManager;
+}

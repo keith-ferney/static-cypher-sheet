@@ -6,6 +6,31 @@
   margin-bottom: 0;
 }
 
+/* Disabled state */
+.fancy-select.disabled .fancy-select-trigger {
+  background: #e5e7eb;
+  cursor: not-allowed;
+}
+
+.fancy-select.disabled .fancy-select-trigger:hover {
+  background: #e5e7eb;
+}
+
+/* Info button should still work when disabled */
+.fancy-select.disabled .fancy-select-info-button {
+  background: white;
+  cursor: pointer;
+}
+
+.fancy-select.disabled .fancy-select-info-button:hover {
+  background: #f0f9ff;
+  border-color: #bae6fd;
+}
+
+.fancy-select.disabled .fancy-select-info-button:hover svg {
+  color: #3b82f6;
+}
+
 .fancy-select-trigger-wrapper {
   display: flex;
   gap: 0.25rem;

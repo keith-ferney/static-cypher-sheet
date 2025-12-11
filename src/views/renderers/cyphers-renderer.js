@@ -60,3 +60,8 @@ class CyphersRenderer {
 if (typeof global !== 'undefined') {
     global.CyphersRenderer = CyphersRenderer;
 }
+
+// ES6 module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CyphersRenderer;
+}

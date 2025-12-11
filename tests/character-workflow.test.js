@@ -207,7 +207,7 @@ describe('Full Character Workflow Tests', () => {
       attacks: ['Dagger'],
       cyphers: [],
       powerShifts: [
-        { name: 'Flight', value: 1, additional_text: 'long', hearts_used: 0 }
+        { name: 'Flight', value: 1, additional_text: 'long', hearts_used: 0, id: '0' }
       ]
     };
     
@@ -228,7 +228,7 @@ describe('Full Character Workflow Tests', () => {
     
     // Check power shifts loaded correctly
     const flightValue = document.querySelector('[data-ps-name="Flight"]');
-    const flightText = document.querySelector('[data-ps-text="Flight"]');
+    const flightText = document.querySelector('[data-ps-text="Flight-0"]'); // Updated selector
     expect(flightValue.value).toBe('1');
     expect(flightText.value).toBe('long');
     
