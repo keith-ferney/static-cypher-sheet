@@ -357,6 +357,114 @@ class CharacterView {
         if (this.typeSelect) this.typeSelect.setDisabled(isLocked);
         if (this.focusSelect) this.focusSelect.setDisabled(isLocked);
         if (this.flavorSelect) this.flavorSelect.setDisabled(isLocked);
+        
+        // Disable add buttons for skills, abilities, attacks
+        const addButtons = [
+            document.querySelector('button[onclick="addSkill()"]'),
+            document.querySelector('button[onclick="addAbilityFromSelect()"]'),
+            document.querySelector('button[onclick="addAttack()"]')
+        ];
+        
+        addButtons.forEach(button => {
+            if (button) {
+                button.disabled = isLocked;
+                if (isLocked) {
+                    button.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    button.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        });
+        
+        // Disable ability select dropdown
+        const abilitySelectContainer = document.getElementById('ability-select');
+        if (abilitySelectContainer) {
+            const inputs = abilitySelectContainer.querySelectorAll('input, select, button');
+            inputs.forEach(input => {
+                input.disabled = isLocked;
+            });
+        }
+        
+        // Disable new attack input
+        const newAttackInput = document.getElementById('new-attack');
+        if (newAttackInput) {
+            newAttackInput.disabled = isLocked;
+            if (isLocked) {
+                newAttackInput.classList.add('bg-gray-200', 'cursor-not-allowed');
+            } else {
+                newAttackInput.classList.remove('bg-gray-200', 'cursor-not-allowed');
+            }
+        }
+        
+        // Lock/unlock skills inputs and remove buttons
+        const skillInputs = document.querySelectorAll('#skills-list input, #skills-list select, #skills-list button');
+        skillInputs.forEach(input => {
+            input.disabled = isLocked;
+            if (isLocked && input.tagName !== 'BUTTON') {
+                input.classList.add('bg-gray-200', 'cursor-not-allowed');
+            } else if (!isLocked && input.tagName !== 'BUTTON') {
+                input.classList.remove('bg-gray-200', 'cursor-not-allowed');
+            }
+            if (isLocked && input.tagName === 'BUTTON') {
+                input.classList.add('opacity-50', 'cursor-not-allowed');
+            } else if (!isLocked && input.tagName === 'BUTTON') {
+                input.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+        
+        // Lock/unlock abilities remove buttons
+        const abilityButtons = document.querySelectorAll('#abilities-list button');
+        abilityButtons.forEach(button => {
+            button.disabled = isLocked;
+            if (isLocked) {
+                button.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                button.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+        
+        // Lock/unlock attacks remove buttons
+        const attackButtons = document.querySelectorAll('#attacks-list button');
+        attackButtons.forEach(button => {
+            button.disabled = isLocked;
+            if (isLocked) {
+                button.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                button.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+        
+        // Lock/unlock power shifts inputs and buttons
+        const powerShiftControls = document.querySelectorAll('#powershifts-list input, #powershifts-list button');
+        powerShiftControls.forEach(control => {
+            control.disabled = isLocked;
+            if (isLocked && control.tagName !== 'BUTTON') {
+                control.classList.add('bg-gray-200', 'cursor-not-allowed');
+            } else if (!isLocked && control.tagName !== 'BUTTON') {
+                control.classList.remove('bg-gray-200', 'cursor-not-allowed');
+            }
+            if (isLocked && control.tagName === 'BUTTON') {
+                control.classList.add('opacity-50', 'cursor-not-allowed');
+            } else if (!isLocked && control.tagName === 'BUTTON') {
+                control.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+        
+        // Lock/unlock advancements checkboxes
+        const advancementCheckboxes = document.querySelectorAll('#advancements-list input[type="checkbox"]');
+        advancementCheckboxes.forEach(checkbox => {
+            checkbox.disabled = isLocked;
+            const label = checkbox.closest('label');
+            if (label) {
+                if (isLocked) {
+                    label.classList.add('opacity-60', 'cursor-not-allowed');
+                    label.classList.remove('cursor-pointer', 'hover:bg-gray-50');
+                } else {
+                    label.classList.remove('opacity-60', 'cursor-not-allowed');
+                    label.classList.add('cursor-pointer', 'hover:bg-gray-50');
+                }
+            }
+        });
     }
 }
 

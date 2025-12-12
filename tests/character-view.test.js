@@ -252,6 +252,109 @@ describe('CharacterView', () => {
       const nameInput = document.getElementById('char-name');
       expect(nameInput.disabled).toBe(false);
     });
+
+    test('should disable skills, abilities, attacks, and power shifts when locked', () => {
+      // Setup some content first
+      document.getElementById('skills-list').innerHTML = `
+        <div class="skill-row">
+          <input type="text" class="skill-name">
+          <select class="skill-pool"></select>
+          <button>Remove</button>
+        </div>
+      `;
+      document.getElementById('abilities-list').innerHTML = `
+        <div class="ability-item">
+          <button>Remove</button>
+        </div>
+      `;
+      document.getElementById('attacks-list').innerHTML = `
+        <div class="attack-item">
+          <button>Remove</button>
+        </div>
+      `;
+      document.getElementById('powershifts-list').innerHTML = `
+        <label>
+          <input type="number" class="ps-value">
+          <button>Add</button>
+        </label>
+      `;
+      document.getElementById('advancements-list').innerHTML = `
+        <label class="advancement-item cursor-pointer hover:bg-gray-50">
+          <input type="checkbox">
+        </label>
+      `;
+      
+      view.updateLockState(true);
+      
+      // Check skills
+      const skillInput = document.querySelector('#skills-list input');
+      const skillButton = document.querySelector('#skills-list button');
+      expect(skillInput.disabled).toBe(true);
+      expect(skillButton.disabled).toBe(true);
+      
+      // Check abilities
+      const abilityButton = document.querySelector('#abilities-list button');
+      expect(abilityButton.disabled).toBe(true);
+      
+      // Check attacks
+      const attackButton = document.querySelector('#attacks-list button');
+      expect(attackButton.disabled).toBe(true);
+      
+      // Check power shifts
+      const psInput = document.querySelector('#powershifts-list input');
+      const psButton = document.querySelector('#powershifts-list button');
+      expect(psInput.disabled).toBe(true);
+      expect(psButton.disabled).toBe(true);
+      
+      // Check advancements
+      const advCheckbox = document.querySelector('#advancements-list input[type="checkbox"]');
+      expect(advCheckbox.disabled).toBe(true);
+    });
+
+    test('should enable skills, abilities, attacks, and power shifts when unlocked', () => {
+      // Setup some content first
+      document.getElementById('skills-list').innerHTML = `
+        <div class="skill-row">
+          <input type="text" class="skill-name">
+          <button>Remove</button>
+        </div>
+      `;
+      document.getElementById('abilities-list').innerHTML = `
+        <div class="ability-item">
+          <button>Remove</button>
+        </div>
+      `;
+      document.getElementById('powershifts-list').innerHTML = `
+        <label>
+          <input type="number" class="ps-value">
+        </label>
+      `;
+      document.getElementById('advancements-list').innerHTML = `
+        <label class="advancement-item">
+          <input type="checkbox">
+        </label>
+      `;
+      
+      view.updateLockState(false);
+      
+      // Check skills
+      const skillInput = document.querySelector('#skills-list input');
+      const skillButton = document.querySelector('#skills-list button');
+      expect(skillInput.disabled).toBe(false);
+      expect(skillButton.disabled).toBe(false);
+      
+      // Check abilities
+      const abilityButton = document.querySelector('#abilities-list button');
+      expect(abilityButton.disabled).toBe(false);
+      
+      // Check power shifts
+      const psInput = document.querySelector('#powershifts-list input');
+      expect(psInput.disabled).toBe(false);
+      
+      // Check advancements
+      const advCheckbox = document.querySelector('#advancements-list input[type="checkbox"]');
+      expect(advCheckbox.disabled).toBe(false);
+    });
   });
 
   describe('Change Detection', () => {
