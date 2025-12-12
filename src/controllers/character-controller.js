@@ -29,10 +29,10 @@ class CharacterController {
         
         if (lastCharacterId && this.model.getCharacter(lastCharacterId)) {
             // If we have a saved character ID and it still exists, load it
-            this.loadCharacter(lastCharacterId);
+            await this.loadCharacter(lastCharacterId);
         } else if (this.model.getAllCharacters().length === 0) {
             // If no characters exist, show character sheet instead of list
-            this.showNewCharacterForm();
+            await this.showNewCharacterForm();
         } else {
             // Otherwise show the character list
             this.showCharacterList();
@@ -68,13 +68,13 @@ class CharacterController {
         this.crudController.showCharacterList();
     }
 
-    showNewCharacterForm() {
-        this.crudController.showNewCharacterForm();
+    async showNewCharacterForm() {
+        await this.crudController.showNewCharacterForm();
         this.changeTracker.saveSnapshot();
     }
 
-    loadCharacter(id) {
-        this.crudController.loadCharacter(id);
+    async loadCharacter(id) {
+        await this.crudController.loadCharacter(id);
         this.changeTracker.saveSnapshot();
     }
 
@@ -162,7 +162,7 @@ class CharacterController {
     }
 
     // Power Shifts methods
-    addPowerShiftInstance(psName) {
+    async addPowerShiftInstance(psName) {
         // Get ALL power shifts including those with value 0
         const powerShifts = this.view.getAllPowerShifts();
         const newId = Date.now().toString(); // Use timestamp as unique ID
@@ -174,14 +174,14 @@ class CharacterController {
             id: newId
         });
         
-        this.view.renderPowerShifts(powerShifts);
+        await this.view.renderPowerShifts(powerShifts);
         this.checkForChanges();
     }
 
-    removePowerShiftInstance(psName, psId) {
+    async removePowerShiftInstance(psName, psId) {
         const powerShifts = this.view.getCurrentPowerShifts();
         const filtered = powerShifts.filter(ps => !(ps.name === psName && ps.id === psId));
-        this.view.renderPowerShifts(filtered);
+        await this.view.renderPowerShifts(filtered);
         this.checkForChanges();
     }
 

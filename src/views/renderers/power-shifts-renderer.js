@@ -53,7 +53,7 @@ class PowerShiftsRenderer {
         return powerShifts;
     }
 
-    static renderPowerShifts(characterPowerShifts) {
+    static async renderPowerShifts(characterPowerShifts) {
         const container = document.getElementById('powershifts-list');
         
         if (!container) {
@@ -67,6 +67,7 @@ class PowerShiftsRenderer {
         }
         
         const charPSArray = Array.isArray(characterPowerShifts) ? characterPowerShifts : [];
+        const template = await templateLoader.loadTemplate('power-shift-item');
         
         let html = '';
         
@@ -83,7 +84,7 @@ class PowerShiftsRenderer {
                     const psId = existing.id || index.toString();
                     const isLast = index === entriesToShow.length - 1;
                     const canRemove = hasMultipleInstances;
-                    html += this.renderSinglePowerShift(ps, existing.value, existing.additional_text || '', 0, psId, canRemove, isLast);
+                    html += this.renderSinglePowerShift(template, ps, existing.value, existing.additional_text || '', 0, psId, canRemove, isLast);
                 });
             } else {
                 // Single instance power shifts
@@ -91,76 +92,40 @@ class PowerShiftsRenderer {
                 const value = existing ? existing.value : 0;
                 const additionalText = existing ? (existing.additional_text || '') : '';
                 const heartsUsed = existing ? (existing.hearts_used || 0) : 0;
-                html += this.renderSinglePowerShift(ps, value, additionalText, heartsUsed, '0', false, false);
+                html += this.renderSinglePowerShift(template, ps, value, additionalText, heartsUsed, '0', false, false);
             }
         });
         
         container.innerHTML = html;
     }
     
-    static renderSinglePowerShift(ps, value, additionalText, heartsUsed, psId, canRemove, isLast) {
-        let html = `
-            <label class="text-black flex flex-row gap-1 items-center text-center w-fit px-2 py-1">
-                <input 
-                    type="number" 
-                    value="${value}" 
-                    min="0" 
-                    max="5"
-                    class="w-5 p-0 text-xs ps-value" 
-                    data-ps-name="${ps.name}"
-                    data-ps-id="${psId}"
-                />
-                <span class="text-sm" title="${ps.description || ''}">${ps.name}</span>
-        `;
-        
+    static renderSinglePowerShift(template, ps, value, additionalText, heartsUsed, psId, canRemove, isLast) {
+        const data = {
+            name: ps.name,
+            description: ps.description || '',
+            value: value,
+            psId: psId,
+            additionalText: additionalText,
+            hasHealingCheckboxes: ps.has_healing_checkboxes,
+            allowsAdditionalText: ps.allows_additional_text,
+            canRemove: canRemove,
+            isLast: isLast,
+            isPerRound: ps.is_per_round
+        };
+
+        // Build healing checkboxes array if needed
         if (ps.has_healing_checkboxes) {
-            html += '<div class="flex gap-1">';
+            data.healingCheckboxes = [];
             for (let i = 1; i <= 5; i++) {
-                html += `
-                    <input 
-                        type="checkbox" 
-                        ${i <= heartsUsed ? 'checked' : ''}
-                        data-ps-heart="${ps.name}"
-                        data-heart-num="${i}"
-                    />
-                `;
-            }
-            html += '</div>';
-        }
-        
-        if (ps.allows_additional_text) {
-            html += `
-                <input 
-                    type="text" 
-                    value="${additionalText}"
-                    placeholder="ability name"
-                    class="w-32 p-0 px-1 text-xs ps-text border border-gray-300 rounded" 
-                    data-ps-text="${ps.name}-${psId}"
-                />
-            `;
-            
-            if (canRemove) {
-                html += `
-                    <button onclick="removePowerShiftInstance('${ps.name}', '${psId}')" class="text-red-600 hover:text-red-800 text-sm">×</button>
-                `;
-            }
-            
-            // Add the + button on the same line as the last item
-            if (isLast) {
-                html += `
-                    <button onclick="addPowerShiftInstance('${ps.name}')" class="text-green-600 hover:text-green-800 text-lg font-bold px-1" title="Add another ${ps.name}">
-                        +
-                    </button>
-                `;
+                data.healingCheckboxes.push({
+                    checked: i <= heartsUsed,
+                    psName: ps.name,
+                    num: i
+                });
             }
         }
-        
-        if (ps.is_per_round) {
-            html += '<span class="text-xs">Per Round</span>';
-        }
-        
-        html += '</label>';
-        return html;
+
+        return templateLoader.render(template, data);
     }
 }
 

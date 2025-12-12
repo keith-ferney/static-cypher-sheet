@@ -171,20 +171,20 @@ describe('CharacterView', () => {
       expect(data.descriptor).toBe('Strong');
     });
 
-    test('should clear form', () => {
+    test('should clear form', async () => {
       document.getElementById('char-name').value = 'Test';
       view.descriptorSelect = { setValue: jest.fn() };
       view.typeSelect = { setValue: jest.fn() };
       view.focusSelect = { setValue: jest.fn() };
       view.flavorSelect = { setValue: jest.fn() };
       
-      view.clearForm();
+      await view.clearForm();
       
       expect(document.getElementById('char-name').value).toBe('');
       expect(view.descriptorSelect.setValue).toHaveBeenCalledWith(null);
     });
 
-    test('should load character to form', () => {
+    test('should load character to form', async () => {
       const character = {
         id: '1',
         name: 'Test Hero',
@@ -206,7 +206,7 @@ describe('CharacterView', () => {
       view.focusSelect = { setValue: jest.fn() };
       view.flavorSelect = { setValue: jest.fn() };
       
-      view.loadCharacterToForm(character);
+      await view.loadCharacterToForm(character);
       
       expect(document.getElementById('char-name').value).toBe('Test Hero');
       expect(document.getElementById('char-tier').value).toBe('2');
@@ -374,12 +374,12 @@ describe('CharacterView', () => {
   });
 
   describe('Advancements Rendering', () => {
-    test('should render advancements', () => {
+    test('should render advancements', async () => {
       global.cypherData.advancements = [
         { name: 'Advancement 1', description: 'Option 1' }
       ];
       
-      view.renderAdvancements([]);
+      await view.renderAdvancements([]);
       
       const container = document.getElementById('advancements-list');
       expect(container.innerHTML).toBeTruthy();

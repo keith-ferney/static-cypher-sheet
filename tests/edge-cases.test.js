@@ -123,8 +123,8 @@ describe('Edge Cases and Error Handling Tests', () => {
     expect(options.length).toBe(0);
   });
 
-  test('Power shifts should handle missing properties', () => {
-    view.renderPowerShifts([
+  test('Power shifts should handle missing properties', async () => {
+    await view.renderPowerShifts([
       { name: 'Accuracy', value: 2 }, // Missing additional_text and hearts_used
       { name: 'Flight' }, // Missing value
     ]);

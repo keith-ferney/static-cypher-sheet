@@ -112,51 +112,51 @@ describe('CharacterCRUDController', () => {
       expect(spy).toHaveBeenCalledWith(model.characters);
     });
 
-    test('should show character sheet when loading character', () => {
+    test('should show character sheet when loading character', async () => {
       model.createNewCharacterId();
       model.saveCharacter({ name: 'Test' });
       const charId = model.getCurrentCharacterId();
       
       const spy = jest.spyOn(view, 'showCharacterSheet');
-      controller.loadCharacter(charId);
+      await controller.loadCharacter(charId);
       
       expect(spy).toHaveBeenCalled();
     });
   });
 
   describe('New Character Form', () => {
-    test('should create new character ID', () => {
-      controller.showNewCharacterForm();
+    test('should create new character ID', async () => {
+      await controller.showNewCharacterForm();
       expect(model.getCurrentCharacterId()).toBeTruthy();
     });
 
-    test('should clear form for new character', () => {
+    test('should clear form for new character', async () => {
       const spy = jest.spyOn(view, 'clearForm');
-      controller.showNewCharacterForm();
+      await controller.showNewCharacterForm();
       expect(spy).toHaveBeenCalled();
     });
 
-    test('should show character sheet for new character', () => {
+    test('should show character sheet for new character', async () => {
       const spy = jest.spyOn(view, 'showCharacterSheet');
-      controller.showNewCharacterForm();
+      await controller.showNewCharacterForm();
       expect(spy).toHaveBeenCalled();
     });
 
-    test('should set new character as unlocked', () => {
+    test('should set new character as unlocked', async () => {
       const spy = jest.spyOn(view, 'updateLockState');
-      controller.showNewCharacterForm();
+      await controller.showNewCharacterForm();
       expect(spy).toHaveBeenCalledWith(false);
     });
   });
 
   describe('Load Character', () => {
-    test('should load character data to form', () => {
+    test('should load character data to form', async () => {
       model.createNewCharacterId();
       model.saveCharacter({ name: 'Test Character', tier: 2 });
       const charId = model.getCurrentCharacterId();
       
       const spy = jest.spyOn(view, 'loadCharacterToForm');
-      controller.loadCharacter(charId);
+      await controller.loadCharacter(charId);
       
       expect(spy).toHaveBeenCalled();
       const loadedChar = spy.mock.calls[0][0];
@@ -179,24 +179,24 @@ describe('CharacterCRUDController', () => {
       expect(spy).not.toHaveBeenCalled();
     });
 
-    test('should restore lock state when loading', () => {
+    test('should restore lock state when loading', async () => {
       model.createNewCharacterId();
       model.saveCharacter({ name: 'Test', isLocked: true });
       const charId = model.getCurrentCharacterId();
       
       const spy = jest.spyOn(view, 'updateLockState');
-      controller.loadCharacter(charId);
+      await controller.loadCharacter(charId);
       
       expect(spy).toHaveBeenCalledWith(true);
     });
 
-    test('should default to unlocked when no lock state', () => {
+    test('should default to unlocked when no lock state', async () => {
       model.createNewCharacterId();
       model.saveCharacter({ name: 'Test' });
       const charId = model.getCurrentCharacterId();
       
       const spy = jest.spyOn(view, 'updateLockState');
-      controller.loadCharacter(charId);
+      await controller.loadCharacter(charId);
       
       expect(spy).toHaveBeenCalledWith(false);
     });

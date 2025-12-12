@@ -11,21 +11,21 @@ class CharacterCRUDController {
         this.view.renderCharacterList(this.model.getAllCharacters());
     }
 
-    showNewCharacterForm() {
+    async showNewCharacterForm() {
         this.model.createNewCharacterId();
-        this.view.clearForm();
+        await this.view.clearForm();
         this.view.showCharacterSheet();
         
         // Ensure new characters start unlocked
         this.view.updateLockState(false);
     }
 
-    loadCharacter(id) {
+    async loadCharacter(id) {
         const character = this.model.getCharacter(id);
         if (!character) return;
 
         this.model.setCurrentCharacterId(id);
-        this.view.loadCharacterToForm(character);
+        await this.view.loadCharacterToForm(character);
         this.view.showCharacterSheet();
         
         // Restore lock state

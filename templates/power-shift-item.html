@@ -1,0 +1,44 @@
+<label class="text-black flex flex-row gap-1 items-center text-center w-fit px-2 py-1">
+    <input 
+        type="number" 
+        value="{{value}}" 
+        min="0" 
+        max="5"
+        class="w-5 p-0 text-xs ps-value" 
+        data-ps-name="{{name}}"
+        data-ps-id="{{psId}}"
+    />
+    <span class="text-sm" title="{{description}}">{{name}}</span>
+    {{#hasHealingCheckboxes}}
+    <div class="flex gap-1">
+        {{#healingCheckboxes}}
+        <input 
+            type="checkbox" 
+            {{#checked}}checked{{/checked}}
+            data-ps-heart="{{psName}}"
+            data-heart-num="{{num}}"
+        />
+        {{/healingCheckboxes}}
+    </div>
+    {{/hasHealingCheckboxes}}
+    {{#allowsAdditionalText}}
+    <input 
+        type="text" 
+        value="{{additionalText}}"
+        placeholder="ability name"
+        class="w-32 p-0 px-1 text-xs ps-text border border-gray-300 rounded" 
+        data-ps-text="{{name}}-{{psId}}"
+    />
+    {{/allowsAdditionalText}}
+    {{#canRemove}}
+    <button onclick="removePowerShiftInstance('{{name}}', '{{psId}}')" class="text-red-600 hover:text-red-800 text-sm">×</button>
+    {{/canRemove}}
+    {{#isLast}}
+    <button onclick="addPowerShiftInstance('{{name}}')" class="text-green-600 hover:text-green-800 text-lg font-bold px-1" title="Add another {{name}}">
+        +
+    </button>
+    {{/isLast}}
+    {{#isPerRound}}
+    <span class="text-xs">Per Round</span>
+    {{/isPerRound}}
+</label>

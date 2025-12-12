@@ -44,8 +44,8 @@ describe('Power Shifts Integration Tests', () => {
     global.cypherData = cypherData;
   });
 
-  test('renderPowerShifts should render all three types correctly', () => {
-    view.renderPowerShifts([]);
+  test('renderPowerShifts should render all three types correctly', async () => {
+    await view.renderPowerShifts([]);
     
     const labels = document.querySelectorAll('#powershifts-list label');
     expect(labels.length).toBe(4); // Accuracy, Flight, Healing, Dexterity
@@ -70,9 +70,9 @@ describe('Power Shifts Integration Tests', () => {
     expect(healingCheckboxes.length).toBe(5);
   });
 
-  test('Power shifts should save and load correctly', () => {
+  test('Power shifts should save and load correctly', async () => {
     // Set up power shifts with id property
-    view.renderPowerShifts([
+    await view.renderPowerShifts([
       { name: 'Accuracy', value: 3, additional_text: '', hearts_used: 0, id: '0' },
       { name: 'Flight', value: 2, additional_text: 'short', hearts_used: 0, id: '0' },
       { name: 'Healing', value: 1, additional_text: '', hearts_used: 3, id: '0' }

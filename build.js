@@ -37,6 +37,7 @@ const filesToCopy = [
   'src/app.js',
   'src/models/character.js',
   'src/models/data-loader.js',
+  'src/utils/template-loader.js',
   'src/views/toast-notification.js',
   'src/views/renderers/skills-renderer.js',
   'src/views/renderers/abilities-renderer.js',
@@ -65,6 +66,13 @@ const filesToCopy = [
   'data/abilities.json',
   'data/advancements.json',
   'data/powershifts.json',
+  'templates/advancement-item.html',
+  'templates/skill-row.html',
+  'templates/equipment-item.html',
+  'templates/ability-item.html',
+  'templates/cypher-item.html',
+  'templates/attack-item.html',
+  'templates/power-shift-item.html',
   'assets/CharacterSheetBackground.png',
   'assets/ClaimTheSky.png'
 ];
@@ -92,6 +100,7 @@ let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 // Add version query strings to CSS and JS files
 html = html.replace('href="styles.css"', `href="styles.css?v=${VERSION}"`);
 html = html.replace('src="src/models/data-loader.js"', `src="src/models/data-loader.js?v=${VERSION}"`);
+html = html.replace('src="src/utils/template-loader.js"', `src="src/utils/template-loader.js?v=${VERSION}"`);
 html = html.replace('src="src/components/fancy-select/constants.js"', `src="src/components/fancy-select/constants.js?v=${VERSION}"`);
 html = html.replace('src="src/components/fancy-select/utils.js"', `src="src/components/fancy-select/utils.js?v=${VERSION}"`);
 html = html.replace('src="src/components/fancy-select/tooltip-manager.js"', `src="src/components/fancy-select/tooltip-manager.js?v=${VERSION}"`);

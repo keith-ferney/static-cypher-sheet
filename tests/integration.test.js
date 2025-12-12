@@ -31,6 +31,9 @@ const eventHandlersCode = fs.readFileSync(path.join(__dirname, '../src/component
 const domBuilderCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select/dom-builder.js'), 'utf8');
 const fancySelectCoreCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select/fancy-select-core.js'), 'utf8');
 
+// Load template loader
+const templateLoaderCode = fs.readFileSync(path.join(__dirname, '../src/utils/template-loader.js'), 'utf8');
+
 // Load renderer modules
 const skillsRendererCode = fs.readFileSync(path.join(__dirname, '../src/views/renderers/skills-renderer.js'), 'utf8');
 const abilitiesRendererCode = fs.readFileSync(path.join(__dirname, '../src/views/renderers/abilities-renderer.js'), 'utf8');
@@ -57,6 +60,11 @@ eval(eventHandlersCode);
 eval(domBuilderCode);
 eval(fancySelectCoreCode); // Defines FancySelect class globally
 eval(dataLoaderCode);
+eval(templateLoaderCode); // Must be before renderers
+
+// Create mock template loader (same as test-setup.js)
+global.templateLoader = require('./test-setup').mockTemplateLoader;
+
 eval(skillsRendererCode);
 eval(abilitiesRendererCode);
 eval(equipmentRendererCode);
@@ -315,8 +323,8 @@ describe('Cypher Character Creator - Integration Tests', () => {
   });
 
   describe('Power Shifts Integration', () => {
-    test('renderPowerShifts should render all three types correctly', () => {
-      view.renderPowerShifts([]);
+    test('renderPowerShifts should render all three types correctly', async () => {
+      await view.renderPowerShifts([]);
       
       const labels = document.querySelectorAll('#powershifts-list label');
       expect(labels.length).toBe(4); // Accuracy, Flight, Healing, Dexterity
@@ -341,9 +349,9 @@ describe('Cypher Character Creator - Integration Tests', () => {
       expect(healingCheckboxes.length).toBe(5);
     });
 
-    test('Power shifts should save and load correctly', () => {
+    test('Power shifts should save and load correctly', async () => {
       // Set up power shifts with id property
-      view.renderPowerShifts([
+      await view.renderPowerShifts([
         { name: 'Accuracy', value: 3, additional_text: '', hearts_used: 0, id: '0' },
         { name: 'Flight', value: 2, additional_text: 'short', hearts_used: 0, id: '0' },
         { name: 'Healing', value: 1, additional_text: '', hearts_used: 3, id: '0' }
@@ -381,7 +389,7 @@ describe('Cypher Character Creator - Integration Tests', () => {
   });
 
   describe('Full Character Workflow', () => {
-    test('Create character with FancySelects and save', () => {
+    test('Create character with FancySelects and save', async () => {
       view.initializeFancySelects();
       
       // Set character ID
@@ -401,13 +409,13 @@ describe('Cypher Character Creator - Integration Tests', () => {
       document.getElementById('speed-pool').value = '12';
       
       // Add skills
-      view.renderSkills([
+      await view.renderSkills([
         { name: 'Athletics', pool: 'might', type: 'trained', powerShift: 0 },
         { name: 'Combat', pool: 'speed', type: 'specialized', powerShift: 1 }
       ]);
       
       // Add power shifts
-      view.renderPowerShifts([
+      await view.renderPowerShifts([
         { name: 'Accuracy', value: 2, additional_text: '', hearts_used: 0 }
       ]);
       
@@ -431,7 +439,7 @@ describe('Cypher Character Creator - Integration Tests', () => {
       expect(char.powerShifts[0].value).toBe(2);
     });
 
-    test('Load character should populate FancySelects', () => {
+    test('Load character should populate FancySelects', async () => {
       view.initializeFancySelects();
       
       const testChar = {
@@ -473,7 +481,7 @@ describe('Cypher Character Creator - Integration Tests', () => {
       model.characters = [testChar];
       view.initializeFancySelects();
       
-      controller.loadCharacter('load-test');
+      await controller.loadCharacter('load-test');
       
       // Check basic fields
       expect(document.getElementById('char-name').value).toBe('Loaded Character');
@@ -496,7 +504,7 @@ describe('Cypher Character Creator - Integration Tests', () => {
       expect(skillRows.length).toBe(1);
     });
 
-    test('Clear form should reset FancySelects', () => {
+    test('Clear form should reset FancySelects', async () => {
       view.initializeFancySelects();
       
       // Set values
@@ -508,7 +516,7 @@ describe('Cypher Character Creator - Integration Tests', () => {
       expect(view.descriptorSelect.value).toBe(1);
       
       // Clear form
-      view.clearForm();
+      await view.clearForm();
       
       // Check all FancySelects reset
       expect(view.descriptorSelect.value).toBe(null);
@@ -541,8 +549,8 @@ describe('Cypher Character Creator - Integration Tests', () => {
       expect(options.length).toBe(0);
     });
 
-    test('Power shifts should handle missing properties', () => {
-      view.renderPowerShifts([
+    test('Power shifts should handle missing properties', async () => {
+      await view.renderPowerShifts([
         { name: 'Accuracy', value: 2 }, // Missing additional_text and hearts_used
         { name: 'Flight' }, // Missing value
       ]);
@@ -553,7 +561,7 @@ describe('Cypher Character Creator - Integration Tests', () => {
       expect(accuracy.hearts_used).toBe(0);
     });
 
-    test('Save and load should handle special characters', () => {
+    test('Save and load should handle special characters', async () => {
       view.initializeFancySelects();
       model.setCurrentCharacterId('special-test');
       
@@ -561,12 +569,11 @@ describe('Cypher Character Creator - Integration Tests', () => {
       document.getElementById('char-background').value = "Line 1\nLine 2\nLine 3";
       
       global.alert = jest.fn();
+      
       controller.saveCharacter();
       
-      view.clearForm();
-      controller.loadCharacter('special-test');
-      
-      expect(document.getElementById('char-name').value).toBe('Test "Hero" <Script>');
+      await view.clearForm();
+      await controller.loadCharacter('special-test');      expect(document.getElementById('char-name').value).toBe('Test "Hero" <Script>');
       // HTML inputs don't preserve newlines the same way - just check it's not empty
       expect(document.getElementById('char-background').value).toContain("Line 1");
     });

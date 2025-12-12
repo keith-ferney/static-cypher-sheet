@@ -116,7 +116,7 @@ describe('Full Character Workflow Tests', () => {
     };
   });
 
-  test('Create character with FancySelects and save', () => {
+  test('Create character with FancySelects and save', async () => {
     // Make cypherData global for initialization
     global.cypherData = cypherData;
     
@@ -139,13 +139,13 @@ describe('Full Character Workflow Tests', () => {
     document.getElementById('speed-pool').value = '12';
     
     // Add skills
-    view.renderSkills([
+    await view.renderSkills([
       { name: 'Athletics', pool: 'might', type: 'trained', powerShift: 0 },
       { name: 'Combat', pool: 'speed', type: 'specialized', powerShift: 1 }
     ]);
     
     // Add power shifts
-    view.renderPowerShifts([
+    await view.renderPowerShifts([
       { name: 'Accuracy', value: 2, additional_text: '', hearts_used: 0 }
     ]);
     
@@ -169,7 +169,7 @@ describe('Full Character Workflow Tests', () => {
     expect(char.powerShifts[0].value).toBe(2);
   });
 
-  test('Load character should populate FancySelects', () => {
+  test('Load character should populate FancySelects', async () => {
     // Make cypherData global for initialization
     global.cypherData = cypherData;
     
@@ -214,7 +214,7 @@ describe('Full Character Workflow Tests', () => {
     model.characters = [testChar];
     view.initializeFancySelects();
     
-    controller.loadCharacter('load-test');
+    await controller.loadCharacter('load-test');
     
     // Check basic fields
     expect(document.getElementById('char-name').value).toBe('Loaded Character');
@@ -237,7 +237,7 @@ describe('Full Character Workflow Tests', () => {
     expect(skillRows.length).toBe(1);
   });
 
-  test('Clear form should reset FancySelects', () => {
+  test('Clear form should reset FancySelects', async () => {
     // Make cypherData global for initialization
     global.cypherData = cypherData;
     
@@ -252,7 +252,7 @@ describe('Full Character Workflow Tests', () => {
     expect(view.descriptorSelect.value).toBe(1);
     
     // Clear form
-    view.clearForm();
+    await view.clearForm();
     
     // Check all FancySelects reset
     expect(view.descriptorSelect.value).toBe(null);

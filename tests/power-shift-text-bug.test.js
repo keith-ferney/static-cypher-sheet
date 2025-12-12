@@ -16,7 +16,7 @@ describe('Power Shift Text Bug #6', () => {
     let view;
     let model;
     
-    beforeEach(() => {
+    beforeEach(async () => {
         // Set up DOM
         document.body.innerHTML = `
             <div id="character-form"></div>
@@ -41,10 +41,10 @@ describe('Power Shift Text Bug #6', () => {
         controller = new CharacterController(model, view);
         
         // Initialize with empty power shifts
-        view.renderPowerShifts([]);
+        await view.renderPowerShifts([]);
     });
     
-    test('should preserve text when clicking the green plus button', () => {
+    test('should preserve text when clicking the green plus button', async () => {
         // User types "Supersonic Speed" in the text field
         const textInput = document.querySelector('input[data-ps-text="Flight-0"]');
         expect(textInput).toBeTruthy();
@@ -56,7 +56,7 @@ describe('Power Shift Text Bug #6', () => {
         expect(textInput.value).toBe('Supersonic Speed');
         
         // User clicks the green plus button
-        controller.addPowerShiftInstance('Flight');
+        await controller.addPowerShiftInstance('Flight');
         
         // Check that the first instance still has the text
         const firstTextInput = document.querySelector('input[data-ps-text="Flight-0"]');

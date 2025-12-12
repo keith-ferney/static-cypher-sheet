@@ -21,34 +21,22 @@ class CyphersRenderer {
             .filter(cypher => cypher !== null);
     }
 
-    static renderCyphers(cyphers) {
+    static async renderCyphers(cyphers) {
         const container = document.getElementById('cyphers-list');
         if (!container) {
             console.warn('Cyphers container not found');
             return;
         }
-        container.innerHTML = cyphers.map((cypher, idx) => `
-            <div class="cypher-item border border-gray-300 rounded p-2">
-                <div class="flex justify-between items-start gap-2">
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2 mb-1">
-                            <strong class="cypher-name text-sm truncate">${cypher.name}</strong>
-                            <div class="flex items-center gap-1 flex-shrink-0">
-                                <span class="text-gray-500 text-xs">Lvl</span>
-                                <input 
-                                    type="text" 
-                                    value="${cypher.level}" 
-                                    onchange="app.updateCypherLevel(${idx}, this.value)"
-                                    class="cypher-level-input w-10 px-1 text-xs text-center border border-gray-300 rounded"
-                                >
-                            </div>
-                        </div>
-                        <p class="cypher-desc text-xs text-gray-600">${cypher.description}</p>
-                    </div>
-                    <button onclick="app.removeCypher(${idx}); event.stopPropagation();" class="text-red-600 hover:text-red-800 text-lg leading-none flex-shrink-0">×</button>
-                </div>
-            </div>
-        `).join('');
+        
+        const template = await templateLoader.loadTemplate('cypher-item');
+        container.innerHTML = cyphers.map((cypher, idx) => {
+            return templateLoader.render(template, {
+                name: cypher.name,
+                level: cypher.level,
+                description: cypher.description,
+                index: idx
+            });
+        }).join('');
     }
 
     static toggleCypherDesc(index) {

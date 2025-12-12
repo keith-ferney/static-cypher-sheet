@@ -171,18 +171,18 @@ class CharacterView {
     }
 
     // ========== CHARACTER FORM ==========
-    loadCharacterToForm(character) {
+    async loadCharacterToForm(character) {
         const fancySelects = {
             descriptorSelect: this.descriptorSelect,
             typeSelect: this.typeSelect,
             focusSelect: this.focusSelect,
             flavorSelect: this.flavorSelect
         };
-        this.formManager.loadToForm(character, fancySelects);
+        await this.formManager.loadToForm(character, fancySelects);
     }
 
-    clearForm() {
-        this.formManager.clearForm();
+    async clearForm() {
+        await this.formManager.clearForm();
         
         // Reset FancySelects to null
         if (this.descriptorSelect) this.descriptorSelect.setValue(null);

@@ -9,18 +9,20 @@ class EquipmentRenderer {
             .filter(item => item !== '');
     }
 
-    static renderEquipment(equipment) {
+    static async renderEquipment(equipment) {
         const container = document.getElementById('equipment-list');
         if (!container) {
             console.warn('Equipment container not found');
             return;
         }
-        container.innerHTML = equipment.map((item, idx) => `
-            <div class="equipment-item flex justify-between items-center text-sm border border-gray-300 rounded p-2">
-                <span>${item}</span>
-                <button onclick="app.removeEquipment(${idx})" class="text-red-600 hover:text-red-800">×</button>
-            </div>
-        `).join('');
+        
+        const template = await templateLoader.loadTemplate('equipment-item');
+        container.innerHTML = equipment.map((item, idx) => {
+            return templateLoader.render(template, {
+                item: item,
+                index: idx
+            });
+        }).join('');
     }
 }
 

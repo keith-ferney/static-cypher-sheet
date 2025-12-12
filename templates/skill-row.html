@@ -1,0 +1,27 @@
+<div class="skill-row border border-gray-300 rounded p-2">
+    <div class="flex items-center gap-2 mb-1">
+        <input type="text" value="{{name}}" class="skill-name flex-1 px-2 py-1 text-sm border border-gray-200 rounded" placeholder="Skill name">
+        <button onclick="app.removeSkill({{index}})" class="text-red-600 hover:text-red-800 text-lg leading-none">×</button>
+    </div>
+    <div class="flex gap-2 text-xs">
+        <div class="flex-1">
+            <select class="skill-pool w-full px-1 py-1 border border-gray-200 rounded text-xs">
+                <option value="" {{#poolEmpty}}selected{{/poolEmpty}}>- select pool -</option>
+                <option value="might" {{#poolMight}}selected{{/poolMight}}>Might</option>
+                <option value="speed" {{#poolSpeed}}selected{{/poolSpeed}}>Speed</option>
+                <option value="intellect" {{#poolIntellect}}selected{{/poolIntellect}}>Intellect</option>
+            </select>
+        </div>
+        <div class="w-16">
+            <input type="number" value="{{powerShift}}" class="skill-ps w-full px-1 py-1 text-center border border-gray-200 rounded text-xs" min="0" placeholder="PS">
+        </div>
+        <div class="flex-1">
+            <select class="skill-type w-full px-1 py-1 border border-gray-200 rounded text-xs">
+                <option value="" {{#typeEmpty}}selected{{/typeEmpty}}>- select type -</option>
+                <option value="trained" {{#typeTrained}}selected{{/typeTrained}}>Trained</option>
+                <option value="specialized" {{#typeSpecialized}}selected{{/typeSpecialized}}>Specialized</option>
+                <option value="inability" {{#typeInability}}selected{{/typeInability}}>Inability</option>
+            </select>
+        </div>
+    </div>
+</div>

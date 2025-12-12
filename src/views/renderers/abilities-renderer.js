@@ -31,45 +31,21 @@ class AbilitiesRenderer {
             .filter(ability => ability.name && ability.name.trim() !== '');
     }
 
-    static renderAbilities(abilities) {
+    static async renderAbilities(abilities) {
         const container = document.getElementById('abilities-list');
         if (!container) {
             console.warn('Abilities container not found');
             return;
         }
-        container.innerHTML = abilities.map((ability, idx) => `
-            <div class="ability-item border border-gray-300 p-2 rounded" data-edit-mode="false">
-                <div class="flex justify-between items-start gap-2">
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2 mb-1">
-                            <svg class="ability-chevron w-4 h-4 transition-transform cursor-pointer flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" onclick="app.toggleAbilityDesc(${idx})">
-                                <path d="M10 12.586l-4.293-4.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414L10 12.586z"/>
-                            </svg>
-                            <span class="ability-name-display flex-1 font-semibold text-sm">${this.escapeHtml(ability.name || '')}</span>
-                            <input 
-                                type="text" 
-                                value="${this.escapeHtml(ability.name || '')}" 
-                                placeholder="Ability name"
-                                class="ability-name-input hidden flex-1 font-semibold px-1 py-0.5 border border-gray-300 rounded text-sm focus:border-blue-500 focus:outline-none"
-                                onclick="event.stopPropagation()"
-                                onchange="app.checkForChanges()"
-                            />
-                        </div>
-                        <p class="ability-desc-display text-xs text-gray-600 mt-1 ml-6 hidden whitespace-pre-wrap">${this.escapeHtml(ability.description || '')}</p>
-                        <textarea 
-                            class="ability-desc-input w-full text-xs text-gray-600 mt-1 ml-6 px-1 py-0.5 border border-gray-300 rounded hidden resize-y min-h-[60px] focus:border-blue-500 focus:outline-none"
-                            placeholder="Ability description"
-                            onclick="event.stopPropagation()"
-                            onchange="app.checkForChanges()"
-                        >${this.escapeHtml(ability.description || '')}</textarea>
-                    </div>
-                    <div class="flex gap-1 flex-shrink-0">
-                        <button onclick="AbilitiesRenderer.toggleEditMode(${idx}); event.stopPropagation();" class="ability-edit-btn text-blue-600 hover:text-blue-800 text-sm px-1" title="Edit ability">✎</button>
-                        <button onclick="app.removeAbility(${idx}); event.stopPropagation();" class="text-red-600 hover:text-red-800 text-lg leading-none">×</button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+        
+        const template = await templateLoader.loadTemplate('ability-item');
+        container.innerHTML = abilities.map((ability, idx) => {
+            return templateLoader.render(template, {
+                name: ability.name || '',
+                description: ability.description || '',
+                index: idx
+            });
+        }).join('');
     }
 
     static toggleEditMode(index) {

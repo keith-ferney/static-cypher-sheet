@@ -9,18 +9,20 @@ class CombatRenderer {
             .filter(attack => attack !== '');
     }
 
-    static renderAttacks(attacks) {
+    static async renderAttacks(attacks) {
         const container = document.getElementById('attacks-list');
         if (!container) {
             console.warn('Attacks container not found');
             return;
         }
-        container.innerHTML = attacks.map((attack, idx) => `
-            <div class="attack-item flex justify-between items-center text-sm border border-gray-300 rounded p-2">
-                <span>${attack}</span>
-                <button onclick="app.removeAttack(${idx})" class="text-red-600 hover:text-red-800">×</button>
-            </div>
-        `).join('');
+        
+        const template = await templateLoader.loadTemplate('attack-item');
+        container.innerHTML = attacks.map((attack, idx) => {
+            return templateLoader.render(template, {
+                attack: attack,
+                index: idx
+            });
+        }).join('');
     }
 }
 

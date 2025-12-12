@@ -12,7 +12,7 @@ class CharacterFormManager {
     /**
      * Load character data into the form
      */
-    loadToForm(character, fancySelects) {
+    async loadToForm(character, fancySelects) {
         // Basic fields
         document.getElementById('char-name').value = character.name || '';
         document.getElementById('char-tier').value = character.tier || 1;
@@ -63,19 +63,19 @@ class CharacterFormManager {
         document.getElementById('recovery-10hour').checked = character.recovery10hour || false;
         
         // Render complex lists
-        FormRenderer.renderSkills(character.skills || []);
-        FormRenderer.renderAbilities(character.abilities || []);
-        FormRenderer.renderEquipment(character.equipment || []);
-        FormRenderer.renderAttacks(character.attacks || []);
-        FormRenderer.renderCyphers(character.cyphers || []);
-        FormRenderer.renderPowerShifts(character.powerShifts || []);
-        FormRenderer.renderAdvancements(character.advancements || []);
+        await FormRenderer.renderSkills(character.skills || []);
+        await FormRenderer.renderAbilities(character.abilities || []);
+        await FormRenderer.renderEquipment(character.equipment || []);
+        await FormRenderer.renderAttacks(character.attacks || []);
+        await FormRenderer.renderCyphers(character.cyphers || []);
+        await FormRenderer.renderPowerShifts(character.powerShifts || []);
+        await FormRenderer.renderAdvancements(character.advancements || []);
     }
 
     /**
      * Clear all form fields
      */
-    clearForm() {
+    async clearForm() {
         // Basic fields
         document.getElementById('char-name').value = '';
         document.getElementById('char-tier').value = '1';
@@ -110,13 +110,13 @@ class CharacterFormManager {
         document.getElementById('recovery-10hour').checked = false;
         
         // Clear all lists
-        FormRenderer.renderSkills([]);
-        FormRenderer.renderAbilities([]);
-        FormRenderer.renderEquipment([]);
-        FormRenderer.renderAttacks([]);
-        FormRenderer.renderCyphers([]);
-        FormRenderer.renderPowerShifts([]);
-        FormRenderer.renderAdvancements([]);
+        await FormRenderer.renderSkills([]);
+        await FormRenderer.renderAbilities([]);
+        await FormRenderer.renderEquipment([]);
+        await FormRenderer.renderAttacks([]);
+        await FormRenderer.renderCyphers([]);
+        await FormRenderer.renderPowerShifts([]);
+        await FormRenderer.renderAdvancements([]);
     }
 
     /**

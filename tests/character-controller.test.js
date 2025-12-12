@@ -107,9 +107,9 @@ describe('CharacterController', () => {
   });
 
   describe('Skills Management', () => {
-    test('should add a skill', () => {
+    test('should add a skill', async () => {
       const beforeCount = view.getCurrentSkills().length;
-      controller.addSkill();
+      await controller.addSkill();
       // After adding, the container should have the rendered HTML
       const container = document.getElementById('skills-list');
       expect(container.innerHTML).toContain('skill-row');
@@ -117,8 +117,8 @@ describe('CharacterController', () => {
       // But the HTML should be there for the user to fill in
     });
 
-    test('should add a skill and retrieve it with name', () => {
-      controller.addSkill();
+    test('should add a skill and retrieve it with name', async () => {
+      await controller.addSkill();
       // Set a name in the rendered input
       const nameInput = document.querySelector('.skill-name');
       nameInput.value = 'Test Skill';
@@ -127,14 +127,14 @@ describe('CharacterController', () => {
       expect(skills[0].name).toBe('Test Skill');
     });
 
-    test('should remove a skill', () => {
+    test('should remove a skill', async () => {
       // Add skills with names so they're retrievable
-      controller.addSkill();
+      await controller.addSkill();
       document.querySelector('.skill-name').value = 'Skill 1';
-      controller.addSkill();
+      await controller.addSkill();
       document.querySelectorAll('.skill-name')[1].value = 'Skill 2';
       
-      controller.removeSkill(0);
+      await controller.removeSkill(0);
       const skills = view.getCurrentSkills();
       expect(skills.length).toBe(1);
       expect(skills[0].name).toBe('Skill 2');
@@ -142,46 +142,46 @@ describe('CharacterController', () => {
   });
 
   describe('Abilities Management', () => {
-    test('should add an empty ability', () => {
-      controller.addAbility();
+    test('should add an empty ability', async () => {
+      await controller.addAbility();
       // Empty abilities are filtered out by getCurrentAbilities
       // But the HTML should be rendered
       const container = document.getElementById('abilities-list');
       expect(container.innerHTML).toContain('ability-item');
     });
 
-    test('should remove an ability', () => {
+    test('should remove an ability', async () => {
       // Add abilities with names
-      controller.addAbility();
+      await controller.addAbility();
       // Abilities use textContent, so we need to manipulate the DOM differently
       const container = document.getElementById('abilities-list');
       // Re-render with actual data
-      view.renderAbilities([
+      await view.renderAbilities([
         { name: 'Ability 1', description: 'Desc 1' },
         { name: 'Ability 2', description: 'Desc 2' }
       ]);
-      controller.removeAbility(0);
+      await controller.removeAbility(0);
       const abilities = view.getCurrentAbilities();
       expect(abilities.length).toBe(1);
       expect(abilities[0].name).toBe('Ability 2');
     });
 
-    test('should toggle ability description', () => {
-      controller.addAbility();
+    test('should toggle ability description', async () => {
+      await controller.addAbility();
       // Mock the toggleAbilityDesc method
       const spy = jest.spyOn(view, 'toggleAbilityDesc');
       controller.toggleAbilityDesc(0);
       expect(spy).toHaveBeenCalledWith(0);
     });
 
-    test('should add ability from select when ability selected', () => {
+    test('should add ability from select when ability selected', async () => {
       // Mock ability select
       view.abilitySelect = {
         value: 'Test Ability',
         setValue: jest.fn()
       };
       
-      controller.addAbilityFromSelect();
+      await controller.addAbilityFromSelect();
       const abilities = view.getCurrentAbilities();
       expect(abilities.length).toBe(1);
       expect(abilities[0].name).toBe('Test Ability');
@@ -208,33 +208,33 @@ describe('CharacterController', () => {
   });
 
   describe('Equipment Management', () => {
-    test('should add equipment', () => {
+    test('should add equipment', async () => {
       const input = document.getElementById('new-equipment');
       input.value = 'Sword';
       
-      controller.addEquipment();
+      await controller.addEquipment();
       const equipment = view.getCurrentEquipment();
       expect(equipment).toContain('Sword');
       expect(input.value).toBe('');
     });
 
-    test('should not add empty equipment', () => {
+    test('should not add empty equipment', async () => {
       const input = document.getElementById('new-equipment');
       input.value = '   ';
       
-      controller.addEquipment();
+      await controller.addEquipment();
       const equipment = view.getCurrentEquipment();
       expect(equipment.length).toBe(0);
     });
 
-    test('should remove equipment', () => {
+    test('should remove equipment', async () => {
       const input = document.getElementById('new-equipment');
       input.value = 'Sword';
-      controller.addEquipment();
+      await controller.addEquipment();
       input.value = 'Shield';
-      controller.addEquipment();
+      await controller.addEquipment();
       
-      controller.removeEquipment(0);
+      await controller.removeEquipment(0);
       const equipment = view.getCurrentEquipment();
       expect(equipment.length).toBe(1);
       expect(equipment[0]).toBe('Shield');
@@ -242,8 +242,8 @@ describe('CharacterController', () => {
   });
 
   describe('Power Shifts Management', () => {
-    test('should add power shift instance', () => {
-      controller.addPowerShiftInstance('Strength');
+    test('should add power shift instance', async () => {
+      await controller.addPowerShiftInstance('Strength');
       // Set value to non-zero since getCurrentPowerShifts filters out 0 values
       const valueInput = document.querySelector('.ps-value');
       if (valueInput) valueInput.value = '1';
@@ -253,27 +253,27 @@ describe('CharacterController', () => {
       expect(powerShifts[0].value).toBe(1);
     });
 
-    test('should remove power shift instance', () => {
-      controller.addPowerShiftInstance('Strength');
+    test('should remove power shift instance', async () => {
+      await controller.addPowerShiftInstance('Strength');
       const valueInput = document.querySelector('.ps-value');
       if (valueInput) valueInput.value = '1';
       const powerShifts = view.getCurrentPowerShifts();
       const psId = powerShifts[0].id;
       
-      controller.removePowerShiftInstance('Strength', psId);
+      await controller.removePowerShiftInstance('Strength', psId);
       const updatedPowerShifts = view.getCurrentPowerShifts();
       expect(updatedPowerShifts.length).toBe(0);
     });
 
-    test('should only remove specific power shift instance', () => {
-      controller.addPowerShiftInstance('Strength');
-      controller.addPowerShiftInstance('Strength');
+    test('should only remove specific power shift instance', async () => {
+      await controller.addPowerShiftInstance('Strength');
+      await controller.addPowerShiftInstance('Strength');
       const valueInputs = document.querySelectorAll('.ps-value');
       valueInputs.forEach(input => input.value = '1');
       const powerShifts = view.getCurrentPowerShifts();
       const firstId = powerShifts[0].id;
       
-      controller.removePowerShiftInstance('Strength', firstId);
+      await controller.removePowerShiftInstance('Strength', firstId);
       const updatedPowerShifts = view.getCurrentPowerShifts();
       expect(updatedPowerShifts.length).toBe(1);
       expect(updatedPowerShifts[0].id).not.toBe(firstId);
@@ -281,33 +281,33 @@ describe('CharacterController', () => {
   });
 
   describe('Attacks Management', () => {
-    test('should add attack', () => {
+    test('should add attack', async () => {
       const input = document.getElementById('new-attack');
       input.value = 'Light Blaster (4)';
       
-      controller.addAttack();
+      await controller.addAttack();
       const attacks = view.getCurrentAttacks();
       expect(attacks).toContain('Light Blaster (4)');
       expect(input.value).toBe('');
     });
 
-    test('should not add empty attack', () => {
+    test('should not add empty attack', async () => {
       const input = document.getElementById('new-attack');
       input.value = '   ';
       
-      controller.addAttack();
+      await controller.addAttack();
       const attacks = view.getCurrentAttacks();
       expect(attacks.length).toBe(0);
     });
 
-    test('should remove attack', () => {
+    test('should remove attack', async () => {
       const input = document.getElementById('new-attack');
       input.value = 'Attack 1';
-      controller.addAttack();
+      await controller.addAttack();
       input.value = 'Attack 2';
-      controller.addAttack();
+      await controller.addAttack();
       
-      controller.removeAttack(0);
+      await controller.removeAttack(0);
       const attacks = view.getCurrentAttacks();
       expect(attacks.length).toBe(1);
       expect(attacks[0]).toBe('Attack 2');
@@ -315,7 +315,7 @@ describe('CharacterController', () => {
   });
 
   describe('Cyphers Management', () => {
-    test('should add cypher with all fields', () => {
+    test('should add cypher with all fields', async () => {
       const nameInput = document.getElementById('new-cypher-name');
       const levelInput = document.getElementById('new-cypher-level');
       const descInput = document.getElementById('new-cypher-desc');
@@ -324,7 +324,7 @@ describe('CharacterController', () => {
       levelInput.value = '1d6+4';
       descInput.value = 'Explodes in 30-foot radius';
       
-      controller.addCypher();
+      await controller.addCypher();
       const cyphers = view.getCurrentCyphers();
       expect(cyphers.length).toBe(1);
       expect(cyphers[0]).toEqual({
@@ -337,23 +337,23 @@ describe('CharacterController', () => {
       expect(descInput.value).toBe('');
     });
 
-    test('should not add cypher without name', () => {
+    test('should not add cypher without name', async () => {
       const nameInput = document.getElementById('new-cypher-name');
       nameInput.value = '   ';
       
-      controller.addCypher();
+      await controller.addCypher();
       const cyphers = view.getCurrentCyphers();
       expect(cyphers.length).toBe(0);
     });
 
-    test('should remove cypher', () => {
+    test('should remove cypher', async () => {
       const nameInput = document.getElementById('new-cypher-name');
       nameInput.value = 'Cypher 1';
-      controller.addCypher();
+      await controller.addCypher();
       nameInput.value = 'Cypher 2';
-      controller.addCypher();
+      await controller.addCypher();
       
-      controller.removeCypher(0);
+      await controller.removeCypher(0);
       const cyphers = view.getCurrentCyphers();
       expect(cyphers.length).toBe(1);
       expect(cyphers[0].name).toBe('Cypher 2');

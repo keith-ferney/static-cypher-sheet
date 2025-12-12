@@ -31,6 +31,9 @@ const eventHandlersCode = fs.readFileSync(path.join(__dirname, '../src/component
 const domBuilderCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select/dom-builder.js'), 'utf8');
 const fancySelectCoreCode = fs.readFileSync(path.join(__dirname, '../src/components/fancy-select/fancy-select-core.js'), 'utf8');
 
+// Load template loader
+const templateLoaderCode = fs.readFileSync(path.join(__dirname, '../src/utils/template-loader.js'), 'utf8');
+
 // Load renderer modules
 const skillsRendererCode = fs.readFileSync(path.join(__dirname, '../src/views/renderers/skills-renderer.js'), 'utf8');
 const abilitiesRendererCode = fs.readFileSync(path.join(__dirname, '../src/views/renderers/abilities-renderer.js'), 'utf8');
@@ -51,12 +54,17 @@ const characterControllerCode = fs.readFileSync(path.join(__dirname, '../src/con
 
 // Execute the code in the global scope and extract classes
 eval(dataLoaderCode);
+eval(templateLoaderCode); // Must be before renderers
 eval(constantsCode);
 eval(utilsCode);
 eval(tooltipManagerCode);
 eval(eventHandlersCode);
 eval(domBuilderCode);
 eval(fancySelectCoreCode); // Defines FancySelect class globally
+
+// Create mock template loader (same as test-setup.js)
+global.templateLoader = require('./test-setup').mockTemplateLoader;
+
 eval(skillsRendererCode);
 eval(abilitiesRendererCode);
 eval(equipmentRendererCode);
@@ -159,19 +167,19 @@ describe('Cypher Character Creator - Core Functions', () => {
   });
 
   describe('Skills Management', () => {
-    test('renderSkills should handle empty array', () => {
-      view.renderSkills([]);
+    test('renderSkills should handle empty array', async () => {
+      await view.renderSkills([]);
       const container = document.getElementById('skills-list');
       expect(container.innerHTML).toBe('');
     });
 
-    test('renderSkills should render skill rows', () => {
+    test('renderSkills should render skill rows', async () => {
       const skills = [
         { name: 'Lockpicking', pool: 'speed', type: 'trained', powerShift: 0 },
         { name: 'History', pool: 'intellect', type: 'specialized', powerShift: 1 }
       ];
       
-      view.renderSkills(skills);
+      await view.renderSkills(skills);
       
       const rows = document.querySelectorAll('.skill-row');
       expect(rows.length).toBe(2);
@@ -180,12 +188,12 @@ describe('Cypher Character Creator - Core Functions', () => {
       expect(rows[1].querySelector('.skill-type').value).toBe('specialized');
     });
 
-    test('getCurrentSkills should return skills from DOM', () => {
+    test('getCurrentSkills should return skills from DOM', async () => {
       const skills = [
         { name: 'Climbing', pool: 'might', type: 'trained', powerShift: 0 }
       ];
       
-      view.renderSkills(skills);
+      await view.renderSkills(skills);
       const retrieved = view.getCurrentSkills();
       
       expect(retrieved.length).toBe(1);
@@ -193,8 +201,8 @@ describe('Cypher Character Creator - Core Functions', () => {
       expect(retrieved[0].pool).toBe('might');
     });
 
-    test('getCurrentSkills should filter out skills without names', () => {
-      view.renderSkills([
+    test('getCurrentSkills should filter out skills without names', async () => {
+      await view.renderSkills([
         { name: 'Valid Skill', pool: 'might', type: 'trained', powerShift: 0 },
         { name: '', pool: 'speed', type: 'trained', powerShift: 0 }
       ]);
@@ -204,8 +212,8 @@ describe('Cypher Character Creator - Core Functions', () => {
       expect(retrieved[0].name).toBe('Valid Skill');
     });
 
-    test('renderSkills should normalize old string format', () => {
-      view.renderSkills(['Old Skill String']);
+    test('renderSkills should normalize old string format', async () => {
+      await view.renderSkills(['Old Skill String']);
       
       const rows = document.querySelectorAll('.skill-row');
       expect(rows.length).toBe(1);
@@ -215,19 +223,19 @@ describe('Cypher Character Creator - Core Functions', () => {
   });
 
   describe('Abilities Management', () => {
-    test('renderAbilities should handle empty array', () => {
-      view.renderAbilities([]);
+    test('renderAbilities should handle empty array', async () => {
+      await view.renderAbilities([]);
       const container = document.getElementById('abilities-list');
       expect(container.innerHTML).toBe('');
     });
 
-    test('renderAbilities should render ability items', () => {
+    test('renderAbilities should render ability items', async () => {
       const abilities = [
         { name: 'Fire Blast', description: 'Shoot fire' },
         { name: 'Ice Shield', description: 'Create ice barrier' }
       ];
       
-      view.renderAbilities(abilities);
+      await view.renderAbilities(abilities);
       
       const items = document.querySelectorAll('.ability-item');
       expect(items.length).toBe(2);
@@ -235,16 +243,16 @@ describe('Cypher Character Creator - Core Functions', () => {
       expect(items[1].querySelector('.ability-desc-display').textContent).toBe('Create ice barrier');
     });
 
-    test('getCurrentAbilities should return abilities from DOM', () => {
-      view.renderAbilities([{ name: 'Test', description: 'Test desc' }]);
+    test('getCurrentAbilities should return abilities from DOM', async () => {
+      await view.renderAbilities([{ name: 'Test', description: 'Test desc' }]);
       
       const retrieved = view.getCurrentAbilities();
       expect(retrieved.length).toBe(1);
       expect(retrieved[0].name).toBe('Test');
     });
 
-    test('getCurrentAbilities should filter out abilities without names', () => {
-      view.renderAbilities([
+    test('getCurrentAbilities should filter out abilities without names', async () => {
+      await view.renderAbilities([
         { name: 'Valid Ability', description: 'desc' },
         { name: '', description: 'empty name' }
       ]);
@@ -255,16 +263,16 @@ describe('Cypher Character Creator - Core Functions', () => {
   });
 
   describe('Power Shifts Management', () => {
-    test('renderPowerShifts should handle empty/undefined input', () => {
-      view.renderPowerShifts(undefined);
+    test('renderPowerShifts should handle empty/undefined input', async () => {
+      await view.renderPowerShifts(undefined);
       const container = document.getElementById('powershifts-list');
       // Should render all available power shifts with value 0
       expect(container.innerHTML).toContain('Accuracy');
       expect(container.innerHTML).toContain('Flight');
     });
 
-    test('renderPowerShifts should populate existing values', () => {
-      view.renderPowerShifts([
+    test('renderPowerShifts should populate existing values', async () => {
+      await view.renderPowerShifts([
         { name: 'Accuracy', value: 3 }
       ]);
       
@@ -276,8 +284,8 @@ describe('Cypher Character Creator - Core Functions', () => {
       expect(accuracyInput.value).toBe('3');
     });
 
-    test('getCurrentPowerShifts should only return power shifts with values > 0', () => {
-      view.renderPowerShifts([
+    test('getCurrentPowerShifts should only return power shifts with values > 0', async () => {
+      await view.renderPowerShifts([
         { name: 'Accuracy', value: 2 },
         { name: 'Flight', value: 0 }
       ]);
@@ -290,18 +298,18 @@ describe('Cypher Character Creator - Core Functions', () => {
   });
 
   describe('Character Save/Load', () => {
-    test('saveCharacter should save to localStorage', () => {
+    test('saveCharacter should save to localStorage', async () => {
       model.setCurrentCharacterId('12345');
       document.getElementById('char-name').value = 'Test Hero';
       document.getElementById('char-tier').value = '3';
       
-      view.renderSkills([{ name: 'Combat', pool: 'might', type: 'trained', powerShift: 0 }]);
-      view.renderAbilities([{ name: 'Super Strength', description: 'Very strong' }]);
+      await view.renderSkills([{ name: 'Combat', pool: 'might', type: 'trained', powerShift: 0 }]);
+      await view.renderAbilities([{ name: 'Super Strength', description: 'Very strong' }]);
       
       // Mock alert
       global.alert = jest.fn();
       
-      controller.saveCharacter();
+      await controller.saveCharacter();
       
       const allCharacters = model.getAllCharacters();
       expect(allCharacters.length).toBe(1);
@@ -316,7 +324,7 @@ describe('Cypher Character Creator - Core Functions', () => {
       expect(parsed[0].name).toBe('Test Hero');
     });
 
-    test('loadCharacter should populate form from character data', () => {
+    test('loadCharacter should populate form from character data', async () => {
       const character = {
         id: '999',
         name: 'Loaded Hero',
@@ -341,7 +349,7 @@ describe('Cypher Character Creator - Core Functions', () => {
       
       model.characters = [character];
       
-      controller.loadCharacter('999');
+      await controller.loadCharacter('999');
       
       expect(document.getElementById('char-name').value).toBe('Loaded Hero');
       expect(document.getElementById('char-tier').value).toBe('5');
@@ -354,7 +362,7 @@ describe('Cypher Character Creator - Core Functions', () => {
   });
 
   describe('Edge Cases', () => {
-    test('should handle undefined character properties gracefully', () => {
+    test('should handle undefined character properties gracefully', async () => {
       const character = {
         id: '1',
         name: 'Minimal'
@@ -391,7 +399,7 @@ describe('Cypher Character Creator - Core Functions', () => {
       `;
       
       // Should not throw
-      expect(() => controller.loadCharacter('1')).not.toThrow();
+      await expect(controller.loadCharacter('1')).resolves.not.toThrow();
     });
   });
 });

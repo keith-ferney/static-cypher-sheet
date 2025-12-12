@@ -28,40 +28,40 @@ describe('Renderer Edge Cases', () => {
   });
 
   describe('AbilitiesRenderer', () => {
-    test('should render abilities with descriptions', () => {
+    test('should render abilities with descriptions', async () => {
       const abilities = [
         { name: 'Bash', description: 'Hit things hard' },
         { name: 'Hack', description: 'Break into systems' }
       ];
       
-      AbilitiesRenderer.renderAbilities(abilities);
+      await AbilitiesRenderer.renderAbilities(abilities);
       
       const container = document.getElementById('abilities-list');
       expect(container.children.length).toBeGreaterThan(0);
     });
 
-    test('should render empty abilities list', () => {
-      AbilitiesRenderer.renderAbilities([]);
+    test('should render empty abilities list', async () => {
+      await AbilitiesRenderer.renderAbilities([]);
       
       const container = document.getElementById('abilities-list');
       expect(container.innerHTML).toBe('');
     });
 
-    test('should handle abilities without descriptions', () => {
+    test('should handle abilities without descriptions', async () => {
       const abilities = [{ name: 'Test Ability' }];
       
-      expect(() => AbilitiesRenderer.renderAbilities(abilities)).not.toThrow();
+      await expect(AbilitiesRenderer.renderAbilities(abilities)).resolves.not.toThrow();
     });
 
-    test('should handle null abilities', () => {
-      expect(() => AbilitiesRenderer.renderAbilities(null)).toThrow();
+    test('should handle null abilities', async () => {
+      await expect(AbilitiesRenderer.renderAbilities(null)).rejects.toThrow();
     });
 
-    test('should warn when container not found', () => {
+    test('should warn when container not found', async () => {
       document.getElementById('abilities-list').remove();
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
       
-      AbilitiesRenderer.renderAbilities([]);
+      await AbilitiesRenderer.renderAbilities([]);
       
       expect(consoleWarnSpy).toHaveBeenCalledWith('Abilities container not found');
       consoleWarnSpy.mockRestore();
@@ -69,42 +69,42 @@ describe('Renderer Edge Cases', () => {
   });
 
   describe('CyphersRenderer', () => {
-    test('should render cyphers with all fields', () => {
+    test('should render cyphers with all fields', async () => {
       const cyphers = [
         { name: 'Detonation', level: '1d6+4', description: 'Explodes' },
         { name: 'Stim', level: '1d6+2', description: 'Boosts' }
       ];
       
-      CyphersRenderer.renderCyphers(cyphers);
+      await CyphersRenderer.renderCyphers(cyphers);
       
       const container = document.getElementById('cyphers-list');
       expect(container.children.length).toBeGreaterThan(0);
     });
 
-    test('should render empty cyphers list', () => {
-      CyphersRenderer.renderCyphers([]);
+    test('should render empty cyphers list', async () => {
+      await CyphersRenderer.renderCyphers([]);
       
       const container = document.getElementById('cyphers-list');
       expect(container.innerHTML).toBe('');
     });
 
-    test('should handle cyphers without description', () => {
+    test('should handle cyphers without description', async () => {
       const cyphers = [{ name: 'Test', level: '1d6' }];
       
-      expect(() => CyphersRenderer.renderCyphers(cyphers)).not.toThrow();
+      await expect(CyphersRenderer.renderCyphers(cyphers)).resolves.not.toThrow();
     });
 
-    test('should handle cyphers without level', () => {
+    test('should handle cyphers without level', async () => {
       const cyphers = [{ name: 'Test', description: 'Desc' }];
       
-      expect(() => CyphersRenderer.renderCyphers(cyphers)).not.toThrow();
+      await expect(CyphersRenderer.renderCyphers(cyphers)).resolves.not.toThrow();
     });
 
-    test('should warn when container not found', () => {
+    test('should warn when container not found', async () => {
       document.getElementById('cyphers-list').remove();
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
       
-      CyphersRenderer.renderCyphers([]);
+      await CyphersRenderer.renderCyphers([]);
       
       expect(consoleWarnSpy).toHaveBeenCalled();
       consoleWarnSpy.mockRestore();
@@ -112,65 +112,65 @@ describe('Renderer Edge Cases', () => {
   });
 
   describe('AdvancementsRenderer', () => {
-    test('should render advancements for tier 1', () => {
-      AdvancementsRenderer.renderAdvancements();
+    test('should render advancements for tier 1', async () => {
+      await AdvancementsRenderer.renderAdvancements();
       
       const container = document.getElementById('advancements-list');
       expect(container.innerHTML).toContain('INCREASE CAPABILITIES');
     });
 
-    test('should render all advancement tiers', () => {
-      AdvancementsRenderer.renderAdvancements();
+    test('should render all advancement tiers', async () => {
+      await AdvancementsRenderer.renderAdvancements();
       
       const container = document.getElementById('advancements-list');
       expect(container.innerHTML).toContain('INCREASE CAPABILITIES');
       expect(container.innerHTML).toContain('MOVE TOWARD PERFECTION');
     });
 
-    test('should render advancement options as checkboxes', () => {
-      AdvancementsRenderer.renderAdvancements();
+    test('should render advancement options as checkboxes', async () => {
+      await AdvancementsRenderer.renderAdvancements();
       
       const checkboxes = document.querySelectorAll('input[type="checkbox"]');
       expect(checkboxes.length).toBeGreaterThan(0);
     });
 
-    test('should handle missing advancements data', () => {
+    test('should handle missing advancements data', async () => {
       global.cypherData.advancements = [];
       
-      expect(() => AdvancementsRenderer.renderAdvancements()).not.toThrow();
+      await expect(AdvancementsRenderer.renderAdvancements()).resolves.not.toThrow();
     });
 
-    test('should warn when container not found', () => {
+    test('should warn when container not found', async () => {
       document.getElementById('advancements-list').remove();
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
       
-      AdvancementsRenderer.renderAdvancements();
+      await AdvancementsRenderer.renderAdvancements();
       
       expect(consoleWarnSpy).toHaveBeenCalledWith('Advancements container not found');
       consoleWarnSpy.mockRestore();
     });
 
-    test('should handle advancements without options', () => {
+    test('should handle advancements without options', async () => {
       global.cypherData.advancements = [{ tier: 1 }];
       
-      expect(() => AdvancementsRenderer.renderAdvancements()).not.toThrow();
+      await expect(AdvancementsRenderer.renderAdvancements()).resolves.not.toThrow();
     });
   });
 
   describe('Renderer Integration', () => {
-    test('should render multiple sections without conflicts', () => {
-      AbilitiesRenderer.renderAbilities([{ name: 'Ability 1' }]);
-      CyphersRenderer.renderCyphers([{ name: 'Cypher 1' }]);
-      AdvancementsRenderer.renderAdvancements();
+    test('should render multiple sections without conflicts', async () => {
+      await AbilitiesRenderer.renderAbilities([{ name: 'Ability 1' }]);
+      await CyphersRenderer.renderCyphers([{ name: 'Cypher 1' }]);
+      await AdvancementsRenderer.renderAdvancements();
       
       expect(document.getElementById('abilities-list').innerHTML).toBeTruthy();
       expect(document.getElementById('cyphers-list').innerHTML).toBeTruthy();
       expect(document.getElementById('advancements-list').innerHTML).toBeTruthy();
     });
 
-    test('should handle rapid re-renders', () => {
+    test('should handle rapid re-renders', async () => {
       for (let i = 0; i < 10; i++) {
-        AbilitiesRenderer.renderAbilities([{ name: `Ability ${i}` }]);
+        await AbilitiesRenderer.renderAbilities([{ name: `Ability ${i}` }]);
       }
       
       const container = document.getElementById('abilities-list');

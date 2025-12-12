@@ -1,0 +1,7 @@
+<label class="advancement-item flex items-start gap-2 p-2 border border-gray-300 rounded cursor-pointer hover:bg-gray-50 transition-colors {{#isChecked}}bg-blue-50 border-blue-300{{/isChecked}}">
+    <input type="checkbox" data-advancement="{{name}}" {{#isChecked}}checked{{/isChecked}} class="mt-0.5 flex-shrink-0">
+    <div class="flex-1 min-w-0">
+        <span class="text-sm font-semibold block">{{name}}</span>
+        <small class="text-xs text-gray-600 block">{{description}}</small>
+    </div>
+</label>
