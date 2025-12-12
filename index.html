@@ -51,7 +51,10 @@
         <div class="sm:px-6 lg:px-8">
             <!-- Header with navigation and options menu -->
             <div class="flex justify-between items-center mb-4">
-                <button onclick="showCharacterList()" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm">← Back to List</button>
+                <div class="flex items-center gap-2">
+                    <button onclick="showCharacterList()" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm">← Back to List</button>
+                    <img src="assets/ClaimTheSky.png" alt="Claim the Sky" class="md:hidden h-8">
+                </div>
                 <div class="relative">
                     <button id="options-menu-button" onclick="toggleOptionsMenu()" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
                         <svg class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
@@ -110,24 +113,24 @@
                 </div>
 
                 <!-- Tier Effort XP -->
-                <div class="flex gap-1 justify-between">
-                    <div class="bg-white w-full text-black flex items-center flex-col border-r-8 border-b-8 border-black">
+                <div class="flex flex-wrap gap-1 justify-between">
+                    <div class="bg-white flex-1 text-black flex items-center flex-col border-r-8 border-b-8 border-black">
                         <input id="char-tier" type="number" value="1" class="text-center w-24 border-0">
                         <label class="text-center font-semibold text-xl">Tier</label>
                     </div>
-                    <div class="bg-white w-full text-black flex items-center flex-col border-r-8 border-b-8 border-black">
+                    <div class="bg-white flex-1 text-black flex items-center flex-col border-r-8 border-b-8 border-black">
                         <input id="char-effort" type="number" value="1" class="text-center w-24 border-0">
                         <label class="text-center font-semibold text-xl">Effort</label>
                     </div>
-                    <div class="bg-white w-full text-black flex items-center flex-col border-r-8 border-b-8 border-black">
+                    <div class="bg-white flex-1 text-black flex items-center flex-col border-r-8 border-b-8 border-black">
                         <input id="char-experience" type="number" value="0" class="text-center w-24 border-0">
                         <label class="text-center font-semibold text-xl">XP</label>
                     </div>
                 </div>
 
                 <!-- Might Speed Intellect -->
-                <div class="flex bg-white w-full justify-between text-black border-r-8 border-b-8 border-black">
-                    <div class="flex flex-grow flex-col border-x border-x-black px-1">
+                <div class="flex flex-wrap w-full justify-between text-black border-r-8 border-b-8 border-black">
+                    <div class="flex flex-1 bg-white flex-col border-t border-x border-x-black px-1">
                         <label class="text-center font-semibold text-xl">Might</label>
                         <input id="might-current" type="number" value="10" class="text-center w-24 border-0">
                         <div class="grid grid-cols-2 border-t-2 border-t-black">
@@ -141,7 +144,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-grow flex-col border-x border-x-black px-1">
+                    <div class="flex flex-1 bg-white flex-col border-t border-x border-x-black px-1">
                         <label class="text-center font-semibold text-xl">Speed</label>
                         <input id="speed-current" type="number" value="10" class="text-center w-24 border-0">
                         <div class="grid grid-cols-2 border-t-2 border-t-black">
@@ -155,7 +158,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-grow flex-col border-x border-x-black px-1">
+                    <div class="flex flex-1 bg-white flex-col border-t border-x border-x-black px-1">
                         <label class="text-center font-semibold text-xl">Intellect</label>
                         <input id="intellect-current" type="number" value="10" class="text-center w-24 border-0">
                         <div class="grid grid-cols-2 border-t-2 border-t-black">
@@ -248,15 +251,15 @@
                 <!-- Advancements -->
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
                     <label class="font-medium w-full text-lg underline-offset-8 mb-2 underline">Advancements</label>
-                    <div id="advancements-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2"></div>
+                    <div id="advancements-list" class="grid grid-cols-1 xl:grid-cols-2 gap-2"></div>
                 </div>
 
                 <!-- Special Abilities (Column 2) -->
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
                     <label class="font-medium w-full text-lg underline-offset-8 mb-2 underline">Special Abilities</label>
-                    <div class="mb-2 flex gap-2">
+                    <div class="mb-2 flex gap-2 flex-wrap">
                         <div id="ability-select" class="flex-1"></div>
-                        <button onclick="addAbilityFromSelect()" class="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs whitespace-nowrap">+ Add Ability</button>
+                        <button onclick="addAbilityFromSelect()" class="shrink px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs whitespace-nowrap">+ Add Ability</button>
                     </div>
                     <div id="abilities-list" class="flex flex-col gap-2 overflow-y-auto max-h-64"></div>
                 </div>

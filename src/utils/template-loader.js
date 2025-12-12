@@ -30,28 +30,39 @@ class TemplateLoader {
     render(template, data) {
         let result = template;
 
-        // Handle array iterations {{#array}}...{{/array}}
-        result = result.replace(/\{\{#(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (match, key, content) => {
-            const value = data[key];
-            if (Array.isArray(value)) {
-                // Render content for each array item
-                return value.map(item => {
-                    let itemResult = content;
-                    // Replace variables in the item content
-                    Object.keys(item).forEach(itemKey => {
-                        const regex = new RegExp(`\\{\\{${itemKey}\\}\\}`, 'g');
-                        itemResult = itemResult.replace(regex, this.escapeHtml(item[itemKey]));
-                    });
-                    return itemResult;
-                }).join('');
-            } else if (value) {
-                // Boolean conditional - show content if truthy
-                return content;
-            } else {
-                // Falsy value - hide content
-                return '';
-            }
-        });
+        // Process conditionals/iterations recursively from innermost to outermost
+        // Keep processing until no more matches
+        let previousResult;
+        do {
+            previousResult = result;
+            result = result.replace(/\{\{#(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (match, key, content) => {
+                const value = data[key];
+                if (Array.isArray(value)) {
+                    // Render content for each array item
+                    return value.map(item => {
+                        let itemResult = content;
+                        
+                        // First handle nested conditionals for this item
+                        itemResult = itemResult.replace(/\{\{#(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (nestedMatch, nestedKey, nestedContent) => {
+                            return item[nestedKey] ? nestedContent : '';
+                        });
+                        
+                        // Then replace variables in the item content
+                        Object.keys(item).forEach(itemKey => {
+                            const regex = new RegExp(`\\{\\{${itemKey}\\}\\}`, 'g');
+                            itemResult = itemResult.replace(regex, this.escapeHtml(item[itemKey]));
+                        });
+                        return itemResult;
+                    }).join('');
+                } else if (value) {
+                    // Boolean conditional - show content if truthy
+                    return content;
+                } else {
+                    // Falsy value - hide content
+                    return '';
+                }
+            });
+        } while (result !== previousResult); // Keep processing until stable
         
         // Handle regular variable substitution
         result = result.replace(/\{\{(\w+)\}\}/g, (match, key) => {
