@@ -41,10 +41,13 @@ describe('FancySelect Event Handlers', () => {
       expect(select.isOpen).toBe(true);
     });
 
-    test('should close dropdown on outside click', () => {
+    test('should close dropdown on outside click', async () => {
       const trigger = container.querySelector('.fancy-select-trigger');
       trigger.click();
       expect(select.isOpen).toBe(true);
+      
+      // Wait for the outside click handler to be attached (it's in a setTimeout)
+      await new Promise(resolve => setTimeout(resolve, 10));
       
       // Click outside
       document.body.click();

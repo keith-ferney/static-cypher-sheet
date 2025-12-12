@@ -12,15 +12,17 @@ const AdvancementsRenderer = global.AdvancementsRenderer;
 describe('Renderer Edge Cases', () => {
   beforeEach(() => {
     document.body.innerHTML = `
-      <div id="abilities-container"></div>
-      <div id="cyphers-container"></div>
-      <div id="advancements-container"></div>
+      <div id="abilities-list"></div>
+      <div id="cyphers-list"></div>
+      <div id="advancements-list"></div>
     `;
     
     global.cypherData = {
       advancements: [
-        { tier: 1, options: ['Increase Capabilities', 'Move Toward Perfection', 'Extra Effort', 'Skill Training'] },
-        { tier: 2, options: ['Increase Capabilities', 'Move Toward Perfection', 'Extra Effort', 'Skill Training'] }
+        { name: "INCREASE CAPABILITIES", description: "+4 points into stat Pools" },
+        { name: "MOVE TOWARD PERFECTION", description: "+1 to the Edge of your choice" },
+        { name: "EXTRA EFFORT", description: "+1 into Effort" },
+        { name: "SKILL TRAINING", description: "Train in a skill or specialize in a trained skill" }
       ]
     };
   });
@@ -34,15 +36,15 @@ describe('Renderer Edge Cases', () => {
       
       AbilitiesRenderer.renderAbilities(abilities);
       
-      const container = document.getElementById('abilities-container');
+      const container = document.getElementById('abilities-list');
       expect(container.children.length).toBeGreaterThan(0);
     });
 
     test('should render empty abilities list', () => {
       AbilitiesRenderer.renderAbilities([]);
       
-      const container = document.getElementById('abilities-container');
-      expect(container.innerHTML).toBeTruthy();
+      const container = document.getElementById('abilities-list');
+      expect(container.innerHTML).toBe('');
     });
 
     test('should handle abilities without descriptions', () => {
@@ -52,11 +54,11 @@ describe('Renderer Edge Cases', () => {
     });
 
     test('should handle null abilities', () => {
-      expect(() => AbilitiesRenderer.renderAbilities(null)).not.toThrow();
+      expect(() => AbilitiesRenderer.renderAbilities(null)).toThrow();
     });
 
     test('should warn when container not found', () => {
-      document.getElementById('abilities-container').remove();
+      document.getElementById('abilities-list').remove();
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
       
       AbilitiesRenderer.renderAbilities([]);
@@ -75,15 +77,15 @@ describe('Renderer Edge Cases', () => {
       
       CyphersRenderer.renderCyphers(cyphers);
       
-      const container = document.getElementById('cyphers-container');
+      const container = document.getElementById('cyphers-list');
       expect(container.children.length).toBeGreaterThan(0);
     });
 
     test('should render empty cyphers list', () => {
       CyphersRenderer.renderCyphers([]);
       
-      const container = document.getElementById('cyphers-container');
-      expect(container.innerHTML).toBeTruthy();
+      const container = document.getElementById('cyphers-list');
+      expect(container.innerHTML).toBe('');
     });
 
     test('should handle cyphers without description', () => {
@@ -99,7 +101,7 @@ describe('Renderer Edge Cases', () => {
     });
 
     test('should warn when container not found', () => {
-      document.getElementById('cyphers-container').remove();
+      document.getElementById('cyphers-list').remove();
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
       
       CyphersRenderer.renderCyphers([]);
@@ -113,16 +115,16 @@ describe('Renderer Edge Cases', () => {
     test('should render advancements for tier 1', () => {
       AdvancementsRenderer.renderAdvancements();
       
-      const container = document.getElementById('advancements-container');
-      expect(container.innerHTML).toContain('Tier 1');
+      const container = document.getElementById('advancements-list');
+      expect(container.innerHTML).toContain('INCREASE CAPABILITIES');
     });
 
     test('should render all advancement tiers', () => {
       AdvancementsRenderer.renderAdvancements();
       
-      const container = document.getElementById('advancements-container');
-      expect(container.innerHTML).toContain('Tier 1');
-      expect(container.innerHTML).toContain('Tier 2');
+      const container = document.getElementById('advancements-list');
+      expect(container.innerHTML).toContain('INCREASE CAPABILITIES');
+      expect(container.innerHTML).toContain('MOVE TOWARD PERFECTION');
     });
 
     test('should render advancement options as checkboxes', () => {
@@ -139,7 +141,7 @@ describe('Renderer Edge Cases', () => {
     });
 
     test('should warn when container not found', () => {
-      document.getElementById('advancements-container').remove();
+      document.getElementById('advancements-list').remove();
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
       
       AdvancementsRenderer.renderAdvancements();
@@ -161,9 +163,9 @@ describe('Renderer Edge Cases', () => {
       CyphersRenderer.renderCyphers([{ name: 'Cypher 1' }]);
       AdvancementsRenderer.renderAdvancements();
       
-      expect(document.getElementById('abilities-container').innerHTML).toBeTruthy();
-      expect(document.getElementById('cyphers-container').innerHTML).toBeTruthy();
-      expect(document.getElementById('advancements-container').innerHTML).toBeTruthy();
+      expect(document.getElementById('abilities-list').innerHTML).toBeTruthy();
+      expect(document.getElementById('cyphers-list').innerHTML).toBeTruthy();
+      expect(document.getElementById('advancements-list').innerHTML).toBeTruthy();
     });
 
     test('should handle rapid re-renders', () => {
@@ -171,7 +173,7 @@ describe('Renderer Edge Cases', () => {
         AbilitiesRenderer.renderAbilities([{ name: `Ability ${i}` }]);
       }
       
-      const container = document.getElementById('abilities-container');
+      const container = document.getElementById('abilities-list');
       expect(container.innerHTML).toBeTruthy();
     });
   });

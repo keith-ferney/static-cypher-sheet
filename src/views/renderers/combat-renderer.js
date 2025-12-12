@@ -2,7 +2,10 @@
 class CombatRenderer {
     static getCurrentAttacks() {
         return Array.from(document.querySelectorAll('#attacks-list .attack-item'))
-            .map(el => el.textContent.trim());
+            .map(el => {
+                const span = el.querySelector('span');
+                return span ? span.textContent.trim() : el.textContent.trim();
+            });
     }
 
     static renderAttacks(attacks) {

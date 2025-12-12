@@ -15,6 +15,11 @@ describe('CharacterCRUDController', () => {
   beforeEach(() => {
     localStorage.clear();
     
+    // Mock URL.createObjectURL and revokeObjectURL for JSDOM
+    global.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
+    global.URL.revokeObjectURL = jest.fn();
+    
+    // Setup DOM FIRST
     document.body.innerHTML = `
       <div id="character-list-view"></div>
       <div id="character-sheet-view">
@@ -34,25 +39,33 @@ describe('CharacterCRUDController', () => {
         <div id="flavor-select"></div>
         <div id="ability-select"></div>
         
-        <input id="char-might-pool" value="10" />
-        <input id="char-speed-pool" value="10" />
-        <input id="char-intellect-pool" value="10" />
-        <input id="char-might-edge" value="0" />
-        <input id="char-speed-edge" value="0" />
-        <input id="char-intellect-edge" value="0" />
+        <input id="might-pool" value="10" />
+        <input id="might-edge" value="0" />
+        <input id="might-current" value="10" />
+        <input id="speed-pool" value="10" />
+        <input id="speed-edge" value="0" />
+        <input id="speed-current" value="10" />
+        <input id="intellect-pool" value="10" />
+        <input id="intellect-edge" value="0" />
+        <input id="intellect-current" value="10" />
         <input id="char-effort" value="1" />
-        <input id="char-xp" value="0" />
-        <input id="char-armor" value="0" />
-        <input id="char-recovery-rolls" value="1d6+1" />
-        <input id="char-damage-track" value="Hale" />
+        <input id="char-experience" value="0" />
+        <input id="recovery-modifier" value="0" />
+        <input id="impaired" type="checkbox" />
+        <input id="debilitated" type="checkbox" />
+        <input id="recovery-action" type="checkbox" />
+        <input id="recovery-10min" type="checkbox" />
+        <input id="recovery-1hour" type="checkbox" />
+        <input id="recovery-10hour" type="checkbox" />
         
-        <div id="skills-container"></div>
-        <div id="abilities-container"></div>
-        <div id="equipment-container"></div>
-        <div id="power-shifts-container"></div>
-        <div id="attacks-container"></div>
-        <div id="cyphers-container"></div>
-        <div id="advancements-container"></div>
+        <div id="skills-list"></div>
+        <div id="abilities-list"></div>
+        <div id="equipment-list"></div>
+        <div id="power-shifts-list"></div>
+        <div id="powershifts-list"></div>
+        <div id="attacks-list"></div>
+        <div id="cyphers-list"></div>
+        <div id="advancements-list"></div>
         <div id="toast-container"></div>
         <div id="character-list"></div>
         <table id="character-table">
@@ -303,11 +316,11 @@ describe('CharacterCRUDController', () => {
     });
 
     test('should handle export with no current character', () => {
-      global.alert = jest.fn();
+      const showToastSpy = jest.spyOn(view, 'showToast');
       model.currentCharacterId = null;
       
       controller.exportCurrentCharacter();
-      expect(global.alert).toHaveBeenCalledWith('No character to export');
+      expect(showToastSpy).toHaveBeenCalledWith('No character selected', 'error');
     });
   });
 
@@ -341,10 +354,14 @@ describe('CharacterCRUDController', () => {
   describe('Download JSON', () => {
     test('should create download link', () => {
       const createElementSpy = jest.spyOn(document, 'createElement');
+      const appendChildSpy = jest.spyOn(document.body, 'appendChild').mockImplementation(() => {});
+      const removeChildSpy = jest.spyOn(document.body, 'removeChild').mockImplementation(() => {});
       
       controller.downloadJSON('{"test": "data"}', 'test.json');
       
       expect(createElementSpy).toHaveBeenCalledWith('a');
+      appendChildSpy.mockRestore();
+      removeChildSpy.mockRestore();
     });
 
     test('should trigger download with correct filename', () => {
@@ -357,6 +374,8 @@ describe('CharacterCRUDController', () => {
       };
       
       jest.spyOn(document, 'createElement').mockReturnValue(mockLink);
+      jest.spyOn(document.body, 'appendChild').mockImplementation(() => {});
+      jest.spyOn(document.body, 'removeChild').mockImplementation(() => {});
       
       controller.downloadJSON('{"test": "data"}', 'characters.json');
       

@@ -41,15 +41,15 @@ class CharacterFormManager {
         document.getElementById('char-portrait').value = character.portrait || '';
         
         // Stats
-        document.getElementById('might-pool').value = character.mightPool || 10;
-        document.getElementById('might-edge').value = character.mightEdge || 0;
-        document.getElementById('might-current').value = character.mightCurrent || 10;
-        document.getElementById('speed-pool').value = character.speedPool || 10;
-        document.getElementById('speed-edge').value = character.speedEdge || 0;
-        document.getElementById('speed-current').value = character.speedCurrent || 10;
-        document.getElementById('intellect-pool').value = character.intellectPool || 10;
-        document.getElementById('intellect-edge').value = character.intellectEdge || 0;
-        document.getElementById('intellect-current').value = character.intellectCurrent || 10;
+        document.getElementById('might-pool').value = character.mightPool ?? 10;
+        document.getElementById('might-edge').value = character.mightEdge ?? 0;
+        document.getElementById('might-current').value = character.mightCurrent ?? 10;
+        document.getElementById('speed-pool').value = character.speedPool ?? 10;
+        document.getElementById('speed-edge').value = character.speedEdge ?? 0;
+        document.getElementById('speed-current').value = character.speedCurrent ?? 10;
+        document.getElementById('intellect-pool').value = character.intellectPool ?? 10;
+        document.getElementById('intellect-edge').value = character.intellectEdge ?? 0;
+        document.getElementById('intellect-current').value = character.intellectCurrent ?? 10;
         document.getElementById('char-effort').value = character.effort || 1;
         document.getElementById('char-experience').value = character.experience || 0;
         
@@ -136,15 +136,15 @@ class CharacterFormManager {
             background: document.getElementById('char-background').value,
             notes: document.getElementById('char-notes').value,
             portrait: document.getElementById('char-portrait').value,
-            mightPool: parseInt(document.getElementById('might-pool').value) || 10,
+            mightPool: parseInt(document.getElementById('might-pool').value) || 0,
             mightEdge: parseInt(document.getElementById('might-edge').value) || 0,
-            mightCurrent: parseInt(document.getElementById('might-current').value) || 10,
-            speedPool: parseInt(document.getElementById('speed-pool').value) || 10,
+            mightCurrent: parseInt(document.getElementById('might-current').value) || 0,
+            speedPool: parseInt(document.getElementById('speed-pool').value) || 0,
             speedEdge: parseInt(document.getElementById('speed-edge').value) || 0,
-            speedCurrent: parseInt(document.getElementById('speed-current').value) || 10,
-            intellectPool: parseInt(document.getElementById('intellect-pool').value) || 10,
+            speedCurrent: parseInt(document.getElementById('speed-current').value) || 0,
+            intellectPool: parseInt(document.getElementById('intellect-pool').value) || 0,
             intellectEdge: parseInt(document.getElementById('intellect-edge').value) || 0,
-            intellectCurrent: parseInt(document.getElementById('intellect-current').value) || 10,
+            intellectCurrent: parseInt(document.getElementById('intellect-current').value) || 0,
             effort: parseInt(document.getElementById('char-effort').value) || 1,
             experience: parseInt(document.getElementById('char-experience').value) || 0,
             recoveryModifier: parseInt(document.getElementById('recovery-modifier').value) || 0,

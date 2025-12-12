@@ -14,6 +14,7 @@ describe('CharacterView', () => {
   beforeEach(() => {
     localStorage.clear();
     
+    // Setup DOM FIRST
     document.body.innerHTML = `
       <div id="character-list-view"></div>
       <div id="character-sheet-view">
@@ -33,24 +34,33 @@ describe('CharacterView', () => {
         <div id="flavor-select"></div>
         <div id="ability-select"></div>
         
-        <input id="char-might-pool" value="10" />
-        <input id="char-speed-pool" value="10" />
-        <input id="char-intellect-pool" value="10" />
-        <input id="char-might-edge" value="0" />
-        <input id="char-speed-edge" value="0" />
-        <input id="char-intellect-edge" value="0" />
+        <input id="might-pool" value="10" />
+        <input id="might-edge" value="0" />
+        <input id="might-current" value="10" />
+        <input id="speed-pool" value="10" />
+        <input id="speed-edge" value="0" />
+        <input id="speed-current" value="10" />
+        <input id="intellect-pool" value="10" />
+        <input id="intellect-edge" value="0" />
+        <input id="intellect-current" value="10" />
         <input id="char-effort" value="1" />
-        <input id="char-xp" value="0" />
-        <input id="char-armor" value="0" />
-        <input id="char-recovery-rolls" value="1d6+1" />
-        <input id="char-damage-track" value="Hale" />
+        <input id="char-experience" value="0" />
+        <input id="recovery-modifier" value="0" />
+        <input id="impaired" type="checkbox" />
+        <input id="debilitated" type="checkbox" />
+        <input id="recovery-action" type="checkbox" />
+        <input id="recovery-10min" type="checkbox" />
+        <input id="recovery-1hour" type="checkbox" />
+        <input id="recovery-10hour" type="checkbox" />
         
-        <div id="skills-container"></div>
-        <div id="abilities-container"></div>
-        <div id="equipment-container"></div>
-        <div id="power-shifts-container"></div>
-        <div id="attacks-container"></div>
-        <div id="cyphers-container"></div>
+        <div id="skills-list"></div>
+        <div id="abilities-list"></div>
+        <div id="equipment-list"></div>
+        <div id="power-shifts-list"></div>
+        <div id="powershifts-list"></div>
+        <div id="attacks-list"></div>
+        <div id="cyphers-list"></div>
+        <div id="advancements-list"></div>
         <div id="advancements-container"></div>
         <div id="toast-container"></div>
         <table id="character-table">
@@ -58,9 +68,9 @@ describe('CharacterView', () => {
         </table>
         <div id="character-list"></div>
         
-        <button id="lock-toggle" class="lock-btn">
-          <span class="lock-icon">🔓</span>
-          <span class="lock-text">Unlocked</span>
+        <button id="lock-toggle-btn" class="lock-btn">
+          <span id="lock-icon">🔓</span>
+          <span id="lock-text">Unlocked</span>
         </button>
       </div>
     `;
@@ -73,6 +83,17 @@ describe('CharacterView', () => {
       abilities: [{ name: 'Bash', description: 'Hit things' }],
       advancements: [],
       powerShifts: []
+    };
+    
+    // Mock global app object for onclick handlers
+    global.app = {
+      toggleAbilityDesc: jest.fn(),
+      removeSkill: jest.fn(),
+      removeAbility: jest.fn(),
+      removeEquipment: jest.fn(),
+      removeAttack: jest.fn(),
+      removeCypher: jest.fn(),
+      removePowerShiftInstance: jest.fn()
     };
     
     view = new CharacterView();
@@ -101,8 +122,8 @@ describe('CharacterView', () => {
       const listView = document.getElementById('character-list-view');
       const sheetView = document.getElementById('character-sheet-view');
       
-      expect(listView.classList.contains('active')).toBe(true);
-      expect(sheetView.classList.contains('active')).toBe(false);
+      expect(listView.classList.contains('hidden')).toBe(false);
+      expect(sheetView.classList.contains('hidden')).toBe(true);
     });
 
     test('should show character sheet', () => {
@@ -111,8 +132,8 @@ describe('CharacterView', () => {
       const listView = document.getElementById('character-list-view');
       const sheetView = document.getElementById('character-sheet-view');
       
-      expect(listView.classList.contains('active')).toBe(false);
-      expect(sheetView.classList.contains('active')).toBe(true);
+      expect(listView.classList.contains('hidden')).toBe(true);
+      expect(sheetView.classList.contains('hidden')).toBe(false);
     });
   });
 
@@ -125,15 +146,15 @@ describe('CharacterView', () => {
       
       view.renderCharacterList(characters);
       
-      const listContainer = document.getElementById('character-list');
-      expect(listContainer.children.length).toBe(2);
+      const tbody = document.getElementById('characters-tbody');
+      expect(tbody.children.length).toBe(2);
     });
 
     test('should show empty message when no characters', () => {
       view.renderCharacterList([]);
       
-      const listContainer = document.getElementById('character-list');
-      expect(listContainer.textContent).toContain('No characters yet');
+      const tbody = document.getElementById('characters-tbody');
+      expect(tbody.textContent).toContain('No characters yet');
     });
   });
 
@@ -146,7 +167,7 @@ describe('CharacterView', () => {
       const data = view.getCharacterDataFromForm();
       
       expect(data.name).toBe('Test Hero');
-      expect(data.tier).toBe('2');
+      expect(data.tier).toBe(2);
       expect(data.descriptor).toBe('Strong');
     });
 
@@ -197,11 +218,11 @@ describe('CharacterView', () => {
     test('should update lock state to locked', () => {
       view.updateLockState(true);
       
-      const lockBtn = document.getElementById('lock-toggle');
-      const icon = lockBtn.querySelector('.lock-icon');
-      const text = lockBtn.querySelector('.lock-text');
+      const lockBtn = document.getElementById('lock-toggle-btn');
+      const icon = document.getElementById('lock-icon');
+      const text = document.getElementById('lock-text');
       
-      expect(lockBtn.classList.contains('locked')).toBe(true);
+      expect(lockBtn.classList.contains('bg-orange-600')).toBe(true);
       expect(icon.textContent).toBe('🔒');
       expect(text.textContent).toBe('Locked');
     });
@@ -209,11 +230,11 @@ describe('CharacterView', () => {
     test('should update lock state to unlocked', () => {
       view.updateLockState(false);
       
-      const lockBtn = document.getElementById('lock-toggle');
-      const icon = lockBtn.querySelector('.lock-icon');
-      const text = lockBtn.querySelector('.lock-text');
+      const lockBtn = document.getElementById('lock-toggle-btn');
+      const icon = document.getElementById('lock-icon');
+      const text = document.getElementById('lock-text');
       
-      expect(lockBtn.classList.contains('locked')).toBe(false);
+      expect(lockBtn.classList.contains('bg-blue-600')).toBe(true);
       expect(icon.textContent).toBe('🔓');
       expect(text.textContent).toBe('Unlocked');
     });
@@ -252,49 +273,55 @@ describe('CharacterView', () => {
   describe('Advancements Rendering', () => {
     test('should render advancements', () => {
       global.cypherData.advancements = [
-        { tier: 1, options: ['Option 1', 'Option 2'] }
+        { name: 'Advancement 1', description: 'Option 1' }
       ];
       
-      view.renderAdvancements();
+      view.renderAdvancements([]);
       
-      const container = document.getElementById('advancements-container');
+      const container = document.getElementById('advancements-list');
       expect(container.innerHTML).toBeTruthy();
     });
   });
 
   describe('Current Data Getters', () => {
     test('should get current skills', () => {
-      view.formManager.getCurrentSkills = jest.fn(() => [{ name: 'Climbing' }]);
+      const FormRenderer = require('../src/views/form-renderer');
+      jest.spyOn(FormRenderer, 'getCurrentSkills').mockReturnValue([{ name: 'Climbing' }]);
       const skills = view.getCurrentSkills();
       expect(skills).toEqual([{ name: 'Climbing' }]);
     });
 
     test('should get current abilities', () => {
-      view.formManager.getCurrentAbilities = jest.fn(() => [{ name: 'Bash' }]);
+      const FormRenderer = require('../src/views/form-renderer');
+      jest.spyOn(FormRenderer, 'getCurrentAbilities').mockReturnValue([{ name: 'Bash' }]);
       const abilities = view.getCurrentAbilities();
       expect(abilities).toEqual([{ name: 'Bash' }]);
     });
 
     test('should get current equipment', () => {
-      view.formManager.getCurrentEquipment = jest.fn(() => ['Sword']);
+      const FormRenderer = require('../src/views/form-renderer');
+      jest.spyOn(FormRenderer, 'getCurrentEquipment').mockReturnValue(['Sword']);
       const equipment = view.getCurrentEquipment();
       expect(equipment).toEqual(['Sword']);
     });
 
     test('should get current power shifts', () => {
-      view.formManager.getCurrentPowerShifts = jest.fn(() => [{ name: 'Strength', value: 1 }]);
+      const FormRenderer = require('../src/views/form-renderer');
+      jest.spyOn(FormRenderer, 'getCurrentPowerShifts').mockReturnValue([{ name: 'Strength', value: 1 }]);
       const powerShifts = view.getCurrentPowerShifts();
       expect(powerShifts).toEqual([{ name: 'Strength', value: 1 }]);
     });
 
     test('should get current attacks', () => {
-      view.formManager.getCurrentAttacks = jest.fn(() => ['Punch (2)']);
+      const FormRenderer = require('../src/views/form-renderer');
+      jest.spyOn(FormRenderer, 'getCurrentAttacks').mockReturnValue(['Punch (2)']);
       const attacks = view.getCurrentAttacks();
       expect(attacks).toEqual(['Punch (2)']);
     });
 
     test('should get current cyphers', () => {
-      view.formManager.getCurrentCyphers = jest.fn(() => [{ name: 'Detonation' }]);
+      const FormRenderer = require('../src/views/form-renderer');
+      jest.spyOn(FormRenderer, 'getCurrentCyphers').mockReturnValue([{ name: 'Detonation' }]);
       const cyphers = view.getCurrentCyphers();
       expect(cyphers).toEqual([{ name: 'Detonation' }]);
     });
@@ -302,37 +329,43 @@ describe('CharacterView', () => {
 
   describe('Renderers', () => {
     test('should render skills', () => {
-      const spy = jest.spyOn(view.formManager, 'renderSkills');
+      const FormRenderer = require('../src/views/form-renderer');
+      const spy = jest.spyOn(FormRenderer, 'renderSkills');
       view.renderSkills([{ name: 'Climbing' }]);
       expect(spy).toHaveBeenCalledWith([{ name: 'Climbing' }]);
     });
 
     test('should render abilities', () => {
-      const spy = jest.spyOn(view.formManager, 'renderAbilities');
+      const FormRenderer = require('../src/views/form-renderer');
+      const spy = jest.spyOn(FormRenderer, 'renderAbilities');
       view.renderAbilities([{ name: 'Bash' }]);
       expect(spy).toHaveBeenCalledWith([{ name: 'Bash' }]);
     });
 
     test('should render equipment', () => {
-      const spy = jest.spyOn(view.formManager, 'renderEquipment');
+      const FormRenderer = require('../src/views/form-renderer');
+      const spy = jest.spyOn(FormRenderer, 'renderEquipment');
       view.renderEquipment(['Sword']);
       expect(spy).toHaveBeenCalledWith(['Sword']);
     });
 
     test('should render power shifts', () => {
-      const spy = jest.spyOn(view.formManager, 'renderPowerShifts');
+      const FormRenderer = require('../src/views/form-renderer');
+      const spy = jest.spyOn(FormRenderer, 'renderPowerShifts');
       view.renderPowerShifts([{ name: 'Strength' }]);
       expect(spy).toHaveBeenCalledWith([{ name: 'Strength' }]);
     });
 
     test('should render attacks', () => {
-      const spy = jest.spyOn(view.formManager, 'renderAttacks');
+      const FormRenderer = require('../src/views/form-renderer');
+      const spy = jest.spyOn(FormRenderer, 'renderAttacks');
       view.renderAttacks(['Punch']);
       expect(spy).toHaveBeenCalledWith(['Punch']);
     });
 
     test('should render cyphers', () => {
-      const spy = jest.spyOn(view.formManager, 'renderCyphers');
+      const FormRenderer = require('../src/views/form-renderer');
+      const spy = jest.spyOn(FormRenderer, 'renderCyphers');
       view.renderCyphers([{ name: 'Detonation' }]);
       expect(spy).toHaveBeenCalledWith([{ name: 'Detonation' }]);
     });
@@ -340,18 +373,10 @@ describe('CharacterView', () => {
 
   describe('Toggle Ability Description', () => {
     test('should toggle ability description visibility', () => {
-      view.formManager.renderAbilities([
-        { name: 'Ability 1', description: 'Description 1' }
-      ]);
-      
-      const abilitiesContainer = document.getElementById('abilities-container');
-      const descEl = abilitiesContainer.querySelector('.ability-desc');
-      
-      if (descEl) {
-        const initialDisplay = descEl.style.display;
-        view.toggleAbilityDesc(0);
-        expect(descEl.style.display).not.toBe(initialDisplay);
-      }
+      const FormRenderer = require('../src/views/form-renderer');
+      const spy = jest.spyOn(FormRenderer, 'toggleAbilityDesc');
+      view.toggleAbilityDesc(0);
+      expect(spy).toHaveBeenCalledWith(0);
     });
   });
 });

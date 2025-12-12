@@ -317,5 +317,26 @@ describe('CharacterModel', () => {
       
       expect(model.characters.length).toBe(1);
     });
+
+    test('should preserve zero values for stats', () => {
+      model.createNewCharacterId();
+      model.saveCharacter({ 
+        name: 'Test',
+        mightPool: 0,
+        speedPool: 0,
+        intellectPool: 0,
+        mightCurrent: 0,
+        speedCurrent: 0,
+        intellectCurrent: 0
+      });
+      
+      const char = model.currentCharacter;
+      expect(char.mightPool).toBe(0);
+      expect(char.speedPool).toBe(0);
+      expect(char.intellectPool).toBe(0);
+      expect(char.mightCurrent).toBe(0);
+      expect(char.speedCurrent).toBe(0);
+      expect(char.intellectCurrent).toBe(0);
+    });
   });
 });

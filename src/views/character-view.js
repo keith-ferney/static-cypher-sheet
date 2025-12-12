@@ -266,6 +266,10 @@ class CharacterView {
         return FormRenderer.getCurrentPowerShifts();
     }
 
+    getAllPowerShifts() {
+        return FormRenderer.getAllPowerShifts();
+    }
+
     renderPowerShifts(powerShifts) {
         FormRenderer.renderPowerShifts(powerShifts);
     }

@@ -163,7 +163,8 @@ class CharacterController {
 
     // Power Shifts methods
     addPowerShiftInstance(psName) {
-        const powerShifts = this.view.getCurrentPowerShifts();
+        // Get ALL power shifts including those with value 0
+        const powerShifts = this.view.getAllPowerShifts();
         const newId = Date.now().toString(); // Use timestamp as unique ID
         
         powerShifts.push({

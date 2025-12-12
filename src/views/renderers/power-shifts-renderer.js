@@ -1,6 +1,10 @@
 // Power Shifts Renderer - Handles rendering and retrieving data for power shifts
 class PowerShiftsRenderer {
     static getCurrentPowerShifts() {
+        return this.getAllPowerShifts(true); // Filter out zero values
+    }
+
+    static getAllPowerShifts(filterZeroValues = false) {
         const container = document.getElementById('powershifts-list');
         const labels = container.querySelectorAll('label');
         
@@ -11,7 +15,7 @@ class PowerShiftsRenderer {
             if (!valueInput) return;
             
             const value = parseInt(valueInput.value) || 0;
-            if (value === 0) return; // Skip power shifts with 0 value
+            if (filterZeroValues && value === 0) return; // Skip power shifts with 0 value
             
             const psName = valueInput.dataset.psName;
             const psId = valueInput.dataset.psId || '0'; // Unique ID for multiple instances

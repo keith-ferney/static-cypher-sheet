@@ -18,6 +18,9 @@ const localStorageMock = (() => {
 
 global.localStorage = localStorageMock;
 
+// Mock window.confirm (not implemented in JSDOM)
+global.confirm = jest.fn(() => true);
+
 // Load and register all source files in dependency order
 // Each file exports its class and also registers on global
 const { loadCypherData, cypherData } = require('../src/models/data-loader.js');

@@ -96,7 +96,10 @@ class FancySelectEventHandlers {
         if (oldIndex !== newIndex) {
             const options = optionsContainer.querySelectorAll('.fancy-select-option');
             if (options[newIndex]) {
-                options[newIndex].scrollIntoView({ block: 'nearest' });
+                // scrollIntoView may not be available in test environments (e.g., JSDOM)
+                if (typeof options[newIndex].scrollIntoView === 'function') {
+                    options[newIndex].scrollIntoView({ block: 'nearest' });
+                }
             }
         }
     }
@@ -172,6 +175,9 @@ class FancySelectEventHandlers {
                 e.preventDefault();
                 this.select.selectOption(filtered[this.select.expandedIndex]);
             } else if (e.key === 'Escape') {
+                // Clear the search and close the dropdown
+                this.select.searchTerm = '';
+                searchInput.value = '';
                 this.select.isOpen = false;
                 this.select.render();
             }

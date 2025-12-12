@@ -56,6 +56,10 @@ class FormRenderer {
         return PowerShiftsRenderer.getCurrentPowerShifts();
     }
 
+    static getAllPowerShifts() {
+        return PowerShiftsRenderer.getAllPowerShifts();
+    }
+
     static renderPowerShifts(characterPowerShifts) {
         return PowerShiftsRenderer.renderPowerShifts(characterPowerShifts);
     }
