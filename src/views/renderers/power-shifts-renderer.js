@@ -15,8 +15,6 @@ class PowerShiftsRenderer {
             if (!valueInput) return;
             
             const value = parseInt(valueInput.value) || 0;
-            if (filterZeroValues && value === 0) return; // Skip power shifts with 0 value
-            
             const psName = valueInput.dataset.psName;
             const psId = valueInput.dataset.psId || '0'; // Unique ID for multiple instances
             
@@ -42,6 +40,11 @@ class PowerShiftsRenderer {
             const textInput = label.querySelector(`input[data-ps-text="${psName}-${psId}"]`);
             if (textInput && textInput.value.trim()) {
                 powerShift.additional_text = textInput.value.trim();
+            }
+            
+            // Filter logic: skip power shifts with 0 value UNLESS they have additional text
+            if (filterZeroValues && value === 0 && !powerShift.additional_text) {
+                return; // Skip power shifts with 0 value and no additional text
             }
             
             powerShifts.push(powerShift);
