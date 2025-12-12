@@ -231,8 +231,8 @@ describe('Cypher Character Creator - Core Functions', () => {
       
       const items = document.querySelectorAll('.ability-item');
       expect(items.length).toBe(2);
-      expect(items[0].querySelector('.ability-name').textContent).toBe('Fire Blast');
-      expect(items[1].querySelector('.ability-desc').textContent).toBe('Create ice barrier');
+      expect(items[0].querySelector('.ability-name-display').textContent).toBe('Fire Blast');
+      expect(items[1].querySelector('.ability-desc-display').textContent).toBe('Create ice barrier');
     });
 
     test('getCurrentAbilities should return abilities from DOM', () => {
