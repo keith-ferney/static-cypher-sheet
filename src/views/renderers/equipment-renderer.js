@@ -4,8 +4,9 @@ class EquipmentRenderer {
         return Array.from(document.querySelectorAll('#equipment-list .equipment-item'))
             .map(el => {
                 const span = el.querySelector('span');
-                return span ? span.textContent.trim() : el.textContent.trim();
-            });
+                return span ? span.textContent.trim() : '';
+            })
+            .filter(item => item !== '');
     }
 
     static renderEquipment(equipment) {

@@ -4,8 +4,9 @@ class CombatRenderer {
         return Array.from(document.querySelectorAll('#attacks-list .attack-item'))
             .map(el => {
                 const span = el.querySelector('span');
-                return span ? span.textContent.trim() : el.textContent.trim();
-            });
+                return span ? span.textContent.trim() : '';
+            })
+            .filter(attack => attack !== '');
     }
 
     static renderAttacks(attacks) {
