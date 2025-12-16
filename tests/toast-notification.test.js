@@ -17,7 +17,7 @@ describe('ToastNotification', () => {
     toast = new ToastNotification();
   });
 
-  test('should show success toast', (done) => {
+  test('should show success toast', () => {
     toast.show('Success message', 'success');
     
     const container = document.getElementById('toast-container');
@@ -26,12 +26,6 @@ describe('ToastNotification', () => {
     expect(toastEl).toBeTruthy();
     expect(toastEl.classList.contains('success')).toBe(true);
     expect(toastEl.textContent).toContain('Success message');
-    
-    // Wait for auto-hide
-    setTimeout(() => {
-      expect(container.querySelector('.toast')).toBeFalsy();
-      done();
-    }, 3500);
   });
 
   test('should show error toast', () => {
@@ -77,13 +71,18 @@ describe('ToastNotification', () => {
     expect(document.querySelector('.toast')).toBeFalsy();
   });
 
-  test('should remove toast after fade out', (done) => {
+  test('should remove toast after fade out animation', () => {
     toast.show('Test message');
     
-    setTimeout(() => {
-      expect(document.querySelector('.toast')).toBeFalsy();
-      done();
-    }, 3500);
+    const toastEl = document.querySelector('.toast');
+    expect(toastEl).toBeTruthy();
+    
+    // Simulate the fadeOut animation ending
+    const event = new Event('animationend');
+    event.animationName = 'fadeOut';
+    toastEl.dispatchEvent(event);
+    
+    expect(document.querySelector('.toast')).toBeFalsy();
   });
 
   test('should show multiple toasts', () => {
@@ -94,13 +93,23 @@ describe('ToastNotification', () => {
     expect(toasts.length).toBe(2);
   });
 
-  test('should auto-hide after 3 seconds', (done) => {
+  test('should not remove toast on slideInRight animation', () => {
     toast.show('Auto-hide message');
     
-    setTimeout(() => {
-      const toastEl = document.querySelector('.toast');
-      expect(toastEl).toBeFalsy();
-      done();
-    }, 3500);
+    const toastEl = document.querySelector('.toast');
+    
+    // Simulate the slideInRight animation ending (should NOT remove)
+    const event = new Event('animationend');
+    event.animationName = 'slideInRight';
+    toastEl.dispatchEvent(event);
+    
+    expect(document.querySelector('.toast')).toBeTruthy();
+    
+    // Now simulate fadeOut (should remove)
+    const fadeEvent = new Event('animationend');
+    fadeEvent.animationName = 'fadeOut';
+    toastEl.dispatchEvent(fadeEvent);
+    
+    expect(document.querySelector('.toast')).toBeFalsy();
   });
 });

@@ -204,12 +204,35 @@
 
 **Lines of JS Removed**: ~5 lines
 
+### 2025-12-16 - Step 6: Additional Refinements ✅
+**Files Modified**: 
+- `index.html`
+- `src/views/toast-notification.js`
+- `tests/toast-notification.test.js`
+
+**Changes**:
+- **File input button**: Replaced `onclick="document.getElementById('import-file-input').click()"` with native `<label for="import-file-input">`
+- **Toast removal**: Replaced `setTimeout()` with CSS `animationend` event listener
+- Updated tests to reflect event-driven toast removal
+
+**Benefits**:
+- No more setTimeout timing dependencies
+- Toast removal is now tied to actual CSS animation completion
+- More semantic HTML for file input
+- Better synchronization between CSS animations and JS
+
+**Test Results**: 
+- 263/263 tests passing (100% pass rate maintained)
+
+**Lines of JS Improved**: ~3 lines (setTimeout → animationend, onclick → label)
+
 ---
 
 ## Summary So Far
-**Total JS Lines Removed**: ~78 lines
+**Total JS Lines Removed/Improved**: ~81 lines
 **Features Converted to CSS**: 4 (Options menu, Cypher form, Import/Export modal, Ability descriptions)
 **Dead Code Removed**: 1 (Cypher description toggle)
+**Refinements**: 2 (File input label, Toast animationend event)
 **Tests Status**: 263/263 passing (100% pass rate!)
 
 ## Analysis: Remaining JavaScript
@@ -245,11 +268,12 @@ We successfully minimized JavaScript usage following modern CSS best practices f
 - **Semantic HTML** for better accessibility
 
 ### Key Metrics
-- 📉 **~78 lines of JavaScript removed**
+- 📉 **~81 lines of JavaScript removed/improved**
 - ✅ **100% test pass rate maintained** (263/263)
 - 🎯 **4 features converted to CSS-only**
-- ♿ **Improved accessibility** (native keyboard navigation)
+- ♿ **Improved accessibility** (native keyboard navigation, semantic file input)
 - 🚀 **Better performance** (CSS animations run on compositor thread)
+- ⚡ **Better timing** (animationend event instead of setTimeout)
 - 🔧 **Improved build process** (auto-discovers all files)
 
 ### What Changed
@@ -257,7 +281,9 @@ We successfully minimized JavaScript usage following modern CSS best practices f
 2. **Cypher form toggle** - CSS checkbox + `:checked` state
 3. **Import/Export modal** - CSS checkbox + `:checked` state
 4. **Ability descriptions** - Native `<details>` element
-5. **Build process** - Auto-discovers all project files
+5. **File input** - Native `<label>` instead of onclick
+6. **Toast removal** - CSS `animationend` event instead of setTimeout
+7. **Build process** - Auto-discovers all project files
 
 ### What Stayed (And Why)
 The remaining JavaScript is **essential** for the app's core functionality:

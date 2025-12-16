@@ -366,9 +366,9 @@
             <div class="mb-6">
                 <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Import</h4>
                 <input type="file" id="import-file-input" accept=".json" class="hidden" onchange="handleImportFile(event)">
-                <button onclick="document.getElementById('import-file-input').click()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md mb-2">
+                <label for="import-file-input" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md mb-2 cursor-pointer select-none flex items-center justify-center">
                     📁 Choose File to Import
-                </button>
+                </label>
                 <div class="mb-2">
                     <label class="flex items-center text-sm text-gray-700 dark:text-gray-300">
                         <input type="radio" name="import-mode" value="merge" checked class="mr-2">

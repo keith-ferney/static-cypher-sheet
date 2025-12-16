@@ -25,10 +25,13 @@ class ToastNotification {
         
         this.container.appendChild(toast);
         
-        // Remove toast after animation completes
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
+        // Remove toast after CSS animation completes (no setTimeout needed!)
+        toast.addEventListener('animationend', (e) => {
+            // Only remove on the fadeOut animation, not slideInRight
+            if (e.animationName === 'fadeOut') {
+                toast.remove();
+            }
+        });
     }
 
     success(message) {
