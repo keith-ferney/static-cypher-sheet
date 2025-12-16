@@ -141,7 +141,7 @@
   z-index: 50;
 }
 
-.fancy-select-trigger-description.show {
+.fancy-select-trigger-description[data-tooltip-visible="true"] {
   opacity: 1;
   pointer-events: auto;
 }
@@ -218,7 +218,7 @@
   color: #6b7280;
 }
 
-.fancy-select-option.expanded .fancy-select-option-chevron {
+.fancy-select-option[data-expanded="true"] .fancy-select-option-chevron {
   transform: rotate(90deg);
 }
 
@@ -298,7 +298,7 @@
   transition: max-height 0.3s ease, opacity 0.2s ease, padding 0.3s ease;
 }
 
-.fancy-select-option.expanded .fancy-select-option-description {
+.fancy-select-option[data-expanded="true"] .fancy-select-option-description {
   max-height: 60vh;
   opacity: 1;
   overflow-y: auto;

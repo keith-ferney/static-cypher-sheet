@@ -1,0 +1,69 @@
+/* Character Lock - CSS-Only Implementation */
+
+/* When checkbox is checked, update lock button appearance */
+#character-lock-toggle:checked + #lock-toggle-btn {
+    background-color: rgb(234 88 12); /* orange-600 */
+}
+
+#character-lock-toggle:checked + #lock-toggle-btn:hover {
+    background-color: rgb(194 65 12); /* orange-700 */
+}
+
+/* Update lock icon text when checked */
+#character-lock-toggle:checked + #lock-toggle-btn .lock-icon::before {
+    content: '🔒 Locked';
+}
+
+#character-lock-toggle:not(:checked) + #lock-toggle-btn .lock-icon::before {
+    content: '🔓 Unlocked';
+}
+
+/* Hide the default text since we're using ::before */
+#character-lock-toggle + #lock-toggle-btn .lock-icon {
+    font-size: 0;
+}
+
+#character-lock-toggle + #lock-toggle-btn .lock-icon::before {
+    font-size: 0.875rem; /* text-sm */
+}
+
+/* Disable and style lockable fields when checkbox is checked */
+#character-lock-toggle:checked ~ .character-sheet-form .lockable-field {
+    pointer-events: none;
+    background-color: rgb(229 231 235); /* gray-200 */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Disable FancySelect components when locked */
+#character-lock-toggle:checked ~ .character-sheet-form #descriptor-select,
+#character-lock-toggle:checked ~ .character-sheet-form #type-select,
+#character-lock-toggle:checked ~ .character-sheet-form #focus-select,
+#character-lock-toggle:checked ~ .character-sheet-form #flavor-select {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+#character-lock-toggle:checked ~ .character-sheet-form #descriptor-select .fancy-select-trigger,
+#character-lock-toggle:checked ~ .character-sheet-form #type-select .fancy-select-trigger,
+#character-lock-toggle:checked ~ .character-sheet-form #focus-select .fancy-select-trigger,
+#character-lock-toggle:checked ~ .character-sheet-form #flavor-select .fancy-select-trigger {
+    background-color: rgb(229 231 235); /* gray-200 */
+    cursor: not-allowed;
+}
+
+/* Disable add buttons when locked */
+#character-lock-toggle:checked ~ .character-sheet-form button[data-action="addSkill"],
+#character-lock-toggle:checked ~ .character-sheet-form button[data-action="addAbilityFromSelect"],
+#character-lock-toggle:checked ~ .character-sheet-form button[data-action="addAttack"] {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Disable form submissions when locked */
+#character-lock-toggle:checked ~ .character-sheet-form form[onsubmit*="addSkill"],
+#character-lock-toggle:checked ~ .character-sheet-form form[onsubmit*="addAttack"] {
+    pointer-events: none;
+    opacity: 0.5;
+}

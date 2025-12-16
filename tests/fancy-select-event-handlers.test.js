@@ -113,7 +113,7 @@ describe('FancySelect Event Handlers', () => {
       const header = options[0].querySelector('.fancy-select-option-header');
       header.click();
       
-      expect(options[0].classList.contains('expanded')).toBe(true);
+      expect(options[0].dataset.expanded).toBe('true');
     });
 
     test('should collapse expanded option on second click', () => {
@@ -124,10 +124,10 @@ describe('FancySelect Event Handlers', () => {
       const header = options[0].querySelector('.fancy-select-option-header');
       
       header.click();
-      expect(options[0].classList.contains('expanded')).toBe(true);
+      expect(options[0].dataset.expanded).toBe('true');
       
       header.click();
-      expect(options[0].classList.contains('expanded')).toBe(false);
+      expect(options[0].dataset.expanded).toBeUndefined();
     });
 
     test('should collapse other options when expanding one', () => {
@@ -137,11 +137,11 @@ describe('FancySelect Event Handlers', () => {
       const options = container.querySelectorAll('.fancy-select-option');
       
       options[0].querySelector('.fancy-select-option-header').click();
-      expect(options[0].classList.contains('expanded')).toBe(true);
+      expect(options[0].dataset.expanded).toBe('true');
       
       options[1].querySelector('.fancy-select-option-header').click();
-      expect(options[0].classList.contains('expanded')).toBe(false);
-      expect(options[1].classList.contains('expanded')).toBe(true);
+      expect(options[0].dataset.expanded).toBeUndefined();
+      expect(options[1].dataset.expanded).toBe('true');
     });
   });
 
@@ -266,7 +266,7 @@ describe('TooltipManager', () => {
       const event = new MouseEvent('mouseenter');
       trigger.dispatchEvent(event);
       
-      expect(tooltip.classList.contains('show')).toBe(true);
+      expect(tooltip.dataset.tooltipVisible).toBe('true');
     });
 
     test('should hide tooltip on trigger leave', (done) => {
@@ -278,7 +278,7 @@ describe('TooltipManager', () => {
       trigger.dispatchEvent(leaveEvent);
       
       setTimeout(() => {
-        expect(tooltip.classList.contains('show')).toBe(false);
+        expect(tooltip.dataset.tooltipVisible).toBeUndefined();
         done();
       }, 100);
     });
@@ -287,7 +287,7 @@ describe('TooltipManager', () => {
       trigger.dispatchEvent(new MouseEvent('mouseenter'));
       tooltip.dispatchEvent(new MouseEvent('mouseenter'));
       
-      expect(tooltip.classList.contains('hovered')).toBe(true);
+      expect(tooltip.dataset.hovered).toBe('true');
     });
 
     test('should hide tooltip when leaving tooltip', () => {

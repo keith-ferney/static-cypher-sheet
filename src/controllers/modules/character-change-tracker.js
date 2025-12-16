@@ -63,10 +63,8 @@ class CharacterChangeTracker {
         const currentSnapshot = JSON.stringify(currentData);
 
         if (this.savedCharacterSnapshot !== currentSnapshot) {
-            this.view.showUnsavedIndicator();
             this.view.updateSaveButtonState(true);
         } else {
-            this.view.hideUnsavedIndicator();
             this.view.updateSaveButtonState(false);
         }
     }
@@ -79,13 +77,11 @@ class CharacterChangeTracker {
 
         const currentData = this.view.getCharacterDataFromForm();
         this.savedCharacterSnapshot = JSON.stringify(currentData);
-        this.view.hideUnsavedIndicator();
         this.view.updateSaveButtonState(false);
     }
 
     clearSnapshot() {
         this.savedCharacterSnapshot = null;
-        this.view.hideUnsavedIndicator();
         this.view.updateSaveButtonState(false);
     }
 }

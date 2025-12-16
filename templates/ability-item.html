@@ -10,24 +10,24 @@
                     type="text" 
                     value="{{name}}" 
                     placeholder="Ability name"
-                    class="ability-name-input hidden flex-1 font-semibold px-1 py-0.5 border border-gray-300 rounded text-sm focus:border-blue-500 focus:outline-none"
+                    class="ability-name-input flex-1 font-semibold px-1 py-0.5 border border-gray-300 rounded text-sm focus:border-blue-500 focus:outline-none"
                     onclick="event.stopPropagation()"
-                    onchange="app.checkForChanges()"
+                    data-action="checkForChanges"
                 />
             </div>
         </div>
         <div class="flex gap-1 flex-shrink-0">
-            <button onclick="AbilitiesRenderer.toggleEditMode({{index}}); event.stopPropagation();" class="ability-edit-btn text-blue-600 hover:text-blue-800 text-sm px-1" title="Edit ability">✎</button>
-            <button onclick="app.removeAbility({{index}}); event.stopPropagation();" class="text-red-600 hover:text-red-800 text-lg leading-none">×</button>
+            <button data-action="toggleAbilityEditMode" data-index="{{index}}" class="ability-edit-btn text-blue-600 hover:text-blue-800 text-sm px-1" onclick="event.stopPropagation()"></button>
+            <button data-action="removeAbility" data-index="{{index}}" class="text-red-600 hover:text-red-800 text-lg leading-none" onclick="event.stopPropagation()">×</button>
         </div>
     </summary>
     <div class="mt-2 ml-6">
         <p class="ability-desc-display text-xs text-gray-600 whitespace-pre-wrap">{{description}}</p>
         <textarea 
-            class="ability-desc-input hidden w-full text-xs text-gray-600 px-1 py-0.5 border border-gray-300 rounded resize-y min-h-[60px] focus:border-blue-500 focus:outline-none"
+            class="ability-desc-input w-full text-xs text-gray-600 px-1 py-0.5 border border-gray-300 rounded resize-y min-h-[60px] focus:border-blue-500 focus:outline-none"
             placeholder="Ability description"
             onclick="event.stopPropagation()"
-            onchange="app.checkForChanges()"
+            data-action="checkForChanges"
         >{{description}}</textarea>
     </div>
 </details>

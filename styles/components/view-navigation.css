@@ -1,0 +1,31 @@
+/**
+ * CSS-Only View Navigation
+ * Uses radio button state to control which view is visible
+ */
+
+/* Default: Hide character sheet, show character list */
+#character-list-view {
+  display: block;
+}
+
+#character-sheet-view {
+  display: none;
+}
+
+/* When sheet view radio is checked, hide list and show sheet */
+#view-sheet:checked ~ #character-list-view {
+  display: none;
+}
+
+#view-sheet:checked ~ #character-sheet-view {
+  display: block;
+}
+
+/* When list view radio is checked (default), show list and hide sheet */
+#view-list:checked ~ #character-list-view {
+  display: block;
+}
+
+#view-list:checked ~ #character-sheet-view {
+  display: none;
+}

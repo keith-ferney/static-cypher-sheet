@@ -58,20 +58,13 @@ class AbilitiesRenderer {
         const nameInput = item.querySelector('.ability-name-input');
         const descDisplay = item.querySelector('.ability-desc-display');
         const descInput = item.querySelector('.ability-desc-input');
-        const editBtn = item.querySelector('.ability-edit-btn');
 
         if (isEditMode) {
             // Switch to view mode - save changes to display
             nameDisplay.textContent = nameInput.value;
             descDisplay.textContent = descInput.value;
             
-            nameDisplay.classList.remove('hidden');
-            nameInput.classList.add('hidden');
-            descDisplay.classList.remove('hidden');
-            descInput.classList.add('hidden');
-            
-            editBtn.textContent = '✎';
-            editBtn.title = 'Edit ability';
+            // CSS-only implementation: just toggle attribute, CSS handles visibility
             item.setAttribute('data-edit-mode', 'false');
             
             // Trigger change detection
@@ -83,21 +76,13 @@ class AbilitiesRenderer {
             nameInput.value = nameDisplay.textContent;
             descInput.value = descDisplay.textContent;
             
-            nameDisplay.classList.add('hidden');
-            nameInput.classList.remove('hidden');
-            descDisplay.classList.add('hidden');
-            descInput.classList.remove('hidden');
-            
-            editBtn.textContent = '✓';
-            editBtn.title = 'Save changes';
+            // CSS-only implementation: just toggle attribute, CSS handles visibility
             item.setAttribute('data-edit-mode', 'true');
             
             // Focus the name input
             nameInput.focus();
         }
     }
-
-    // Note: toggleAbilityDesc removed - now handled by native <details> element
 }
 
 // Make available globally

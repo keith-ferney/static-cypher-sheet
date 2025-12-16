@@ -73,9 +73,9 @@ class FancySelectEventHandlers {
         const allOptions = optionsContainer.querySelectorAll('.fancy-select-option');
         allOptions.forEach((opt, idx) => {
             if (idx === this.select.expandedIndex) {
-                opt.classList.add('expanded');
+                opt.dataset.expanded = 'true';
             } else {
-                opt.classList.remove('expanded');
+                delete opt.dataset.expanded;
             }
         });
     }

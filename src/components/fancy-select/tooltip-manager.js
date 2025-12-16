@@ -28,7 +28,8 @@ class TooltipManager {
     
     // Keep tooltip visible when hovering over it
     this.tooltipElement.addEventListener('mouseenter', () => {
-      this.tooltipElement.classList.add('show', 'hovered');
+      this.tooltipElement.dataset.tooltipVisible = 'true';
+      this.tooltipElement.dataset.hovered = 'true';
     });
     
     this.tooltipElement.addEventListener('mouseleave', () => {
@@ -75,11 +76,12 @@ class TooltipManager {
   
   showTooltip() {
     TooltipManager.positionTooltip(this.tooltipElement, this.triggerElement, this.position, this.offset);
-    this.tooltipElement.classList.add('show');
+    this.tooltipElement.dataset.tooltipVisible = 'true';
   }
   
   hideTooltip() {
-    this.tooltipElement.classList.remove('show', 'hovered');
+    delete this.tooltipElement.dataset.tooltipVisible;
+    delete this.tooltipElement.dataset.hovered;
   }
 }
 

@@ -123,8 +123,9 @@ class CharacterFormManager {
      * Get all character data from the form
      */
     getDataFromForm() {
-        // Preserve isLocked from current character if it exists
-        const currentIsLocked = this.model?.currentCharacter?.isLocked || false;
+        // Read isLocked from CSS checkbox (CSS-only implementation)
+        const lockCheckbox = document.getElementById('character-lock-toggle');
+        const isLocked = lockCheckbox ? lockCheckbox.checked : false;
         
         return {
             name: document.getElementById('char-name').value || 'Unnamed Character',
@@ -161,7 +162,7 @@ class CharacterFormManager {
             cyphers: FormRenderer.getCurrentCyphers(),
             powerShifts: FormRenderer.getCurrentPowerShifts(),
             advancements: FormRenderer.getCurrentAdvancements(),
-            isLocked: currentIsLocked // Preserve lock state
+            isLocked: isLocked // Read from CSS checkbox
         };
     }
 }

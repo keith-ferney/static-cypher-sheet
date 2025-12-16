@@ -1,0 +1,34 @@
+/**
+ * CSS-Only Ability Edit Mode Toggle
+ * Uses data-edit-mode attribute to control visibility of display vs edit fields
+ */
+
+/* Default state (data-edit-mode="false"): Show display, hide inputs */
+.ability-item[data-edit-mode="false"] .ability-name-display,
+.ability-item[data-edit-mode="false"] .ability-desc-display {
+  display: block;
+}
+
+.ability-item[data-edit-mode="false"] .ability-name-input,
+.ability-item[data-edit-mode="false"] .ability-desc-input {
+  display: none;
+}
+
+.ability-item[data-edit-mode="false"] .ability-edit-btn::before {
+  content: '✎';
+}
+
+/* Edit mode (data-edit-mode="true"): Hide display, show inputs */
+.ability-item[data-edit-mode="true"] .ability-name-display,
+.ability-item[data-edit-mode="true"] .ability-desc-display {
+  display: none;
+}
+
+.ability-item[data-edit-mode="true"] .ability-name-input,
+.ability-item[data-edit-mode="true"] .ability-desc-input {
+  display: block;
+}
+
+.ability-item[data-edit-mode="true"] .ability-edit-btn::before {
+  content: '✓';
+}

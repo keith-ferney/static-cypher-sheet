@@ -138,8 +138,6 @@ class CharacterController {
         this.checkForChanges();
     }
 
-    // Note: toggleAbilityDesc removed - now handled by native <details> element
-
     // Equipment methods
     addEquipment() {
         const input = document.getElementById('new-equipment');
@@ -245,31 +243,6 @@ class CharacterController {
     // Helper to download JSON
     downloadJSON(jsonData, filename) {
         this.crudController.downloadJSON(jsonData, filename);
-    }
-
-    // Toggle character lock/unlock
-    toggleCharacterLock() {
-        const currentCharacter = this.model.currentCharacter;
-        if (!currentCharacter) return;
-        
-        const isLocked = currentCharacter.isLocked || false;
-        const newLockState = !isLocked;
-        
-        // Update model first
-        currentCharacter.isLocked = newLockState;
-        
-        // Save the character data with the lock state
-        const characterData = this.view.getCharacterDataFromForm();
-        characterData.isLocked = newLockState; // Ensure it's in the saved data
-        this.model.saveCharacter(characterData);
-        
-        // Update UI
-        this.view.updateLockState(newLockState);
-        
-        // Update snapshot to match current state (so no "unsaved changes" indicator)
-        this.changeTracker.saveSnapshot();
-        
-        this.view.showToast(newLockState ? 'Character locked' : 'Character unlocked', 'success');
     }
 }
 

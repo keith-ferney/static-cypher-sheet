@@ -9,6 +9,10 @@
 </head>
 <body class="bg-gray-900">
     
+    <!-- View Navigation Radio Buttons (CSS-only view switching) -->
+    <input type="radio" name="view" id="view-list" checked style="display:none;">
+    <input type="radio" name="view" id="view-sheet" style="display:none;">
+    
     <!-- Character List View -->
     <div id="character-list-view" class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -19,7 +23,7 @@
                             Your Characters
                         </h2>
                         <div class="flex gap-2">
-                            <button onclick="showNewCharacterForm()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md">
+                            <button data-action="showNewCharacterForm" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md">
                                 Create Character
                             </button>
                             <label for="import-export-toggle" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md cursor-pointer select-none">
@@ -47,12 +51,12 @@
     </div>
 
     <!-- Character Sheet View -->
-    <div id="character-sheet-view" class="hidden py-4">
+    <div id="character-sheet-view" class="py-4">
         <div class="sm:px-6 lg:px-8">
             <!-- Header with navigation and options menu -->
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-2">
-                    <button onclick="showCharacterList()" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm">← Back to List</button>
+                    <button data-action="showCharacterList" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm">← Back to List</button>
                     <img src="assets/ClaimTheSky.png" alt="Claim the Sky" class="md:hidden h-8">
                 </div>
                 <details class="relative options-menu">
@@ -62,11 +66,11 @@
                         </svg>
                     </summary>
                     <div class="absolute top-12 right-0 bg-white shadow-lg rounded-lg border border-gray-200 py-2 min-w-48 z-50">
-                        <button onclick="exportCurrentCharacter(); this.closest('details').removeAttribute('open');" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
+                        <button data-action="exportCurrentCharacter" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
                             <span>📥</span>
                             <span>Export Character</span>
                         </button>
-                        <button onclick="deleteCurrentCharacter(); this.closest('details').removeAttribute('open');" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2 text-red-600">
+                        <button data-action="deleteCurrentCharacter" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2 text-red-600">
                             <span>🗑️</span>
                             <span>Delete Character</span>
                         </button>
@@ -74,13 +78,13 @@
                 </details>
             </div>
             <!-- Main Character Sheet -->
-            <div style="background-image: url('assets/CharacterSheetBackground.png');" class="bg-center bg-cover bg-no-repeat bg-slate-200 dark:bg-gray-800 shadow-sm sm:rounded-lg text-gray-900 dark:text-black p-6 grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible">
+            <div style="background-image: url('assets/CharacterSheetBackground.png');" class="bg-center bg-cover bg-no-repeat bg-slate-200 dark:bg-gray-800 shadow-sm sm:rounded-lg text-gray-900 dark:text-black p-6 grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible character-sheet-form">
                 
                 <!-- COLUMN 1 CONTAINER -->
                 <div class="flex flex-col gap-3 overflow-visible h-full">
                 <!-- Name -->
                 <div class="w-full flex flex-col">
-                    <input id="char-name" type="text" class="border-0 border-r-8 border-b-8 border-black px-3 py-2" placeholder="Character Name">
+                    <input id="char-name" type="text" class="border-0 border-r-8 border-b-8 border-black px-3 py-2 lockable-field" placeholder="Character Name">
                     <label class="bg-black text-white w-fit px-2 font-normal -mt-2 text-lg">Name</label>
                 </div>
 
@@ -115,11 +119,11 @@
                 <!-- Tier Effort XP -->
                 <div class="flex flex-wrap gap-1 justify-between">
                     <div class="bg-white flex-1 text-black flex items-center flex-col border-r-8 border-b-8 border-black">
-                        <input id="char-tier" type="number" value="1" class="text-center w-24 border-0">
+                        <input id="char-tier" type="number" value="1" class="text-center w-24 border-0 lockable-field">
                         <label class="text-center font-semibold text-xl">Tier</label>
                     </div>
                     <div class="bg-white flex-1 text-black flex items-center flex-col border-r-8 border-b-8 border-black">
-                        <input id="char-effort" type="number" value="1" class="text-center w-24 border-0">
+                        <input id="char-effort" type="number" value="1" class="text-center w-24 border-0 lockable-field">
                         <label class="text-center font-semibold text-xl">Effort</label>
                     </div>
                     <div class="bg-white flex-1 text-black flex items-center flex-col border-r-8 border-b-8 border-black">
@@ -135,11 +139,11 @@
                         <input id="might-current" type="number" value="10" class="text-center w-24 border-0">
                         <div class="grid grid-cols-2 border-t-2 border-t-black">
                             <div class="flex flex-col border-r border-r-black">
-                                <input id="might-pool" type="number" value="10" class="text-center border-0 w-14">
+                                <input id="might-pool" type="number" value="10" class="text-center border-0 w-14 lockable-field">
                                 <label class="text-center font-semibold">Pool</label>
                             </div>
                             <div class="flex flex-col border-l border-l-black">
-                                <input id="might-edge" type="number" value="0" class="text-center border-0 w-14">
+                                <input id="might-edge" type="number" value="0" class="text-center border-0 w-14 lockable-field">
                                 <label class="text-center font-semibold">Edge</label>
                             </div>
                         </div>
@@ -149,11 +153,11 @@
                         <input id="speed-current" type="number" value="10" class="text-center w-24 border-0">
                         <div class="grid grid-cols-2 border-t-2 border-t-black">
                             <div class="flex flex-col border-r border-r-black">
-                                <input id="speed-pool" type="number" value="10" class="text-center border-0 w-14">
+                                <input id="speed-pool" type="number" value="10" class="text-center border-0 w-14 lockable-field">
                                 <label class="text-center font-semibold">Pool</label>
                             </div>
                             <div class="flex flex-col border-l border-l-black">
-                                <input id="speed-edge" type="number" value="0" class="text-center border-0 w-14">
+                                <input id="speed-edge" type="number" value="0" class="text-center border-0 w-14 lockable-field">
                                 <label class="text-center font-semibold">Edge</label>
                             </div>
                         </div>
@@ -163,11 +167,11 @@
                         <input id="intellect-current" type="number" value="10" class="text-center w-24 border-0">
                         <div class="grid grid-cols-2 border-t-2 border-t-black">
                             <div class="flex flex-col border-r border-r-black">
-                                <input id="intellect-pool" type="number" value="10" class="text-center border-0 w-14">
+                                <input id="intellect-pool" type="number" value="10" class="text-center border-0 w-14 lockable-field">
                                 <label class="text-center font-semibold">Pool</label>
                             </div>
                             <div class="flex flex-col border-l border-l-black">
-                                <input id="intellect-edge" type="number" value="0" class="text-center border-0 w-14">
+                                <input id="intellect-edge" type="number" value="0" class="text-center border-0 w-14 lockable-field">
                                 <label class="text-center font-semibold">Edge</label>
                             </div>
                         </div>
@@ -236,7 +240,9 @@
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
                     <label class="font-medium w-full text-lg underline-offset-8 mb-2 underline">Skills</label>
                     <div id="skills-list" class="flex flex-col gap-2"></div>
-                    <button onclick="addSkill()" class="mt-2 px-3 py-1 bg-black text-white text-sm rounded hover:bg-gray-800">+ Add Skill</button>
+                    <form onsubmit="addSkill(); return false;" class="mt-2">
+                        <button type="submit" class="px-3 py-1 bg-black text-white text-sm rounded hover:bg-gray-800">+ Add Skill</button>
+                    </form>
                 </div>
 
                 <!-- Background (Column 1) -->
@@ -259,7 +265,7 @@
                     <label class="font-medium w-full text-lg underline-offset-8 mb-2 underline">Special Abilities</label>
                     <div class="mb-2 flex gap-2 flex-wrap">
                         <div id="ability-select" class="flex-1"></div>
-                        <button onclick="addAbilityFromSelect()" class="shrink px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs whitespace-nowrap">+ Add Ability</button>
+                        <button data-action="addAbilityFromSelect" class="shrink px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs whitespace-nowrap">+ Add Ability</button>
                     </div>
                     <div id="abilities-list" class="flex flex-col gap-2 overflow-y-auto max-h-64"></div>
                 </div>
@@ -268,10 +274,10 @@
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
                     <label class="font-medium w-full text-lg underline-offset-8 mb-4 underline">Attacks</label>
                     <div id="attacks-list" class="flex flex-col gap-2 overflow-y-auto max-h-32"></div>
-                    <div class="mt-2 flex gap-2">
+                    <form onsubmit="addAttack(); return false;" class="mt-2 flex gap-2">
                         <input id="new-attack" type="text" placeholder="Attack (e.g., Sword - 4 dmg)" class="flex-1 px-2 py-1 border border-black">
-                        <button onclick="addAttack()" class="px-3 py-1 bg-black text-white">Add</button>
-                    </div>
+                        <button type="submit" class="px-3 py-1 bg-black text-white">Add</button>
+                    </form>
                 </div>
 
                 <!-- Notes (Column 2) -->
@@ -295,17 +301,17 @@
                         <label class="font-medium text-lg underline-offset-8 underline">Cyphers</label>
                         <label for="cypher-form-toggle" id="toggle-cypher-form" class="px-3 py-1 bg-black text-white text-sm rounded hover:bg-gray-800 cursor-pointer select-none">+ Add</label>
                     </div>
-                    <div id="cypher-form" class="hidden flex-col gap-2 pb-2 mb-2 border-b border-gray-300">
+                    <form id="cypher-form" onsubmit="addCypher(); return false;" class="hidden flex-col gap-2 pb-2 mb-2 border-b border-gray-300">
                         <div class="flex gap-2">
                             <input id="new-cypher-name" type="text" placeholder="Name" class="flex-1 px-2 py-1 text-sm border border-gray-300 rounded">
                             <input id="new-cypher-level" type="text" placeholder="Lvl" class="w-16 px-2 py-1 text-sm border border-gray-300 rounded text-center">
                         </div>
                         <textarea id="new-cypher-desc" placeholder="Effect" class="px-2 py-1 text-sm border border-gray-300 rounded resize-none" rows="2"></textarea>
                         <div class="flex gap-2">
-                            <button onclick="addCypher()" class="flex-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">Save</button>
+                            <button type="submit" class="flex-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">Save</button>
                             <label for="cypher-form-toggle" class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700 cursor-pointer select-none flex items-center justify-center">Cancel</label>
                         </div>
-                    </div>
+                    </form>
                     <div id="cyphers-list" class="flex flex-col gap-2 overflow-y-auto max-h-48"></div>
                 </div>
 
@@ -319,10 +325,10 @@
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
                     <label class="font-medium w-full text-lg underline-offset-8 mb-4 underline">Equipment</label>
                     <div id="equipment-list" class="flex flex-col gap-2 overflow-y-auto max-h-48"></div>
-                    <div class="mt-2 flex gap-2">
+                    <form onsubmit="addEquipment(); return false;" class="mt-2 flex gap-2">
                         <input id="new-equipment" type="text" placeholder="Equipment" class="flex-1 px-2 py-1 border border-black">
-                        <button onclick="addEquipment()" class="px-3 py-1 bg-black text-white">Add</button>
-                    </div>
+                        <button type="submit" class="px-3 py-1 bg-black text-white">Add</button>
+                    </form>
                 </div>
 
                 <!-- Portrait (Column 3) -->
@@ -338,10 +344,12 @@
 
             <!-- Action Buttons -->
             <div class="sticky-action-buttons">
-                <button onclick="toggleCharacterLock()" id="lock-toggle-btn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm" title="Lock/Unlock character creation fields">
-                    <span id="lock-icon">🔓</span> <span id="lock-text">Unlocked</span>
-                </button>
-                <button onclick="saveCharacter()" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm">💾 Save Character</button>
+                <!-- Hidden checkbox for CSS-only lock state -->
+                <input type="checkbox" id="character-lock-toggle" class="hidden">
+                <label for="character-lock-toggle" id="lock-toggle-btn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm cursor-pointer select-none" title="Lock/Unlock character creation fields">
+                    <span class="lock-icon">🔓 Unlocked</span>
+                </label>
+                <button data-action="saveCharacter" data-has-changes="false" class="px-4 py-2 text-white rounded-md text-sm"></button>
             </div>
         </div>
     </div>
@@ -356,7 +364,7 @@
             <!-- Export Section -->
             <div class="mb-6">
                 <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Export</h4>
-                <button onclick="exportAllCharacters()" class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md mb-2">
+                <button data-action="exportAllCharacters" class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md mb-2">
                     📤 Export All Characters
                 </button>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Downloads a JSON file with all your characters</p>
@@ -365,7 +373,7 @@
             <!-- Import Section -->
             <div class="mb-6">
                 <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Import</h4>
-                <input type="file" id="import-file-input" accept=".json" class="hidden" onchange="handleImportFile(event)">
+                <input type="file" id="import-file-input" accept=".json" class="hidden" data-action="handleImportFile">
                 <label for="import-file-input" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md mb-2 cursor-pointer select-none flex items-center justify-center">
                     📁 Choose File to Import
                 </label>
