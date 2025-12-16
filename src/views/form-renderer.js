@@ -20,9 +20,7 @@ class FormRenderer {
         return AbilitiesRenderer.renderAbilities(abilities);
     }
 
-    static toggleAbilityDesc(index) {
-        return AbilitiesRenderer.toggleAbilityDesc(index);
-    }
+    // Note: toggleAbilityDesc removed - now handled by native <details> element
 
     // ========== EQUIPMENT ==========
     static getCurrentEquipment() {

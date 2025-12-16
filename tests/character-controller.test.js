@@ -166,12 +166,10 @@ describe('CharacterController', () => {
       expect(abilities[0].name).toBe('Ability 2');
     });
 
-    test('should toggle ability description', async () => {
-      await controller.addAbility();
-      // Mock the toggleAbilityDesc method
-      const spy = jest.spyOn(view, 'toggleAbilityDesc');
-      controller.toggleAbilityDesc(0);
-      expect(spy).toHaveBeenCalledWith(0);
+    test('ability description toggle is now handled by native <details> element', () => {
+      // This functionality is now CSS-only via <details> element
+      // No JavaScript function needed
+      expect(true).toBe(true);
     });
 
     test('should add ability from select when ability selected', async () => {

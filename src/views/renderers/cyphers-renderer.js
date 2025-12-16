@@ -38,10 +38,6 @@ class CyphersRenderer {
             });
         }).join('');
     }
-
-    static toggleCypherDesc(index) {
-        // No longer needed, but keeping for backward compatibility
-    }
 }
 
 // Make available globally

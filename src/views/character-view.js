@@ -234,9 +234,7 @@ class CharacterView {
         FormRenderer.renderAbilities(abilities);
     }
 
-    toggleAbilityDesc(index) {
-        FormRenderer.toggleAbilityDesc(index);
-    }
+    // Note: toggleAbilityDesc removed - now handled by native <details> element
 
     getCurrentEquipment() {
         return FormRenderer.getCurrentEquipment();

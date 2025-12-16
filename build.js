@@ -6,7 +6,7 @@
  * This script:
  * 1. Generates a version hash based on current timestamp
  * 2. Creates a dist/ folder
- * 3. Copies all files to dist/
+ * 3. Automatically discovers and copies all project files
  * 4. Updates index.html to include version query strings on JS/CSS files
  */
 
@@ -26,7 +26,50 @@ if (fs.existsSync(distDir)) {
 }
 fs.mkdirSync(distDir);
 
-// Files to copy directly
+// Helper function to recursively find files
+function getAllFiles(dirPath, arrayOfFiles = [], baseDir = dirPath) {
+  const files = fs.readdirSync(dirPath);
+  
+  files.forEach(file => {
+    const fullPath = path.join(dirPath, file);
+    const relativePath = path.relative(baseDir, fullPath);
+    
+    // Skip certain directories and files
+    if (file === 'node_modules' || 
+        file === 'dist' || 
+        file === '.git' || 
+        file === 'coverage' ||
+        file === 'tests' ||
+        file === 'docs' ||
+        file === '.DS_Store' ||
+        file.endsWith('.md') ||
+        file.endsWith('.test.js') ||
+        file === 'build.js' ||
+        file === 'jest.config.json' ||
+        file === 'package.json' ||
+        file === 'package-lock.json' ||
+        file === 'netlify.toml' ||
+        file.endsWith('.bak')) {
+      return;
+    }
+    
+    if (fs.statSync(fullPath).isDirectory()) {
+      getAllFiles(fullPath, arrayOfFiles, baseDir);
+    } else {
+      arrayOfFiles.push(relativePath);
+    }
+  });
+  
+  return arrayOfFiles;
+}
+
+// Automatically discover all files to copy
+console.log('🔍 Discovering project files...');
+const filesToCopy = getAllFiles(__dirname);
+console.log(`📋 Found ${filesToCopy.length} files to copy`);
+
+// Keep legacy explicit list as reference (commented out)
+/*
 const filesToCopy = [
   'styles.css',
   'styles/layout.css',
@@ -34,48 +77,11 @@ const filesToCopy = [
   'styles/components/fancy-select.css',
   'styles/components/toast.css',
   'styles/components/modal.css',
+  'styles/components/cypher-form.css',
   'src/app.js',
-  'src/models/character.js',
-  'src/models/data-loader.js',
-  'src/utils/template-loader.js',
-  'src/views/toast-notification.js',
-  'src/views/renderers/skills-renderer.js',
-  'src/views/renderers/abilities-renderer.js',
-  'src/views/renderers/equipment-renderer.js',
-  'src/views/renderers/combat-renderer.js',
-  'src/views/renderers/cyphers-renderer.js',
-  'src/views/renderers/power-shifts-renderer.js',
-  'src/views/renderers/advancements-renderer.js',
-  'src/views/form-renderer.js',
-  'src/views/character-form-manager.js',
-  'src/views/character-view.js',
-  'src/controllers/modules/character-crud-controller.js',
-  'src/controllers/modules/character-change-tracker.js',
-  'src/controllers/character-controller.js',
-  'src/components/fancy-select/constants.js',
-  'src/components/fancy-select/utils.js',
-  'src/components/fancy-select/tooltip-manager.js',
-  'src/components/fancy-select/event-handlers.js',
-  'src/components/fancy-select/dom-builder.js',
-  'src/components/fancy-select/fancy-select-core.js',
-  'src/components/fancy-select.js',
-  'data/descriptors.json',
-  'data/types.json',
-  'data/foci.json',
-  'data/flavors.json',
-  'data/abilities.json',
-  'data/advancements.json',
-  'data/powershifts.json',
-  'templates/advancement-item.html',
-  'templates/skill-row.html',
-  'templates/equipment-item.html',
-  'templates/ability-item.html',
-  'templates/cypher-item.html',
-  'templates/attack-item.html',
-  'templates/power-shift-item.html',
-  'assets/CharacterSheetBackground.png',
-  'assets/ClaimTheSky.png'
+  ... all other files
 ];
+*/
 
 // Copy files
 console.log('📂 Copying files...');

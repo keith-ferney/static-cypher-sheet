@@ -97,28 +97,7 @@ class AbilitiesRenderer {
         }
     }
 
-    static toggleAbilityDesc(index) {
-        const abilities = document.querySelectorAll('#abilities-list .ability-item');
-        if (abilities[index]) {
-            const item = abilities[index];
-            const isEditMode = item.getAttribute('data-edit-mode') === 'true';
-            const descDisplay = item.querySelector('.ability-desc-display');
-            const descInput = item.querySelector('.ability-desc-input');
-            const chevron = item.querySelector('.ability-chevron');
-            
-            if (isEditMode) {
-                // In edit mode, toggle the textarea
-                descInput.classList.toggle('hidden');
-            } else {
-                // In view mode, toggle the display paragraph
-                descDisplay.classList.toggle('hidden');
-            }
-            
-            if (chevron) {
-                chevron.classList.toggle('rotate-180');
-            }
-        }
-    }
+    // Note: toggleAbilityDesc removed - now handled by native <details> element
 }
 
 // Make available globally

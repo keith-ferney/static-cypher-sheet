@@ -1,0 +1,25 @@
+/* Cypher Form Toggle - CSS Only Implementation */
+
+/* Show form when checkbox is checked */
+#cypher-form-toggle:checked ~ #cypher-form {
+    display: flex !important;
+}
+
+/* Change button text when form is visible */
+#cypher-form-toggle:not(:checked) ~ div #toggle-cypher-form::after {
+    content: '+ Add';
+}
+
+#cypher-form-toggle:checked ~ div #toggle-cypher-form::after {
+    content: 'Cancel';
+}
+
+/* Hide original text content */
+#cypher-form-toggle ~ div #toggle-cypher-form {
+    font-size: 0;
+}
+
+/* Show the pseudo-element text */
+#cypher-form-toggle ~ div #toggle-cypher-form::after {
+    font-size: 0.875rem; /* text-sm */
+}

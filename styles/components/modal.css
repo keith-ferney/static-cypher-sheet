@@ -1,6 +1,12 @@
-/* Modal Styles */
+/* Modal Styles - CSS Only Implementation */
 
-/* Import/Export Modal */
+/* Import/Export Modal Toggle */
+/* Show modal when checkbox is checked */
+#import-export-toggle:checked ~ #import-export-modal {
+  display: flex !important;
+}
+
+/* Modal backdrop and animations */
 #import-export-modal {
   backdrop-filter: blur(4px);
 }

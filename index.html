@@ -22,9 +22,9 @@
                             <button onclick="showNewCharacterForm()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md">
                                 Create Character
                             </button>
-                            <button onclick="showImportExportModal()" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md">
+                            <label for="import-export-toggle" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md cursor-pointer select-none">
                                 📥 Import/Export
-                            </button>
+                            </label>
                         </div>
                     </div>
 
@@ -55,23 +55,23 @@
                     <button onclick="showCharacterList()" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm">← Back to List</button>
                     <img src="assets/ClaimTheSky.png" alt="Claim the Sky" class="md:hidden h-8">
                 </div>
-                <div class="relative">
-                    <button id="options-menu-button" onclick="toggleOptionsMenu()" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+                <details class="relative options-menu">
+                    <summary class="p-2 hover:bg-gray-200 rounded-full transition-colors cursor-pointer list-none">
                         <svg class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
                         </svg>
-                    </button>
-                    <div id="options-menu" class="hidden absolute top-12 right-0 bg-white shadow-lg rounded-lg border border-gray-200 py-2 min-w-48 z-50">
-                        <button onclick="exportCurrentCharacter(); toggleOptionsMenu();" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
+                    </summary>
+                    <div class="absolute top-12 right-0 bg-white shadow-lg rounded-lg border border-gray-200 py-2 min-w-48 z-50">
+                        <button onclick="exportCurrentCharacter(); this.closest('details').removeAttribute('open');" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
                             <span>📥</span>
                             <span>Export Character</span>
                         </button>
-                        <button onclick="deleteCurrentCharacter(); toggleOptionsMenu();" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2 text-red-600">
+                        <button onclick="deleteCurrentCharacter(); this.closest('details').removeAttribute('open');" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2 text-red-600">
                             <span>🗑️</span>
                             <span>Delete Character</span>
                         </button>
                     </div>
-                </div>
+                </details>
             </div>
             <!-- Main Character Sheet -->
             <div style="background-image: url('assets/CharacterSheetBackground.png');" class="bg-center bg-cover bg-no-repeat bg-slate-200 dark:bg-gray-800 shadow-sm sm:rounded-lg text-gray-900 dark:text-black p-6 grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible">
@@ -288,9 +288,12 @@
 
                 <!-- Cyphers (Column 3) -->
                 <div class="bg-white w-full flex flex-col border-r-8 border-b-8 border-black px-3 py-2">
+                    <!-- Hidden checkbox for CSS-only form toggle -->
+                    <input type="checkbox" id="cypher-form-toggle" class="hidden">
+                    
                     <div class="flex justify-between items-center mb-2">
                         <label class="font-medium text-lg underline-offset-8 underline">Cyphers</label>
-                        <button id="toggle-cypher-form" onclick="toggleCypherForm()" class="px-3 py-1 bg-black text-white text-sm rounded hover:bg-gray-800">+ Add</button>
+                        <label for="cypher-form-toggle" id="toggle-cypher-form" class="px-3 py-1 bg-black text-white text-sm rounded hover:bg-gray-800 cursor-pointer select-none">+ Add</label>
                     </div>
                     <div id="cypher-form" class="hidden flex-col gap-2 pb-2 mb-2 border-b border-gray-300">
                         <div class="flex gap-2">
@@ -300,7 +303,7 @@
                         <textarea id="new-cypher-desc" placeholder="Effect" class="px-2 py-1 text-sm border border-gray-300 rounded resize-none" rows="2"></textarea>
                         <div class="flex gap-2">
                             <button onclick="addCypher()" class="flex-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">Save</button>
-                            <button onclick="toggleCypherForm()" class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">Cancel</button>
+                            <label for="cypher-form-toggle" class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700 cursor-pointer select-none flex items-center justify-center">Cancel</label>
                         </div>
                     </div>
                     <div id="cyphers-list" class="flex flex-col gap-2 overflow-y-auto max-h-48"></div>
@@ -343,7 +346,9 @@
         </div>
     </div>
 
-    <!-- Import/Export Modal -->
+    <!-- Import/Export Modal - CSS Only Toggle -->
+    <input type="checkbox" id="import-export-toggle" class="hidden">
+    
     <div id="import-export-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
             <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Import/Export Characters</h3>
@@ -378,9 +383,9 @@
             </div>
 
             <!-- Close Button -->
-            <button onclick="hideImportExportModal()" class="w-full px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md">
+            <label for="import-export-toggle" class="w-full px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md cursor-pointer select-none flex items-center justify-center">
                 Close
-            </button>
+            </label>
         </div>
     </div>
 

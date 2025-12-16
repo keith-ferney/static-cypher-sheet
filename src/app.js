@@ -55,13 +55,8 @@ function removeAbility(index) {
     app.removeAbility(index);
 }
 
-function toggleAbilityDesc(index) {
-    app.toggleAbilityDesc(index);
-}
-
-function toggleCypherDesc(index) {
-    CyphersRenderer.toggleCypherDesc(index);
-}
+// Note: Ability description toggle now uses native <details> element - no JS needed!
+// Note: Cypher descriptions don't need toggle - always visible
 
 function addEquipment() {
     app.addEquipment();
@@ -81,38 +76,22 @@ function removeAttack(index) {
 
 function addCypher() {
     app.addCypher();
-    // Hide form after adding
-    const form = document.getElementById('cypher-form');
-    const button = document.getElementById('toggle-cypher-form');
-    if (form && button) {
-        form.classList.add('hidden');
-        button.textContent = '+ Add';
+    // Close form after adding (CSS-only toggle)
+    const toggleCheckbox = document.getElementById('cypher-form-toggle');
+    if (toggleCheckbox) {
+        toggleCheckbox.checked = false;
     }
+    // Clear form fields
+    document.getElementById('new-cypher-name').value = '';
+    document.getElementById('new-cypher-level').value = '';
+    document.getElementById('new-cypher-desc').value = '';
 }
 
 function removeCypher(index) {
     app.removeCypher(index);
 }
 
-function toggleCypherForm() {
-    const form = document.getElementById('cypher-form');
-    const button = document.getElementById('toggle-cypher-form');
-    if (form && button) {
-        if (form.classList.contains('hidden')) {
-            form.classList.remove('hidden');
-            form.classList.add('flex');
-            button.textContent = 'Cancel';
-            // Clear form
-            document.getElementById('new-cypher-name').value = '';
-            document.getElementById('new-cypher-level').value = '';
-            document.getElementById('new-cypher-desc').value = '';
-        } else {
-            form.classList.add('hidden');
-            form.classList.remove('flex');
-            button.textContent = '+ Add';
-        }
-    }
-}
+// Note: Cypher form toggle now uses CSS-only checkbox solution - no JS needed!
 
 function updateCypherLevel(index, newLevel) {
     const cyphers = app.character.cyphers || [];
@@ -120,13 +99,6 @@ function updateCypherLevel(index, newLevel) {
         cyphers[index].level = newLevel;
         app.character.cyphers = cyphers;
         app.saveCharacter();
-    }
-}
-
-function toggleOptionsMenu() {
-    const menu = document.getElementById('options-menu');
-    if (menu) {
-        menu.classList.toggle('hidden');
     }
 }
 
@@ -138,14 +110,7 @@ function removePowerShiftInstance(psName, psId) {
     app.removePowerShiftInstance(psName, psId);
 }
 
-// Close options menu when clicking outside
-document.addEventListener('click', (e) => {
-    const menu = document.getElementById('options-menu');
-    const button = document.getElementById('options-menu-button');
-    if (menu && button && !menu.contains(e.target) && !button.contains(e.target)) {
-        menu.classList.add('hidden');
-    }
-});
+// Note: Options menu now uses native <details> element - no JS needed!
 
 // Import/Export functions
 function exportCurrentCharacter() {
@@ -163,18 +128,15 @@ function handleImportFile(event) {
     const mode = document.querySelector('input[name="import-mode"]:checked').value;
     app.importCharacters(file, mode);
     
-    // Reset file input and hide modal
+    // Reset file input and close modal (CSS-only toggle)
     event.target.value = '';
-    hideImportExportModal();
+    const toggleCheckbox = document.getElementById('import-export-toggle');
+    if (toggleCheckbox) {
+        toggleCheckbox.checked = false;
+    }
 }
 
-function showImportExportModal() {
-    document.getElementById('import-export-modal').classList.remove('hidden');
-}
-
-function hideImportExportModal() {
-    document.getElementById('import-export-modal').classList.add('hidden');
-}
+// Note: Import/Export modal now uses CSS-only checkbox solution - no JS needed!
 
 function toggleCharacterLock() {
     app.toggleCharacterLock();

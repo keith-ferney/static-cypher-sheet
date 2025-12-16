@@ -1,0 +1,33 @@
+/* Ability Item Styles - CSS Only Implementation */
+
+/* Rotate chevron when details is open */
+details.ability-item[open] .ability-chevron {
+    transform: rotate(180deg);
+}
+
+/* In edit mode, show textarea and hide description display in details content */
+details.ability-item[data-edit-mode="true"] .ability-desc-display {
+    display: none;
+}
+
+details.ability-item[data-edit-mode="true"] .ability-desc-input {
+    display: block;
+}
+
+/* In view mode, show description display */
+details.ability-item[data-edit-mode="false"] .ability-desc-display {
+    display: block;
+}
+
+details.ability-item[data-edit-mode="false"] .ability-desc-input {
+    display: none;
+}
+
+/* Style the summary to remove default marker */
+details.ability-item summary::-webkit-details-marker {
+    display: none;
+}
+
+details.ability-item summary::marker {
+    display: none;
+}

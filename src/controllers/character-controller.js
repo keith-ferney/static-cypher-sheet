@@ -138,9 +138,7 @@ class CharacterController {
         this.checkForChanges();
     }
 
-    toggleAbilityDesc(index) {
-        this.view.toggleAbilityDesc(index);
-    }
+    // Note: toggleAbilityDesc removed - now handled by native <details> element
 
     // Equipment methods
     addEquipment() {
