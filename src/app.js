@@ -1,5 +1,5 @@
 // Main application entry point
-let app; // Global app instance for onclick handlers
+let app; // Global app instance for handlers
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Initialize MVC components
@@ -7,12 +7,91 @@ document.addEventListener('DOMContentLoaded', async () => {
     const view = new CharacterView();
     const controller = new CharacterController(model, view);
     
-    // Make controller available globally for onclick handlers
+    // Make controller available globally for handlers
     app = controller;
     
     // Initialize the application
     await controller.initialize();
+    
+    // Set up event delegation for data-action buttons
+    setupEventDelegation();
 });
+
+// Event delegation handler for data-action attributes
+function setupEventDelegation() {
+    // Handle clicks
+    document.addEventListener('click', (e) => {
+        const element = e.target.closest('[data-action]');
+        if (!element) return;
+        
+        const action = element.dataset.action;
+        
+        // Handle actions with index parameter
+        if (element.dataset.index !== undefined) {
+            const index = parseInt(element.dataset.index);
+            
+            if (action === 'removeSkill') {
+                app.removeSkill(index);
+            } else if (action === 'removeEquipment') {
+                app.removeEquipment(index);
+            } else if (action === 'removeAttack') {
+                app.removeAttack(index);
+            } else if (action === 'removeCypher') {
+                app.removeCypher(index);
+            } else if (action === 'removeAbility') {
+                app.removeAbility(index);
+            } else if (action === 'toggleAbilityEditMode') {
+                AbilitiesRenderer.toggleEditMode(index);
+            }
+        }
+        // Handle power shift actions with special parameters
+        else if (action === 'addPowerShiftInstance') {
+            const psName = element.dataset.psName;
+            app.addPowerShiftInstance(psName);
+        } else if (action === 'removePowerShiftInstance') {
+            const psName = element.dataset.psName;
+            const psId = element.dataset.psId;
+            app.removePowerShiftInstance(psName, psId);
+        }
+        // Handle loadCharacter with character ID
+        else if (action === 'loadCharacter') {
+            const charId = element.dataset.charId;
+            app.loadCharacter(charId);
+        }
+        // Handle no-parameter actions
+        else if (typeof window[action] === 'function') {
+            window[action]();
+        }
+        
+        // Close parent details element if inside options menu
+        const details = element.closest('details');
+        if (details && !details.hasAttribute('open')) {
+            // Only close if it was already open (for options menu)
+        } else if (details) {
+            details.removeAttribute('open');
+        }
+    });
+    
+    // Handle change events for inputs with data-action
+    document.addEventListener('change', (e) => {
+        const element = e.target.closest('[data-action]');
+        if (!element) return;
+        
+        const action = element.dataset.action;
+        
+        if (action === 'updateCypherLevel') {
+            const index = parseInt(element.dataset.index);
+            app.updateCypherLevel(index, element.value);
+        } else if (action === 'checkForChanges') {
+            app.checkForChanges();
+        } else if (action === 'handleImportFile') {
+            handleImportFile(e);
+        } else if (action === 'loadCharacter') {
+            const charId = element.dataset.charId;
+            app.loadCharacter(charId);
+        }
+    });
+}
 
 // Global functions for onclick handlers (delegates to controller)
 function showCharacterList() {
@@ -55,9 +134,6 @@ function removeAbility(index) {
     app.removeAbility(index);
 }
 
-// Note: Ability description toggle now uses native <details> element - no JS needed!
-// Note: Cypher descriptions don't need toggle - always visible
-
 function addEquipment() {
     app.addEquipment();
 }
@@ -91,8 +167,6 @@ function removeCypher(index) {
     app.removeCypher(index);
 }
 
-// Note: Cypher form toggle now uses CSS-only checkbox solution - no JS needed!
-
 function updateCypherLevel(index, newLevel) {
     const cyphers = app.character.cyphers || [];
     if (cyphers[index]) {
@@ -109,8 +183,6 @@ function addPowerShiftInstance(psName) {
 function removePowerShiftInstance(psName, psId) {
     app.removePowerShiftInstance(psName, psId);
 }
-
-// Note: Options menu now uses native <details> element - no JS needed!
 
 // Import/Export functions
 function exportCurrentCharacter() {
@@ -136,8 +208,10 @@ function handleImportFile(event) {
     }
 }
 
-// Note: Import/Export modal now uses CSS-only checkbox solution - no JS needed!
-
-function toggleCharacterLock() {
-    app.toggleCharacterLock();
-}
+// Stub for backward compatibility with old saved characters that have inline onclick handlers
+// This prevents errors when loading characters saved before the CSS-only refactoring
+window.toggleAbilityDesc = function() {
+    // No-op: Ability descriptions are now handled by native <details> element
+    // Old saved characters may have onclick="app.toggleAbilityDesc()" in their HTML
+    console.warn('toggleAbilityDesc called from old saved data - functionality now handled by <details> element');
+};

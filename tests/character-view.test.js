@@ -16,6 +16,9 @@ describe('CharacterView', () => {
     
     // Setup DOM FIRST
     document.body.innerHTML = `
+      <input type="radio" name="view" id="view-list" checked style="display:none;">
+      <input type="radio" name="view" id="view-sheet" style="display:none;">
+      
       <div id="character-list-view"></div>
       <div id="character-sheet-view">
         <input id="char-name" />
@@ -68,10 +71,11 @@ describe('CharacterView', () => {
         </table>
         <div id="character-list"></div>
         
-        <button id="lock-toggle-btn" class="lock-btn">
+        <input type="checkbox" id="character-lock-toggle" style="display:none;" />
+        <label for="character-lock-toggle" id="lock-toggle-btn" class="lock-btn">
           <span id="lock-icon">🔓</span>
           <span id="lock-text">Unlocked</span>
-        </button>
+        </label>
       </div>
     `;
     
@@ -119,21 +123,23 @@ describe('CharacterView', () => {
     test('should show character list', () => {
       view.showCharacterList();
       
-      const listView = document.getElementById('character-list-view');
-      const sheetView = document.getElementById('character-sheet-view');
+      // CSS-only implementation: check radio button state
+      const listRadio = document.getElementById('view-list');
+      const sheetRadio = document.getElementById('view-sheet');
       
-      expect(listView.classList.contains('hidden')).toBe(false);
-      expect(sheetView.classList.contains('hidden')).toBe(true);
+      expect(listRadio.checked).toBe(true);
+      expect(sheetRadio.checked).toBe(false);
     });
 
     test('should show character sheet', () => {
       view.showCharacterSheet();
       
-      const listView = document.getElementById('character-list-view');
-      const sheetView = document.getElementById('character-sheet-view');
+      // CSS-only implementation: check radio button state
+      const listRadio = document.getElementById('view-list');
+      const sheetRadio = document.getElementById('view-sheet');
       
-      expect(listView.classList.contains('hidden')).toBe(true);
-      expect(sheetView.classList.contains('hidden')).toBe(false);
+      expect(listRadio.checked).toBe(false);
+      expect(sheetRadio.checked).toBe(true);
     });
   });
 
@@ -218,143 +224,39 @@ describe('CharacterView', () => {
     test('should update lock state to locked', () => {
       view.updateLockState(true);
       
-      const lockBtn = document.getElementById('lock-toggle-btn');
-      const icon = document.getElementById('lock-icon');
-      const text = document.getElementById('lock-text');
-      
-      expect(lockBtn.classList.contains('bg-orange-600')).toBe(true);
-      expect(icon.textContent).toBe('🔒');
-      expect(text.textContent).toBe('Locked');
+      // CSS-only implementation: just check the checkbox state
+      const checkbox = document.getElementById('character-lock-toggle');
+      expect(checkbox.checked).toBe(true);
     });
 
     test('should update lock state to unlocked', () => {
       view.updateLockState(false);
       
-      const lockBtn = document.getElementById('lock-toggle-btn');
-      const icon = document.getElementById('lock-icon');
-      const text = document.getElementById('lock-text');
-      
-      expect(lockBtn.classList.contains('bg-blue-600')).toBe(true);
-      expect(icon.textContent).toBe('🔓');
-      expect(text.textContent).toBe('Unlocked');
+      // CSS-only implementation: just check the checkbox state
+      const checkbox = document.getElementById('character-lock-toggle');
+      expect(checkbox.checked).toBe(false);
     });
 
-    test('should disable form inputs when locked', () => {
+    test('should set checkbox when locked', () => {
       view.updateLockState(true);
       
-      const nameInput = document.getElementById('char-name');
-      expect(nameInput.disabled).toBe(true);
+      // Checkbox is checked, CSS handles the rest
+      const checkbox = document.getElementById('character-lock-toggle');
+      expect(checkbox).toBeTruthy();
+      expect(checkbox.checked).toBe(true);
     });
 
-    test('should enable form inputs when unlocked', () => {
+    test('should unset checkbox when unlocked', () => {
       view.updateLockState(false);
       
-      const nameInput = document.getElementById('char-name');
-      expect(nameInput.disabled).toBe(false);
+      // Checkbox is unchecked, CSS handles the rest
+      const checkbox = document.getElementById('character-lock-toggle');
+      expect(checkbox).toBeTruthy();
+      expect(checkbox.checked).toBe(false);
     });
 
-    test('should disable skills, abilities, attacks, and power shifts when locked', () => {
-      // Setup some content first
-      document.getElementById('skills-list').innerHTML = `
-        <div class="skill-row">
-          <input type="text" class="skill-name">
-          <select class="skill-pool"></select>
-          <button>Remove</button>
-        </div>
-      `;
-      document.getElementById('abilities-list').innerHTML = `
-        <div class="ability-item">
-          <button>Remove</button>
-        </div>
-      `;
-      document.getElementById('attacks-list').innerHTML = `
-        <div class="attack-item">
-          <button>Remove</button>
-        </div>
-      `;
-      document.getElementById('powershifts-list').innerHTML = `
-        <label>
-          <input type="number" class="ps-value">
-          <button>Add</button>
-        </label>
-      `;
-      document.getElementById('advancements-list').innerHTML = `
-        <label class="advancement-item cursor-pointer hover:bg-gray-50">
-          <input type="checkbox">
-        </label>
-      `;
-      
-      view.updateLockState(true);
-      
-      // Check skills
-      const skillInput = document.querySelector('#skills-list input');
-      const skillButton = document.querySelector('#skills-list button');
-      expect(skillInput.disabled).toBe(true);
-      expect(skillButton.disabled).toBe(true);
-      
-      // Check abilities
-      const abilityButton = document.querySelector('#abilities-list button');
-      expect(abilityButton.disabled).toBe(true);
-      
-      // Check attacks
-      const attackButton = document.querySelector('#attacks-list button');
-      expect(attackButton.disabled).toBe(true);
-      
-      // Check power shifts
-      const psInput = document.querySelector('#powershifts-list input');
-      const psButton = document.querySelector('#powershifts-list button');
-      expect(psInput.disabled).toBe(true);
-      expect(psButton.disabled).toBe(true);
-      
-      // Check advancements
-      const advCheckbox = document.querySelector('#advancements-list input[type="checkbox"]');
-      expect(advCheckbox.disabled).toBe(true);
-    });
-
-    test('should enable skills, abilities, attacks, and power shifts when unlocked', () => {
-      // Setup some content first
-      document.getElementById('skills-list').innerHTML = `
-        <div class="skill-row">
-          <input type="text" class="skill-name">
-          <button>Remove</button>
-        </div>
-      `;
-      document.getElementById('abilities-list').innerHTML = `
-        <div class="ability-item">
-          <button>Remove</button>
-        </div>
-      `;
-      document.getElementById('powershifts-list').innerHTML = `
-        <label>
-          <input type="number" class="ps-value">
-        </label>
-      `;
-      document.getElementById('advancements-list').innerHTML = `
-        <label class="advancement-item">
-          <input type="checkbox">
-        </label>
-      `;
-      
-      view.updateLockState(false);
-      
-      // Check skills
-      const skillInput = document.querySelector('#skills-list input');
-      const skillButton = document.querySelector('#skills-list button');
-      expect(skillInput.disabled).toBe(false);
-      expect(skillButton.disabled).toBe(false);
-      
-      // Check abilities
-      const abilityButton = document.querySelector('#abilities-list button');
-      expect(abilityButton.disabled).toBe(false);
-      
-      // Check power shifts
-      const psInput = document.querySelector('#powershifts-list input');
-      expect(psInput.disabled).toBe(false);
-      
-      // Check advancements
-      const advCheckbox = document.querySelector('#advancements-list input[type="checkbox"]');
-      expect(advCheckbox.disabled).toBe(false);
-    });
+    // Note: CSS-only lock implementation means no DOM manipulation tests needed.
+    // CSS handles all visual and interaction states via :checked selector.
   });
 
   describe('Change Detection', () => {

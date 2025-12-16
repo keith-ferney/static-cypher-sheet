@@ -122,15 +122,13 @@ class CharacterView {
 
     // ========== VIEW NAVIGATION ==========
     showCharacterList() {
-        document.getElementById('character-list-view').classList.remove('hidden');
-        document.getElementById('character-sheet-view').classList.add('hidden');
+        const listRadio = document.getElementById('view-list');
+        if (listRadio) listRadio.checked = true;
     }
 
     showCharacterSheet() {
-        const listView = document.getElementById('character-list-view');
-        const sheetView = document.getElementById('character-sheet-view');
-        if (listView) listView.classList.add('hidden');
-        if (sheetView) sheetView.classList.remove('hidden');
+        const sheetRadio = document.getElementById('view-sheet');
+        if (sheetRadio) sheetRadio.checked = true;
     }
 
     // ========== CHARACTER LIST ==========
@@ -164,7 +162,7 @@ class CharacterView {
                     </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button onclick="app.loadCharacter('${char.id}')" class="text-indigo-600 hover:text-indigo-900">Edit</button>
+                    <button data-action="loadCharacter" data-char-id="${char.id}" class="text-indigo-600 hover:text-indigo-900">Edit</button>
                 </td>
             </tr>
         `).join('');
@@ -198,18 +196,11 @@ class CharacterView {
 
     // ========== SAVE BUTTON STATE ==========
     updateSaveButtonState(hasChanges) {
-        const saveButton = document.querySelector('button[onclick="saveCharacter()"]');
+        const saveButton = document.querySelector('button[data-action="saveCharacter"]');
         if (!saveButton) return;
         
-        if (hasChanges) {
-            saveButton.classList.remove('bg-green-600', 'hover:bg-green-700');
-            saveButton.classList.add('bg-yellow-500', 'hover:bg-yellow-600', 'save-button-unsaved');
-            saveButton.innerHTML = '⚠️ Save Changes';
-        } else {
-            saveButton.classList.remove('bg-yellow-500', 'hover:bg-yellow-600', 'save-button-unsaved');
-            saveButton.classList.add('bg-green-600', 'hover:bg-green-700');
-            saveButton.innerHTML = '💾 Save Character';
-        }
+        // CSS-only implementation: set data attribute, CSS handles styling
+        saveButton.setAttribute('data-has-changes', hasChanges ? 'true' : 'false');
     }
 
     // ========== DELEGATED METHODS TO FormRenderer ==========
@@ -233,8 +224,6 @@ class CharacterView {
     renderAbilities(abilities) {
         FormRenderer.renderAbilities(abilities);
     }
-
-    // Note: toggleAbilityDesc removed - now handled by native <details> element
 
     getCurrentEquipment() {
         return FormRenderer.getCurrentEquipment();
@@ -276,193 +265,14 @@ class CharacterView {
         return FormRenderer.getCurrentAdvancements();
     }
 
-    // ========== UNSAVED INDICATOR ==========
-    showUnsavedIndicator() {
-        const indicator = document.getElementById('unsaved-indicator');
-        if (indicator) {
-            indicator.classList.remove('hidden');
-        }
-    }
-
-    hideUnsavedIndicator() {
-        const indicator = document.getElementById('unsaved-indicator');
-        if (indicator) {
-            indicator.classList.add('hidden');
-        }
-    }
-
-    // ========== CHARACTER LOCK ==========
+    // ========== CHARACTER LOCK (CSS-Only) ==========
+    // Lock UI is handled by CSS using #character-lock-toggle checkbox
+    // This only sets the checkbox state when loading a character
     updateLockState(isLocked) {
-        const lockBtn = document.getElementById('lock-toggle-btn');
-        const lockIcon = document.getElementById('lock-icon');
-        const lockText = document.getElementById('lock-text');
-        
-        // Update button appearance
-        if (lockBtn) {
-            if (isLocked) {
-                lockBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                lockBtn.classList.add('bg-orange-600', 'hover:bg-orange-700');
-            } else {
-                lockBtn.classList.remove('bg-orange-600', 'hover:bg-orange-700');
-                lockBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
-            }
+        const lockCheckbox = document.getElementById('character-lock-toggle');
+        if (lockCheckbox) {
+            lockCheckbox.checked = isLocked || false;
         }
-        
-        if (lockIcon) {
-            lockIcon.textContent = isLocked ? '🔒' : '🔓';
-        }
-        
-        if (lockText) {
-            lockText.textContent = isLocked ? 'Locked' : 'Unlocked';
-        }
-        
-        // Lock/unlock character creation fields
-        this._setFieldsLockState(isLocked);
-    }
-
-    _setFieldsLockState(isLocked) {
-        // Fields that should be locked (character creation fields that don't change during play)
-        const fieldsToLock = [
-            'char-name',
-            'char-descriptor',
-            'char-type',
-            'char-focus',
-            'char-flavor',
-            'char-tier',
-            'char-effort',
-            'might-pool',
-            'might-edge',
-            'speed-pool',
-            'speed-edge',
-            'intellect-pool',
-            'intellect-edge'
-        ];
-        
-        fieldsToLock.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.disabled = isLocked;
-                if (isLocked) {
-                    field.classList.add('bg-gray-200', 'cursor-not-allowed');
-                } else {
-                    field.classList.remove('bg-gray-200', 'cursor-not-allowed');
-                }
-            }
-        });
-        
-        // Also disable FancySelects
-        if (this.descriptorSelect) this.descriptorSelect.setDisabled(isLocked);
-        if (this.typeSelect) this.typeSelect.setDisabled(isLocked);
-        if (this.focusSelect) this.focusSelect.setDisabled(isLocked);
-        if (this.flavorSelect) this.flavorSelect.setDisabled(isLocked);
-        
-        // Disable add buttons for skills, abilities, attacks
-        const addButtons = [
-            document.querySelector('button[onclick="addSkill()"]'),
-            document.querySelector('button[onclick="addAbilityFromSelect()"]'),
-            document.querySelector('button[onclick="addAttack()"]')
-        ];
-        
-        addButtons.forEach(button => {
-            if (button) {
-                button.disabled = isLocked;
-                if (isLocked) {
-                    button.classList.add('opacity-50', 'cursor-not-allowed');
-                } else {
-                    button.classList.remove('opacity-50', 'cursor-not-allowed');
-                }
-            }
-        });
-        
-        // Disable ability select dropdown
-        const abilitySelectContainer = document.getElementById('ability-select');
-        if (abilitySelectContainer) {
-            const inputs = abilitySelectContainer.querySelectorAll('input, select, button');
-            inputs.forEach(input => {
-                input.disabled = isLocked;
-            });
-        }
-        
-        // Disable new attack input
-        const newAttackInput = document.getElementById('new-attack');
-        if (newAttackInput) {
-            newAttackInput.disabled = isLocked;
-            if (isLocked) {
-                newAttackInput.classList.add('bg-gray-200', 'cursor-not-allowed');
-            } else {
-                newAttackInput.classList.remove('bg-gray-200', 'cursor-not-allowed');
-            }
-        }
-        
-        // Lock/unlock skills inputs and remove buttons
-        const skillInputs = document.querySelectorAll('#skills-list input, #skills-list select, #skills-list button');
-        skillInputs.forEach(input => {
-            input.disabled = isLocked;
-            if (isLocked && input.tagName !== 'BUTTON') {
-                input.classList.add('bg-gray-200', 'cursor-not-allowed');
-            } else if (!isLocked && input.tagName !== 'BUTTON') {
-                input.classList.remove('bg-gray-200', 'cursor-not-allowed');
-            }
-            if (isLocked && input.tagName === 'BUTTON') {
-                input.classList.add('opacity-50', 'cursor-not-allowed');
-            } else if (!isLocked && input.tagName === 'BUTTON') {
-                input.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        });
-        
-        // Lock/unlock abilities remove buttons
-        const abilityButtons = document.querySelectorAll('#abilities-list button');
-        abilityButtons.forEach(button => {
-            button.disabled = isLocked;
-            if (isLocked) {
-                button.classList.add('opacity-50', 'cursor-not-allowed');
-            } else {
-                button.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        });
-        
-        // Lock/unlock attacks remove buttons
-        const attackButtons = document.querySelectorAll('#attacks-list button');
-        attackButtons.forEach(button => {
-            button.disabled = isLocked;
-            if (isLocked) {
-                button.classList.add('opacity-50', 'cursor-not-allowed');
-            } else {
-                button.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        });
-        
-        // Lock/unlock power shifts inputs and buttons
-        const powerShiftControls = document.querySelectorAll('#powershifts-list input, #powershifts-list button');
-        powerShiftControls.forEach(control => {
-            control.disabled = isLocked;
-            if (isLocked && control.tagName !== 'BUTTON') {
-                control.classList.add('bg-gray-200', 'cursor-not-allowed');
-            } else if (!isLocked && control.tagName !== 'BUTTON') {
-                control.classList.remove('bg-gray-200', 'cursor-not-allowed');
-            }
-            if (isLocked && control.tagName === 'BUTTON') {
-                control.classList.add('opacity-50', 'cursor-not-allowed');
-            } else if (!isLocked && control.tagName === 'BUTTON') {
-                control.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        });
-        
-        // Lock/unlock advancements checkboxes
-        const advancementCheckboxes = document.querySelectorAll('#advancements-list input[type="checkbox"]');
-        advancementCheckboxes.forEach(checkbox => {
-            checkbox.disabled = isLocked;
-            const label = checkbox.closest('label');
-            if (label) {
-                if (isLocked) {
-                    label.classList.add('opacity-60', 'cursor-not-allowed');
-                    label.classList.remove('cursor-pointer', 'hover:bg-gray-50');
-                } else {
-                    label.classList.remove('opacity-60', 'cursor-not-allowed');
-                    label.classList.add('cursor-pointer', 'hover:bg-gray-50');
-                }
-            }
-        });
     }
 }
 

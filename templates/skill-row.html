@@ -1,7 +1,7 @@
 <div class="skill-row border border-gray-300 rounded p-2">
     <div class="flex items-center gap-2 mb-1">
         <input type="text" value="{{name}}" class="skill-name flex-1 px-2 py-1 text-sm border border-gray-200 rounded" placeholder="Skill name">
-        <button onclick="app.removeSkill({{index}})" class="text-red-600 hover:text-red-800 text-lg leading-none">×</button>
+        <button data-action="removeSkill" data-index="{{index}}" class="text-red-600 hover:text-red-800 text-lg leading-none">×</button>
     </div>
     <div class="flex gap-2 text-xs">
         <div class="flex-1">

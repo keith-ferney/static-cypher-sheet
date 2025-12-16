@@ -31,10 +31,10 @@
     />
     {{/allowsAdditionalText}}
     {{#canRemove}}
-    <button onclick="removePowerShiftInstance('{{name}}', '{{psId}}')" class="text-red-600 hover:text-red-800 text-sm">×</button>
+    <button data-action="removePowerShiftInstance" data-ps-name="{{name}}" data-ps-id="{{psId}}" class="text-red-600 hover:text-red-800 text-sm">×</button>
     {{/canRemove}}
     {{#isLast}}
-    <button onclick="addPowerShiftInstance('{{name}}')" class="text-green-600 hover:text-green-800 text-lg font-bold px-1" title="Add another {{name}}">
+    <button data-action="addPowerShiftInstance" data-ps-name="{{name}}" class="text-green-600 hover:text-green-800 text-lg font-bold px-1" title="Add another {{name}}">
         +
     </button>
     {{/isLast}}

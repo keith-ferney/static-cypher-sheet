@@ -392,34 +392,8 @@ describe('CharacterController', () => {
     });
   });
 
-  describe('Character Lock/Unlock', () => {
-    test('should toggle character lock state', () => {
-      model.createNewCharacterId();
-      model.saveCharacter({ name: 'Test', isLocked: false });
-      
-      controller.toggleCharacterLock();
-      
-      const character = model.currentCharacter;
-      expect(character.isLocked).toBe(true);
-    });
-
-    test('should unlock locked character', () => {
-      model.createNewCharacterId();
-      model.saveCharacter({ name: 'Test', isLocked: true });
-      
-      controller.toggleCharacterLock();
-      
-      const character = model.currentCharacter;
-      expect(character.isLocked).toBe(false);
-    });
-
-    test('should not toggle lock when no current character', () => {
-      model.currentCharacterId = null;
-      controller.toggleCharacterLock();
-      // Should not throw error
-      expect(model.currentCharacter).toBeUndefined();
-    });
-  });
+  // Note: Character lock/unlock now handled by CSS-only checkbox implementation.
+  // No JavaScript controller method needed - lock state is read from checkbox on save.
 
   describe('CRUD Operations Delegation', () => {
     test('should delegate showCharacterList', () => {

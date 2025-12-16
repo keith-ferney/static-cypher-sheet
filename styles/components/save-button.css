@@ -1,0 +1,30 @@
+/**
+ * CSS-Only Save Button State
+ * Uses data-has-changes attribute to control button appearance
+ */
+
+/* Default state: No unsaved changes (green) */
+button[data-action="saveCharacter"][data-has-changes="false"] {
+  background-color: rgb(22 163 74); /* green-600 */
+}
+
+button[data-action="saveCharacter"][data-has-changes="false"]:hover {
+  background-color: rgb(21 128 61); /* green-700 */
+}
+
+button[data-action="saveCharacter"][data-has-changes="false"]::before {
+  content: '💾 Save Character';
+}
+
+/* Unsaved changes state (yellow) */
+button[data-action="saveCharacter"][data-has-changes="true"] {
+  background-color: rgb(234 179 8); /* yellow-500 */
+}
+
+button[data-action="saveCharacter"][data-has-changes="true"]:hover {
+  background-color: rgb(202 138 4); /* yellow-600 */
+}
+
+button[data-action="saveCharacter"][data-has-changes="true"]::before {
+  content: '⚠️ Save Changes';
+}

@@ -7,4 +7,8 @@
 @import url('./styles/components/modal.css');
 @import url('./styles/components/cypher-form.css');
 @import url('./styles/components/abilities.css');
+@import url('./styles/components/character-lock.css');
+@import url('./styles/components/view-navigation.css');
+@import url('./styles/components/save-button.css');
+@import url('./styles/components/ability-edit-mode.css');
 @import url('./styles/layout.css');

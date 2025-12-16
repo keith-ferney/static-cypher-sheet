@@ -20,8 +20,6 @@ class FormRenderer {
         return AbilitiesRenderer.renderAbilities(abilities);
     }
 
-    // Note: toggleAbilityDesc removed - now handled by native <details> element
-
     // ========== EQUIPMENT ==========
     static getCurrentEquipment() {
         return EquipmentRenderer.getCurrentEquipment();
